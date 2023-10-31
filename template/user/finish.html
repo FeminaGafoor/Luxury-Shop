@@ -1,0 +1,83 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+<!-- Page Breadcrumb -->
+	<!-- container -->
+	<div class="container">
+		<div class="page-breadcrumb">
+			<ol class="breadcrumb">
+				<li><a title="Home" href="{% url 'home:home' %}">Home</a></li>
+				<li class="active">Finish</li>
+			</ol>
+			<div class="return-home-link pull-right">
+				<a title="Return Home Page" href="{% url 'home:home' %}">return to home page</a>
+			</div>
+		</div>
+		<div class="page-header bottom-shadow">
+			<h3>Finish</h3>
+			<p>The End</p>
+		</div><!-- Section Header /- -->
+	</div><!-- container /- -->
+	<!-- Page Breadcrumb /- -->
+	
+	<div class="page-wizard">
+		<!-- container -->
+		<div class="container">
+			<ul class="bottom-shadow">
+				<li class="active"><a title="login" href="{% url 'account:user_login' %}">1# login</a></li>
+				<li class="active"><a title="Shipping Address" href="{% url 'outgoing:shipping_address' %}">2# Shipping Address</a></li>
+				<li class="active"><a title="Payments" href="{% url 'outgoing:payments' %}">3# Payments</a></li>
+				<li class="active"><a title="summary" href="{% url 'outgoing:summary' %}">4# summary</a></li>
+				<li class="active"><a title="Finish" href="{% url 'outgoing:finish' %}">5# Finish</a></li>
+			</ul>
+			<!-- contact-form-details -->
+			<div class="contact-form-details successfully-message">
+				<div class="section-header">
+					<h3>Thanks You!</h3>
+				</div>
+				<div class="contact-form bottom-shadow">
+					<h2>Your Order has been Successfully Sent.</h2>
+					<div class="col-md-12">
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="informational-email pull-right">
+								<p>Information E-Mail has been sent to </p>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="informational-email">
+								<h3>Youremail@website.com</h3>							
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="informational-email pull-right">
+								<p>Order Number</p>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="informational-email">
+								<h3>#101087-786</h3> 	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!-- Contact Form Details /- -->
+			<div class="wizard-footer">
+				<a title="Back" href="{% url 'outgoing:summary' %}" class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Back</a>
+				<a title="Back To Home" href="{% url 'home:home' %}" class="btn btn-next btn-fill btn-warning btn-wd btn-sm"	>Back To Home</a>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+{% endblock %}

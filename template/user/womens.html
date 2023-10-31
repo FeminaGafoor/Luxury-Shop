@@ -1,0 +1,148 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+<!-- Page Breadcrumb -->
+<!-- container -->
+<div class="container">
+    <div class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li><a title="Home" href="index.html">Home</a></li>
+            <li class="active"><a href="{% url 'shop:category' %}">ALL Categories</a></li>
+
+        </ol>
+        <div class="return-home-link pull-right">
+            <a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
+        </div>
+    </div>
+    <div class="page-header ow-bottom-padding categories">
+        <h3>Women</h3>
+        <!-- <p>410+ Categories</p> -->
+    </div><!-- Section Header /- -->
+</div><!-- container /- -->
+<!-- Page Breadcrumb /- -->
+
+<!-- Category Section -->
+<div id="category-section" class="category-section categories">
+    <!-- container -->
+    <div class="container">
+        <!-- category box main -->
+            <div class="category-box-main">
+                {% for item in women_products %}
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="category-box">
+                            <a title="{{ item.name }}" href="#">
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width:355px; height:355px;"/>
+                                <span>{{ item.name }}</span>
+                                <div class="cat-hover"></div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+        
+        </div><!-- category box main /- -->
+        <div class="drop-line bottom-shadow"></div>
+        <div class="loading">
+            <a title="Click here for more products" href="#">
+                <img src="images/load.gif" alt="loading icon" />
+                <p>click here for more products</p>
+            </a>
+        </div>
+    </div><!-- container /- -->
+</div><!-- Category Section /- -->
+
+<!-- Footer Section -->
+<div id="footer-section" class="footer-section">
+    
+    <!-- Add Banner -->
+    <div id="add-banner-section" class="add-banner-section bottom-shadow">
+        <!-- container -->
+        <div class="container">
+            <a title="Add-banner" href="#"><img src="images/add-banner-2.jpg" alt="add-banner"/></a>
+        </div><!-- container /- -->
+    </div><!-- Add Banner /- -->
+    
+    <!-- Our Partner -->
+    <div id="our-partner-section" class="our-partner-section bottom-shadow">
+        <!-- container -->
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h3>Partners with us</h3>
+                <p>Nam ac egestas est. Mauris et pulvinar risus, at tincidunt lorem. Maecenas tristique sit amet odio sit amet aliquet. Quisque a pharetra quam. Sed in ultrices diam, eget sodales ligula. Sed ut tincidunt lacus.</p>
+            </div><!-- Section Header /- -->
+            <!-- Owl Carousel -->
+            <div id="our-partner" class="owl-carousel owl-theme our-partner">
+                <div class="item">
+                    <a title="Partner" href="#" class="partner-box">
+                        <img src="images/partner/partner-1.png" alt="partner-1"/>
+                    </a>
+                </div>
+                <div class="item">
+                    <a title="Partner" href="#" class="partner-box">
+                        <img src="images/partner/partner-2.png" alt="partner-1"/>
+                    </a>
+                </div>
+                <div class="item">
+                    <a title="Partner" href="#" class="partner-box">
+                        <img src="images/partner/partner-3.png" alt="partner-1"/>
+                    </a>
+                </div>
+                <div class="item">
+                    <a title="Partner" href="#" class="partner-box">
+                        <img src="images/partner/partner-4.png" alt="partner-1"/>
+                    </a>
+                </div>
+                <div class="item">
+                    <a title="Partner" href="#" class="partner-box">
+                        <img src="images/partner/partner-1.png" alt="partner-1"/>
+                    </a>
+                </div>
+                <div class="item">
+                    <a title="Partner" href="#" class="partner-box">
+                        <img src="images/partner/partner-2.png" alt="partner-1"/>
+                    </a>
+                </div>
+            </div><!-- Owl Carousel /- -->
+        </div><!-- container /- -->
+    </div><!-- Our Partner /- -->
+
+
+    <!-- News Letter -->
+    <div id="news-letter-section" class="news-letter-section">			
+        <!-- container -->
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h3>Sign up for our Newsletter</h3>				
+            </div><!-- Section Header /- -->
+            <!-- col-md-3 -->
+            <div class="col-md-3"></div><!-- col-md-3 /- -->
+            <!-- col-md-6 -->
+            <div class="col-md-6">
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <svg viewBox="0 0 485.211 485.211">
+                            <path d="M485.211,363.906c0,10.637-2.992,20.498-7.785,29.174L324.225,221.67l151.54-132.584   c5.895,9.355,9.446,20.344,9.446,32.219V363.906z M242.606,252.793l210.863-184.5c-8.653-4.737-18.397-7.642-28.908-7.642H60.651   c-10.524,0-20.271,2.905-28.889,7.642L242.606,252.793z M301.393,241.631l-48.809,42.734c-2.855,2.487-6.41,3.729-9.978,3.729   c-3.57,0-7.125-1.242-9.98-3.729l-48.82-42.736L28.667,415.23c9.299,5.834,20.197,9.329,31.983,9.329h363.911   c11.784,0,22.687-3.495,31.983-9.329L301.393,241.631z M9.448,89.085C3.554,98.44,0,109.429,0,121.305v242.602   c0,10.637,2.978,20.498,7.789,29.174l153.183-171.44L9.448,89.085z"/>
+                        </svg>
+                        <input type="text" class="form-control" placeholder="your-email@website.com" required />
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div><!-- col-md-6 /- -->
+            <!-- col-md-3 --><div class="col-md-3"></div><!-- col-md-3 /- --> 
+        </div><!-- container /- -->
+    </div> <!-- News Letter /- -->
+    
+
+
+
+
+
+
+{% endblock %}

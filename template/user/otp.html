@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Verification</title>
+</head>
+<body>
+    <h1>OTP Verification</h1>
+    
+    <form method="post" action="{% url 'account:verify_otp' %}"> <!-- Replace with your form action URL -->
+        {% csrf_token %} <!-- Include this for security -->
+        
+        <label for="otp">Enter the OTP sent to your email:</label>
+        <input type="text" id="otp" name="otp" required>
+        
+        <button type="submit">Verify OTP</button>
+
+
+        {% if messages %}
+            <!-- Bootstrap alert component -->
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </form>
+</body>
+</html>
