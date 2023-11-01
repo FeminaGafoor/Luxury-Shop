@@ -58,6 +58,7 @@
 							</ul>
 						</div>
 					</div> -->
+					
 					<div class="large-product">
 						<div id="about-carousel" class="col-md-3 col-sm-3 col-xs-3 flexslider product-thumb no-padding">
 							<ul class="slides">
@@ -67,6 +68,7 @@
 
 									</li>
 								{% endfor %}
+								
 							</ul>
 						</div>
 						<div id="about-slider" class="flexslider col-md-9 col-sm-9 col-xs-9 product-slider">
@@ -181,29 +183,26 @@
 						</li>
 					</ul>
 					<h4>Color</h4>
-
-					
-					<ul id="color-widget" class="single-side-widget color-widget top-social ow-left-padding">
-						<!-- <li><a title="Check" href="#" class="white"><i class="fa fa-check"></i></a></li> -->
-						<li><a title="Check" href="#" class="color color1 active"><i class="fa fa-check"></i></a></li>
-						<li><a title="Check" href="#" class="color4"><i class="fa fa-check"></i></a></li>
-						<li><a title="Check" href="#" class="color5"><i class="fa fa-check"></i></a></li>
-					</ul>
-<!-- 
-					<ul id="color-widget" class="single-side-widget color-widget top-social ow-left-padding">
-						{% for c in color %}
-						<li><a title="{{ c.name }}" href="#" class="color color{{ forloop.counter }}{% if forloop.first %} active{% endif %}"><i class="fa fa-check"></i></a></li>
+                    <ul id="color-widget" class="single-side-widget color-widget top-social ow-left-padding">
+						{% for c in colors %}
+						<!-- <li><a title="{{ c.name }}" href="#" class="color color{{ forloop.counter }}{% if forloop.first %} active{% endif %}"><i class="fa fa-check"></i></a></li>
+						 -->
+						<li><a title="{{ c.name }}" href="#" class="{% if forloop.first %}active{% endif %}">{{ c.name }}</a></li>
 						{% endfor %}
-					</ul> -->
-					
+					</ul>  
+
+
+					 
 					<h4>Sizes</h4>
 					<ul id="size-widget" class="single-side-widget size-widget top-social ow-left-padding">
-						
-						<li><a title="S" href="#" class="">S</a></li>
-						<li><a title="M" href="#" class="active">M</a></li>
-						<li><a title="L" href="#" class="">L</a></li>
-						
+						{% for size in size %}
+						<li><a title="{{ size.name }}" href="#" class="{% if forloop.first %}active{% endif %}">{{ size.name }}</a></li>
+						{% endfor %}
 					</ul>
+					
+
+
+
 					<h4>Brand or Sponsored</h4>
 					<ul class="single-side-widget top-social ow-left-padding">
 						<li><img src="static/user/assets/images/loreal.jpeg" alt="lo'real" /></li>

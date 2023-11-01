@@ -11,3 +11,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Products, ProductAdmin)
 admin.site.register(ProductImage)
 admin.site.register(Product_variant)
+admin.site.register(MutipleImage)

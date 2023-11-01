@@ -221,7 +221,14 @@
               <label for="image" class="form-label">Image URL</label>
               <input type="file" class="form-control" id="image" name="image" required>
             </div>
-  
+
+
+            <div class="mb-3">
+              <label for="images" class="form-label">Variant Images</label>
+              <input type="file" name="images" id="images" multiple required>
+          </div>
+
+
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Brand</label>
               <select name="brand" class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
@@ -294,6 +301,15 @@
             <!-- File input for uploading a new image -->
             <input type="file" class="form-control" id="edit_image{{ forloop.counter }}" name="edit_image" accept="image/*">
         </div>
+
+
+
+        <div class="mb-3">
+          <label for="edit_images{{ forloop.counter }}" class="form-label">Variant Images</label>
+          <input type="file" name="edit_images" id="edit_images{{ forloop.counter }}" multiple required>
+      </div>
+    
+
 
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Brand</label>

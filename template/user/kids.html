@@ -36,7 +36,7 @@
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <div class="category-box">
                     <span class="sale">+786</span>
-                    <a title="{{ item.name }}" href="{% url 'shop:kids' %}">
+                    <a title="{{ item.name }}" href="{% url 'shop:product' product_id=item.id %}">
                         <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width:355px; height:355px;"/>
                         <span>{{ item.name }}</span>
                         <div class="cat-hover"></div>

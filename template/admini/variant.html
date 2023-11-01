@@ -185,14 +185,10 @@
                       <td>{{item.price}}</td>
 
                       <td>
-                        {% for color in item.colors.all %}
-                        {{color.name}}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
+                        {{ item.colors.name }}
                       </td>
                       <td>
-                        {% for size in item.size.all %}
-                        {{size.name}}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
+                        {{item.size.name }}
                       </td>
                       <td>{{item.stock}}</td>
                       
@@ -250,7 +246,7 @@
             <select name="product" class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
                 <option selected>Open this select product</option>
                 {% for p in products %}
-                <option value="{{ p.name }}">{{ p.name }}</option>
+                  <option value="{{ p.name }}">{{ p.name }}</option>
                 {% endfor %}
               </select>
           </div>
@@ -261,7 +257,7 @@
 
           <div class="mb-3">
             <label for="colors" class="form-label">Colors</label>
-            <select multiple class="form-control" id="color" name="color" required>
+            <select class="form-control" id="color" name="color" required>
               <!-- Loop through the available colors from your database and generate options -->
               {% for color in colors %}
                 <option value="{{ color.id }}">{{ color.name }}</option>
@@ -271,7 +267,7 @@
 
           <div class="mb-3">
             <label for="size" class="form-label">Size</label>
-            <select multiple class="form-control" id="size" name="size" required>
+            <select class="form-control" id="size" name="size" required>
               <!-- Loop through the available colors from your database and generate options -->
               {% for size in sizes %}
                 <option value="{{ size.id }}">{{ size.name }}</option>
@@ -279,11 +275,11 @@
             </select>
           </div>
 
-          
+<!--           
           <div class="mb-3">
             <label for="images" class="form-label">Images</label>
             <input type="file" name="images" id="images" multiple required>
-        </div>
+        </div> -->
 
           <div class="mb-3">
             <label for="name" class="form-label">Stock</label>
@@ -355,10 +351,10 @@
           </div>
 
           
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label for="images" class="form-label">Images</label>
             <input type="file" name="images" id="images" multiple required>
-        </div>
+        </div> -->
         <script>
           document.getElementById("images").addEventListener("change", function() {
               var files = this.files;

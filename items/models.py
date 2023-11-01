@@ -25,7 +25,6 @@ class Brand(models.Model):
 
 class Color(models.Model):
     name = models.CharField(max_length= 50)
-    code = models.CharField(max_length=20,blank=True,null=True)
     
     
     def __str__(self):
@@ -33,7 +32,6 @@ class Color(models.Model):
 
 class Size(models.Model):
     name = models.CharField(max_length= 10)   
-    code = models.CharField(max_length=20,blank=True,null=True)
     
     def __str__(self):
         return self.name
@@ -44,7 +42,7 @@ class Products(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='product_images/',blank=True)
     brand = models.ForeignKey(Brand, blank=True, on_delete=models.SET_NULL, null=True)
-    category = models.ForeignKey(Category, blank=True,null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, blank=True,null=True, on_delete=models.SET_NULL,)
     create = models.DateTimeField(auto_now_add=True,null=True)
     update = models.DateTimeField(auto_now_add=True,null=True)
 
@@ -58,9 +56,9 @@ class Products(models.Model):
 class Product_variant(models.Model):
     product = models.ForeignKey(Products, blank=True, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    colors = models.ManyToManyField(Color)
-    size = models.ManyToManyField(Size)
-    stock = models.CharField(max_length=100,blank=True)                     
+    colors = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
+    size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
+    stock = models.CharField(max_length=100,blank=True)                         
     
     
     def __str__(self):
@@ -69,10 +67,19 @@ class Product_variant(models.Model):
        
 class ProductImage(models.Model):
     
-    pro_variant = models.ForeignKey(Product_variant,null=True, on_delete=models.SET_NULL, blank=True)
-    images = models.ImageField(upload_to='variantproduct_images/',blank=True)
+    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True, blank=True)
+    images = models.FileField(upload_to='variantproduct_images/',blank=True)
     
     def __str__(self):
         return str(self.pro_variant) 
+    
+    
+class MutipleImage(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
+    images = models.FileField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.product.name
+    
     
 

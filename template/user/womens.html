@@ -36,7 +36,7 @@
                 {% for item in women_products %}
                     <div class="col-md-3 col-sm-3 col-xs-6">
                         <div class="category-box">
-                            <a title="{{ item.name }}" href="#">
+                            <a title="{{ item.name }}" href="{% url 'shop:product' product_id=item.id %}">
                                 <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width:355px; height:355px;"/>
                                 <span>{{ item.name }}</span>
                                 <div class="cat-hover"></div>

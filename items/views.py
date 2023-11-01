@@ -4,7 +4,7 @@ from functools import reduce
 from tkinter import Image
 from django.shortcuts import render,redirect, get_object_or_404
 from items.models import Category
-from .models import Brand, Color, Product_variant, ProductImage, Products ,Size
+from .models import Brand, Color, MutipleImage, Product_variant, ProductImage, Products ,Size
 
 from django.contrib import messages
 
@@ -454,44 +454,58 @@ def product_manage(request):
 
 
 def add_product(request):  
-            
     if request.user.is_superuser:
-        category=Category.objects.all()
-        brand=Brand.objects.all()
-    
+        category = Category.objects.all()
+        brand = Brand.objects.all()
+
         if request.method == "POST":
-            name = request.POST['name']
-            description = request.POST['description']
+            name = request.POST.get('name')
+            description = request.POST.get('description')
             product_image = request.FILES.get('image')
             brand_name = request.POST.get('brand')
             category_name = request.POST.get('category')
+            images = request.FILES.getlist('images')  # Use 'images' instead of 'image' for multiple images
             
             if not product_image:
                 messages.error(request, 'Image is not uploaded!')
                 return redirect('items:product_manage')
-            
-            brand_instance = Brand.objects.get(brand_name = brand_name)
-            category_instance = Category.objects.get(name = category_name)
-            
+
+            try:
+                product_instance = Products.objects.get(name=name)
+                messages.error(request, 'Product with this name already exists.')
+                return redirect('items:product_manage')
+            except Products.DoesNotExist:
+                pass  # Product doesn't exist, continue
+
+            brand_instance, created = Brand.objects.get_or_create(brand_name=brand_name)
+            category_instance, created = Category.objects.get_or_create(name=category_name)
+
             product = Products.objects.create(
-                name = name,
-                description = description,
-                image = product_image,
-                brand = brand_instance,
-                category = category_instance,
+                name=name,
+                description=description,
+                image=product_image,
+                brand=brand_instance,
+                category=category_instance,
             )
-            product.save()
+            
+            if images:
+                for image in images:
+                    MutipleImage.objects.create(
+                        product=product,
+                        images=image,
+                    )
+            
             messages.success(request, 'Product added successfully.')
             return redirect('items:product_manage')
 
-        context={
-            'brand':brand,
-            'category':category,
-           }
-        return render(request, 'admini/product/add_pro.html',context)
- 
-    else:   
-        return redirect('for_admin:ad_login')
+        context = {
+            'brand': brand,
+            'category': category,
+        }
+        return render(request, 'admini/product/add_pro.html', context)
+    else:
+        return redirect('for_admin:ad_login')    
+    
     
     
  # EDIT-PRODUCT-----------------------------------------------------------------------------------------
@@ -563,11 +577,11 @@ def delete_product(request, product_id):
 
 
 def variant(request):
+    context = {}
     variant = Product_variant.objects.all()
     colors = Color.objects.all()
     products = Products.objects.all()
     sizes = Size.objects.all()
-    print(sizes)
     context = {
         'variant' : variant,
         'colors': colors,
@@ -576,7 +590,6 @@ def variant(request):
         
     }
     return render(request,'admini/variant.html',context)
-
 
 def add_variant(request):
     if request.user.is_superuser:
@@ -588,8 +601,10 @@ def add_variant(request):
             stock = request.POST.get('stock')
             images = request.FILES.getlist('images')
             
-            selected_color_ids = request.POST.getlist('color')
-            selected_size_ids = request.POST.getlist('size')
+            selected_color_ids = request.POST.get('color')
+            color = Color.objects.get(id=selected_color_ids)
+            selected_size_ids = request.POST.get('size')
+            size = Size.objects.get(id=selected_size_ids)
             
             # Validate the form data
             if not product_name:
@@ -619,15 +634,20 @@ def add_variant(request):
                         product=product_instance,
                         price=price,
                         stock=stock,
+                        colors=color,
+                        size=size
                     )
-            for i in images:
-                image=ProductImage(pro_variant= product_variant,images=i)
-                image.save()
-               
+            
+            # if images:
+            #     for image in images:
+            #         MutipleImage.objects.create(
+            #             product=product_instance,
+            #             images=image,
+            #         )
+            
             
              # Add the selected colors and sizes to the many-to-many fields
-            product_variant.colors.set(selected_color_ids)
-            product_variant.size.set(selected_size_ids)
+          
         
             product_variant.save()
             messages.success(request, 'Variant added successfully.')
