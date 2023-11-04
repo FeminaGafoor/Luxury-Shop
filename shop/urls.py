@@ -5,11 +5,13 @@ app_name='shop'
 
 urlpatterns = [
     path('shop/',views.shop,name='shop'),
-    path('product/<int:product_id>/', views.product, name='product'),
+    path('product/<int:id>/', views.product, name='product'),
     path('category/',views.category,name='category'),
     path('womens/',views.womens,name='womens'),
     path('mens/',views.mens,name='mens'),
     path('kids/',views.kids,name='kids'),
+    path('ajaxcolor/',views.ajaxcolor,name='ajaxcolor'),
+    
     
 ]
     

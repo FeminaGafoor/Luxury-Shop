@@ -1,8 +1,9 @@
 from django.shortcuts import render
 
+from items.models import Brand, MutipleImage, Product_variant, Products
+
 # Create your views here.
-def cart(request):
-    return render(request,'user/cart.html')
+
 
 def checkout(request):
     return render(request,'user/checkout.html')

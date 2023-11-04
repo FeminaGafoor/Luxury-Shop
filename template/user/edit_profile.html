@@ -1,0 +1,190 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Page Breadcrumb -->
+<!-- container -->
+<div class="container">
+	<div class="page-breadcrumb">
+		<ol class="breadcrumb">
+			<li><a title="Home" href="index.html">Home</a></li>
+			<li class="active">Profile</li>
+		</ol>
+		<div class="return-home-link pull-right">
+			<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
+		</div>
+	</div>
+	<div class="page-header bottom-shadow">
+		<h3> Update Profile</h3>
+		<p>It’s free and always will be.</p>
+	</div><!-- Section Header /- -->
+</div><!-- container /- -->
+<!-- Page Breadcrumb /- -->
+
+
+
+<!-- contact-form-details -->
+<div class="contact-form-details">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-sm-6"><!-- User Form -->
+				<div class="section-header">
+					<h3>User Details</h3>
+				</div><!-- Section Header /- -->
+				<div class="contact-form">
+					<form class="form-horizontal" action="{% url 'account:edit_profile' %}" method="POST"
+						enctype="multipart/form-data"> {% csrf_token %}
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="username" class="col-md-4">User Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="user_name" id="user_name"
+									placeholder="enter your username" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="col-md-4">First Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="first_name" id="first_name"
+									placeholder="enter your firstname" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="col-md-4">Last Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="last_name" id="last_name"
+									placeholder="enter your lastname" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="col-md-4">Email Address</label>
+							<div class="col-md-8">
+								<input type="email" class="form-control" name="email" id="email"
+									placeholder="enter your email" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="col-md-4">Phone</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="phone" id="phone"
+									placeholder="enter your phone number" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="col-md-4">Address</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="address" id="address"
+									placeholder="enter your address" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="username" class="col-md-4">City</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="city" id="city"
+									placeholder="enter your city" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="col-md-4">Country</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="country" id="country"
+									placeholder="enter your country" />
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="image" class="col-md-4 col-form-label">Profile Photo</label>
+							<div class="col-md-8">
+								<input type="file" class="form-control" id="image" name="image" required>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-default"
+							style="width: 219px; margin-bottom: -45px;">Update</button>
+
+
+					</form>
+				</div>
+			</div><!-- User Form /- -->
+
+			<div class="col-md-6 col-sm-6">
+				<!-- Section Header -->
+				<div class="section-header">
+					<h3> User Panel</h3>
+				</div><!-- Section Header /- -->
+				<div class="contact-details register-user">
+					<!-- <div class="register-user-banner">
+							<img src="images/register/register-user.png" alt="register-user">
+							<h2>100% Satisfied Customers </h2>
+						</div>						 -->
+					<!-- <h3>If You Already Have an Account, Login Directly</h3>
+						<p>Already have an account? Log in now to access exclusive features and enjoy a seamless shopping experience.</p> -->
+					<!-- <div class="drop-line bottom-shadow"></div> -->
+					<!-- <a title="sign in" href="#" class="btn btn-default"     style="width: 439px;    margin-left: 23px;">Update Profile</a> -->
+					<a title="sign in" href="#" class="btn btn-default" style="width: 439px; margin-left: 23px;">Change
+						Password</a>
+					<a title="sign in" href="#" class="btn btn-default"
+						style="width: 439px; margin-left: 23px;">Orders</a>
+					<a title="sign in" href="{% url 'account:user_logout' %}" class="btn btn-default"
+						style="width: 439px; margin-left: 23px;">Log out</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div><!-- Contact Form Details /- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Footer Section -->
+<div id="footer-section" class="footer-section">
+
+	<!-- Add Banner -->
+	<div id="add-banner-section" class="add-banner-section bottom-shadow">
+		<!-- container -->
+		<div class="container">
+			<a title="Add banner" href="#"><img src="static/user/assets/images/banner20231009_143002_0000-01.jpeg.jpg"
+					alt="add-banner" /></a>
+		</div><!-- container /- -->
+	</div><!-- Add Banner /- -->
+
+	{% endblock %}

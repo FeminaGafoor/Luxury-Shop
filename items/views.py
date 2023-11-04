@@ -4,7 +4,7 @@ from functools import reduce
 from tkinter import Image
 from django.shortcuts import render,redirect, get_object_or_404
 from items.models import Category
-from .models import Brand, Color, MutipleImage, Product_variant, ProductImage, Products ,Size
+from .models import Brand, Color, MutipleImage, Product_variant, Products ,Size
 
 from django.contrib import messages
 
@@ -260,9 +260,10 @@ def add_color(request):
     if request.user.is_superuser:
         if request.method == 'POST' :
             color_name   = request.POST.get('name')
+            color_code = request.POST.get('code')
             # validating whether the field is empty
             
-            if color_name.strip() == '':
+            if color_name.strip() == '' or color_code.strip() == '':
                 messages.error(request, 'field is empty!')
                 return redirect('items:add_color')
             elif Color.objects.filter(name=color_name).exists():
@@ -272,8 +273,9 @@ def add_color(request):
             
             
             else:
-                new_color = Color.objects.create(name=color_name)
+                new_color = Color.objects.create(name=color_name,code=color_code)
                 
+
                 new_color.save()
                 messages.success(request, 'Colors are added successfully')
                 return redirect('items:color')
@@ -292,13 +294,14 @@ def edit_color(request,color_id):
     if request.user.is_superuser:
         if request.method == 'POST':
             color_name = request.POST.get('edit_name')
+            color_code = request.POST.get('edit_code')
             
             
             
             
             #---validate the form data-----
 
-            if color_name.strip() == "":
+            if color_name.strip() == '' or color_code.strip() == '':
                 messages.error(request,"Field is empty!")
                 return redirect('items:color')
             elif Color.objects.filter(name=color_name).exclude(id=color_id).exists():
@@ -311,7 +314,7 @@ def edit_color(request,color_id):
         
             update = get_object_or_404(Color,id=color_id)
             update.name = color_name
-            
+            update.code = color_code 
             update.save()
             messages.success(request, 'Color updated successfully')
             return redirect('items:color')
@@ -619,6 +622,19 @@ def add_variant(request):
             # Check if there are any validation errors
             if messages.get_messages(request):
                 return redirect('items:variant')  # Redirect back to the form page
+            
+            existing_variant = Product_variant.objects.filter(
+                Q(product__name=product_name) &
+                Q(colors=color) &
+                Q(size=size)
+            ).first()
+
+            if existing_variant:
+                messages.error(request, 'A variant with the same product, color, and size already exists.')
+                return redirect('items:variant')
+
+
+
 
             try:
                 product_instance = Products.objects.get(name=product_name)

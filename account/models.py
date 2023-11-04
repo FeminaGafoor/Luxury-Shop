@@ -10,3 +10,17 @@ class Customer(User):
     def __str__(self) :
         return self.username
     
+class User_Profile(models.Model):
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.BigIntegerField()
+    address = models.CharField(max_length=20)
+    city = models.CharField(max_length=15)
+    country = models.CharField(max_length=15)
+    image = models.ImageField( upload_to='images/',blank=True,null=True)
+
+    def __str__(self):
+        return self.user_name

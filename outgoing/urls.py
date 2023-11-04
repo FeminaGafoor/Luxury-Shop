@@ -5,7 +5,7 @@ app_name='outgoing'
 
 
 urlpatterns = [
-     path('cart/',views.cart,name='cart'),
+    
     path('checkout/',views.checkout,name='checkout'),
 
     path('payments',views.payments,name='payments'),

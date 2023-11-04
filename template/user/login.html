@@ -8,103 +8,110 @@
 
 
 <!-- Page Breadcrumb -->
-	<!-- container -->
-	<div class="container">
-		<div class="page-breadcrumb">
-			<ol class="breadcrumb">
-				<li><a title="Home" href="index.html">Home</a></li>
-				<li class="active">Create Account</li>
-			</ol>
-			<div class="return-home-link pull-right">
-				<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
-			</div>
-		</div>
-		<div class="page-header bottom-shadow">
-			<h3>Log-in</h3>
-			<p> Theme Login</p>
-		</div><!-- Section Header /- -->
-	</div><!-- container /- -->
-	<!-- Page Breadcrumb /- -->
-	
-	<div class="page-wizard">
-		<!-- container -->
-		<div class="container">
-			<ul class="bottom-shadow">
-				<li class="active"><a href="{% url 'account:user_login' %}">1# login</a></li>
-				<li><a title="login" href=" {% url 'outgoing:checkout' %}">2# Shipping Address</a></li>
-				<li><a title="Shipping Address" href="{% url 'outgoing:payments' %}">3# Payments</a></li>
-				<li><a title="summary" href="{% url 'outgoing:summary' %}">4# summary</a></li>
-				<li><a title="Finish" href="{% url 'outgoing:finish' %}">5# Finish</a></li>
-			</ul>
-			<!-- contact-form-details -->
-			<div class="contact-form-details row">
-				<!-- col-md-6 -->
-				<div class="col-md-6 col-sm-6">
-					<div class="section-header">
-						<h3>Registered User</h3>
-					</div><!-- Section Header Over -->
-					<div class="contact-form bottom-shadow">
-						<form class="form-horizontal login-page" action="{% url 'account:user_login' %}"  method='POST'>
-							{% csrf_token %}
-							<div class="form-group">
-								<label class="col-md-4">User Name</label>
-								<div class="col-md-8">
-									<input type="text" class="form-control" name="username" id="txt_email" placeholder="enter your name"  />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-4">Email Address</label>
-								<div class="col-md-8">
-									<input type="email"  class="form-control" name="email" id="txt_email" placeholder="enter your email"  />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="password" class="col-md-4">Password</label>
-								<div class="col-md-8">
-									<input type="password"  class="form-control" name="password" id="password" placeholder="*****"  />
-								</div>
-							</div>
-							{% if messages %}
-                                <!-- Bootstrap alert component -->
-                                <div class="alert alert-danger">
-									{% for message in messages %}
-									    {{ message }}
-									{% endfor %}
-                                </div>
-                            {% endif %}
-							<div class="drop-line bottom-shadow"></div>
-							<div class="form-group">
-								<a title=">Forgot Password " href="#">Forgot your Password ?</a>	
-								<input type="submit" value="Login" class="btn btn-default  pull-right">
-							</div>
-						</form>
-					</div>
-				</div><!-- col-md-6 /- -->
-				<!-- col-md-6 -->
-				<div class="col-md-6 col-sm-6"> 
-					<div class="section-header">
-						<h3>New User/ No registration</h3>
-					</div><!-- Section Header Over -->
-					<div class="contact-details new-user-register register-user bottom-shadow"> 
-						<h3>"Unlock Beauty Benefits"</h3>
-						<p>"Discover the world of Luxury Shop - your gateway to exclusive deals, personalized shopping experiences, and faster checkout. Register with us today to elevate your beauty journey and enjoy the full range of benefits we offer." </p>
-						<div class="drop-line bottom-shadow"></div>
-						<a title="Continue" href="{% url 'account:register' %}" class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Continue</a>
-					</div>
-				</div><!-- col-md-6 /- -->
-			</div><!-- Contact Form details /- -->
+<!-- container -->
+<div class="container">
+	<div class="page-breadcrumb">
+		<ol class="breadcrumb">
+			<li><a title="Home" href="index.html">Home</a></li>
+			<li class="active">Create Account</li>
+		</ol>
+		<div class="return-home-link pull-right">
+			<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
 		</div>
 	</div>
+	<div class="page-header bottom-shadow">
+		<h3>Log-in</h3>
+		<p> Theme Login</p>
+	</div><!-- Section Header /- -->
+</div><!-- container /- -->
+<!-- Page Breadcrumb /- -->
 
-	<!-- Footer Section -->
-	<div id="footer-section" class="footer-section">
-		
-		<!-- Add Banner -->
-		<div id="add-banner-section" class="add-banner-section bottom-shadow">
-			<!-- container -->
-			<div class="container">
-				<a title="Add-banner" href="#"><img src="static/user/assets/images/banner20231009_143002_0000-01.jpeg.jpg" alt="add-banner"/></a>
-			</div><!-- container /- -->
-		</div><!-- Add Banner /- -->
-		
-    {% endblock %}
+<div class="page-wizard">
+	<!-- container -->
+	<div class="container">
+		<ul class="bottom-shadow">
+			<li class="active"><a href="{% url 'account:user_login' %}">1# login</a></li>
+			<li><a title="login" href=" {% url 'outgoing:checkout' %}">2# Shipping Address</a></li>
+			<li><a title="Shipping Address" href="{% url 'outgoing:payments' %}">3# Payments</a></li>
+			<li><a title="summary" href="{% url 'outgoing:summary' %}">4# summary</a></li>
+			<li><a title="Finish" href="{% url 'outgoing:finish' %}">5# Finish</a></li>
+		</ul>
+		<!-- contact-form-details -->
+		<div class="contact-form-details row">
+			<!-- col-md-6 -->
+			<div class="col-md-6 col-sm-6">
+				<div class="section-header">
+					<h3>Registered User</h3>
+				</div><!-- Section Header Over -->
+				<div class="contact-form bottom-shadow">
+					<form class="form-horizontal login-page" action="{% url 'account:user_login' %}" method='POST'>
+						{% csrf_token %}
+						<div class="form-group">
+							<label class="col-md-4">User Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="username" id="txt_email"
+									placeholder="enter your name" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4">Email Address</label>
+							<div class="col-md-8">
+								<input type="email" class="form-control" name="email" id="txt_email"
+									placeholder="enter your email" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-md-4">Password</label>
+							<div class="col-md-8">
+								<input type="password" class="form-control" name="password" id="password"
+									placeholder="*****" />
+							</div>
+						</div>
+						{% if messages %}
+						<!-- Bootstrap alert component -->
+						<div class="alert alert-danger">
+							{% for message in messages %}
+							{{ message }}
+							{% endfor %}
+						</div>
+						{% endif %}
+						<div class="drop-line bottom-shadow"></div>
+						<div class="form-group">
+							<a title=">Forgot Password " href="#">Forgot your Password ?</a>
+							<input type="submit" value="Login" class="btn btn-default  pull-right">
+						</div>
+					</form>
+				</div>
+			</div><!-- col-md-6 /- -->
+			<!-- col-md-6 -->
+			<div class="col-md-6 col-sm-6">
+				<div class="section-header">
+					<h3>New User/ No registration</h3>
+				</div><!-- Section Header Over -->
+				<div class="contact-details new-user-register register-user bottom-shadow">
+					<h3>"Unlock Beauty Benefits"</h3>
+					<p>"Discover the world of Luxury Shop - your gateway to exclusive deals, personalized shopping
+						experiences, and faster checkout. Register with us today to elevate your beauty journey and
+						enjoy the full range of benefits we offer." </p>
+					<div class="drop-line bottom-shadow"></div>
+					<a title="Continue" href="{% url 'account:register' %}"
+						class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Continue</a>
+				</div>
+			</div><!-- col-md-6 /- -->
+		</div><!-- Contact Form details /- -->
+	</div>
+</div>
+
+<!-- Footer Section -->
+<div id="footer-section" class="footer-section">
+
+	<!-- Add Banner -->
+	<div id="add-banner-section" class="add-banner-section bottom-shadow">
+		<!-- container -->
+		<div class="container">
+			<a title="Add-banner" href="#"><img src="static/user/assets/images/banner20231009_143002_0000-01.jpeg.jpg"
+					alt="add-banner" /></a>
+		</div><!-- container /- -->
+	</div><!-- Add Banner /- -->
+
+	{% endblock %}

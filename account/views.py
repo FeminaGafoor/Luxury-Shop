@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate ,login,logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.conf import settings
-from account.models import Customer
+from account.models import Customer, User_Profile
 from django.contrib import auth
 from django.core.mail import send_mail
 from django.db.models import Q
@@ -173,11 +173,6 @@ def verify_otp(request):
 #     return render(request, 'user/otp.html')  
 
 
-
-
-
-
-
 def user_login(request):
     if request.method == "POST":
         # Get the input values from the form
@@ -211,3 +206,79 @@ def user_logout(request):
 def profile(request):
     
      return render(request, 'user/profile.html')
+ 
+# def edit_profile(request):
+    
+#     if request.method == "POST":
+#         user_name = request.POST.get('user_name')
+#         first_name = request.POST.get('first_name')
+#         last_name = request.POST.get('last_name')
+#         phone = request.POST.get('phone')
+#         address = request.POST.get('address')
+       
+#         city = request.POST.get('city')
+#         country = request.POST.get('country')
+#         image = request.FILES.get('image')
+       
+#         if not user_name or not first_name or not last_name or not phone or not address or not city or not country or image is None:
+#             messages.error(request,"Field is empty!")
+#             return redirect('account:edit_profile')
+#         else:
+#             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        
+#             user_profile, created = User_Profile.objects.get_or_create(user=request.user)
+#             print("User Profile:", user_profile)
+
+#             user_profile.user_name = user_name
+#             user_profile.first_name = first_name
+#             user_profile.last_name = last_name
+#             user_profile.phone = phone
+#             user_profile.address = address
+#             user_profile.city = city
+#             user_profile.country = country
+#             user_profile.image = image
+#             user_profile.save()
+            
+#             messages.success(request, "Profile updated successfully!")
+
+#         return redirect('account:profile')
+        
+        
+#     return render(request, 'user/edit_profile.html')
+def edit_profile(request):
+    if request.method == "POST":
+        user_name = request.POST.get('user_name')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')  # Add email field
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+        image = request.FILES.get('image')
+
+        if not user_name or not first_name or not last_name or not email or not phone or not address or not city or not country:
+            messages.error(request, "Field is empty!")
+            return redirect('account:edit_profile')
+        else:
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            user_profile, created = User_Profile.objects.get_or_create(user=request.user)
+            user_profile.user_name = user_name
+            user_profile.first_name = first_name
+            user_profile.last_name = last_name
+            user_profile.phone = phone
+            user_profile.address = address
+            user_profile.city = city
+            user_profile.country = country
+            user_profile.image = image
+            user_profile.save()
+
+            # Update the user's email
+            user = request.user
+            user.email = email
+            user.save()
+
+            messages.success(request, "Profile updated successfully!")
+            return redirect('account:profile')
+
+    return render(request, 'user/edit_profile.html')

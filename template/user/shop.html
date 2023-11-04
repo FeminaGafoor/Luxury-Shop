@@ -3,31 +3,31 @@
 
 {% block content %}
 
-    
-    
-    
-    <!-- Page Breadcrumb -->
-	<!-- container -->
-	<div class="container">
-		<div class="page-breadcrumb">
-			<ol class="breadcrumb">
-				<li><a title="Home" href="{% url 'home:home' %}">Home</a></li>
-				<li><a title="Clothing" href="#">Cosmetics</a></li>
-				<li class="active"> Women's </li>
-			</ol>
-			<div class="return-home-link pull-right">
-				<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
-			</div>
-		</div>
-		<div class="page-header ow-bottom-padding categories">
-			<h3>Shop</h3>
-			<p>786+ Products</p>
-		</div><!-- Section Header /- -->
-	</div><!-- container /- -->
-	<!-- Page Breadcrumb /- -->
 
-	<!-- Product Filter -->
-	<!-- <div class="product-filter">
+
+
+<!-- Page Breadcrumb -->
+<!-- container -->
+<div class="container">
+	<div class="page-breadcrumb">
+		<ol class="breadcrumb">
+			<li><a title="Home" href="{% url 'home:home' %}">Home</a></li>
+			<li><a title="Clothing" href="#">Cosmetics</a></li>
+			<li class="active"> Women's </li>
+		</ol>
+		<div class="return-home-link pull-right">
+			<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
+		</div>
+	</div>
+	<div class="page-header ow-bottom-padding categories">
+		<h3>Shop</h3>
+		<p>786+ Products</p>
+	</div><!-- Section Header /- -->
+</div><!-- container /- -->
+<!-- Page Breadcrumb /- -->
+
+<!-- Product Filter -->
+<!-- <div class="product-filter">
 		<div class="container">
 			<div class="product-filter-box bottom-shadow">
 				<div class="col-md-4">
@@ -129,83 +129,84 @@
 					</form>
 				</div>
 			</div> -->
-			<!-- <div class="pillbox"> -->
-				<!-- <a title="Close Icon" href="#">Ethenic Wear <i class="fa fa-close"></i></a>
+<!-- <div class="pillbox"> -->
+<!-- <a title="Close Icon" href="#">Ethenic Wear <i class="fa fa-close"></i></a>
 				<a title="Close Icon" href="#">Gucchi <i class="fa fa-close"></i></a>
 				<a title="Close Icon" href="#">White <i class="fa fa-close"></i></a>
 				<a title="Close Icon" href="#">34-54 Size <i class="fa fa-close"></i></a>
 				<a title="Close Icon" href="#">clear All search tags</a> -->
-			<!-- </div> -->
-		<!-- </div>
+<!-- </div> -->
+<!-- </div>
 	</div> -->
-	<!-- Product Filter /- -->
-	
-	<!-- Feature Product -->
-	<div id="featured-products" class="featured-products bottom-shadow">
-		<!-- container -->
-		<div class="container">			
-			<div class="category-box-main product-box-main">
-				{% for i in product %}
-				<div class="col-md-3 col-sm-6 col-xs-6 main-product">
-					
-					<div class="category-box product-box">
-						
-						<span class="sale">sales</span>
-						
-						<div class="inner-product">
-							
-						
-							
-							<!-- <a href="{% url 'shop:product'  product_id=i.id %}"> -->
-							<img src="{{ i.image.url }}" alt="featured-img" style="width: 292px; height: 294px;" />
-						    <!-- </a> -->
-							
+<!-- Product Filter /- -->
+
+<!-- Feature Product -->
+<div id="featured-products" class="featured-products bottom-shadow">
+	<!-- container -->
+	<div class="container">
+		<div class="category-box-main product-box-main">
+			{% for i in product %}
+			<div class="col-md-3 col-sm-6 col-xs-6 main-product">
+
+				<div class="category-box product-box">
+
+					<span class="sale">sales</span>
+
+					<div class="inner-product">
 
 
-							<div class="product-box-inner">
-								<ul>
-									<li><a title="Eye Icon" href="{{ i.image.url }}"><i class="fa fa-eye"></i></a></li>
-									<li><a title="Heart Icon" href="#"><i class="fa fa-heart"></i></a></li>
-								</ul>
-								<a title="Add to cart" href="#" class="btn">add to cart</a>
-							</div>
+
+						<!-- <a href="{% url 'shop:product'  id=i.id %}"> -->
+						<img src="{{ i.image.url }}" alt="featured-img" style="width: 292px; height: 294px;" />
+						<!-- </a> -->
+
+
+
+						<div class="product-box-inner">
+							<ul>
+								<li><a title="Eye Icon" href="{{ i.image.url }}"><i class="fa fa-eye"></i></a></li>
+								<li><a title="Heart Icon" href="#"><i class="fa fa-heart"></i></a></li>
+							</ul>
+							<a title="Add to cart" href="#" class="btn">add to cart</a>
 						</div>
 					</div>
-				<a title="Fashionable Pink Top" href="#" class="product-title">{{ i.name }}</a>
-					<ul class="star">
-						<li>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star-o"></i>
-						<i class="fa fa-star-o"></i>
-						</li>
-					</ul>
-					<span class="amount"><del>&dollar;24.99</del> &dollar;19.99</span>
 				</div>
-				{% endfor %}
+				<a title="Fashionable Pink Top" href="#" class="product-title">{{ i.name }}</a>
+				<ul class="star">
+					<li>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star-o"></i>
+						<i class="fa fa-star-o"></i>
+					</li>
+				</ul>
+				<span class="amount"><del>&dollar;24.99</del> &dollar;19.99</span>
 			</div>
-		</div><!-- container /- -->
-	</div>
-	<!-- Feature Product /- -->
-	
-	<div class="loading">
-		<a title="Click here for more products" href="#">
-			<img alt="loading icon" src="images/load.gif">
-			<p>click here for more products</p>
-		</a>
-	</div>
-	
-	<!-- Footer Section -->
-	<div id="footer-section" class="footer-section">
-	
-		<!-- Add Banner -->
-		<div id="add-banner-section" class="add-banner-section bottom-shadow">
-			<!-- container -->
-			<div class="container">
-				<a title="Add banner" href="#"><img src="static/user/assets/images/banner20231009_143002_0000-01.jpeg.jpg" alt="add-banner"/></a>
-			</div><!-- container /- -->
-		</div><!-- Add Banner /- -->
+			{% endfor %}
+		</div>
+	</div><!-- container /- -->
+</div>
+<!-- Feature Product /- -->
 
-		
-        {% endblock %}
+<div class="loading">
+	<a title="Click here for more products" href="#">
+		<img alt="loading icon" src="images/load.gif">
+		<p>click here for more products</p>
+	</a>
+</div>
+
+<!-- Footer Section -->
+<div id="footer-section" class="footer-section">
+
+	<!-- Add Banner -->
+	<div id="add-banner-section" class="add-banner-section bottom-shadow">
+		<!-- container -->
+		<div class="container">
+			<a title="Add banner" href="#"><img src="static/user/assets/images/banner20231009_143002_0000-01.jpeg.jpg"
+					alt="add-banner" /></a>
+		</div><!-- container /- -->
+	</div><!-- Add Banner /- -->
+
+
+	{% endblock %}
