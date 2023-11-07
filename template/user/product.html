@@ -20,6 +20,8 @@
 </div><!-- container /- -->
 <!-- Page Breadcrumb /- -->
 
+
+
 <!-- Single Product -->
 <div id="single-product" class="single-product">
 	<!-- Container -->
@@ -27,38 +29,7 @@
 		<div class="row">
 			<!-- col-md-7 -->
 			<div class="col-md-7">
-				<!-- <div class="large-product">
-						<div id="about-carousel" class="col-md-3 col-sm-3 col-xs-3 flexslider product-thumb no-padding">
-							<ul class="slides">
-								<li>
-									<img src="images/single-product/product-thumb-1.jpg" alt="product-thumb">
-								</li>
-								<li>
-									<img src="images/single-product/product-thumb-2.jpg" alt="product-thumb">
-								</li>
-								<li>
-									<img src="images/single-product/product-thumb-3.jpg" alt="product-thumb">
-								</li>								
-							</ul>
-						</div>
-						<div id="about-slider" class="flexslider col-md-9 col-sm-9 col-xs-9 product-slider">
-							<ul class="slides">
-								<li>
-									<a href="images/single-product/product-large-1.jpg"><img class="" src="images/single-product/product-large-1.jpg" alt="product-thumb" /></a>
-								</li>
-								<li>
-									<a href="images/single-product/product-large-1.jpg"><img class="" src="images/single-product/product-large-2.jpg" alt="product-thumb" /></a>
-								</li>
-								<li>
-									<a href="images/single-product/product-large-1.jpg"><img class="" src="images/single-product/product-large-3.jpg" alt="product-thumb" /></a>
-								</li>
-								<li>
-									<a href="images/single-product/product-large-1.jpg"><img class="" src="images/single-product/product-large-2.jpg" alt="product-thumb" /></a>
-								</li>
-							</ul>
-						</div>
-					</div> -->
-
+				
 				<div class="large-product">
 					<div id="about-carousel" class="col-md-3 col-sm-3 col-xs-3 flexslider product-thumb no-padding">
 						<ul class="slides">
@@ -81,90 +52,7 @@
 						</ul>
 					</div>
 				</div>
-				<!-- <div class="large-product"> -->
-					<!-- <div id="about-carousel" class="col-md-3 col-sm-3 col-xs-3 flexslider product-thumb no-padding">
-						<ul class="slides">
-							<li>
-								<img src="images/single-product/product-thumb-1.jpg" alt="product-thumb">
-							</li>
-							<li>
-								<img src="images/single-product/product-thumb-2.jpg" alt="product-thumb">
-							</li>
-							<li>
-								<img src="images/single-product/product-thumb-3.jpg" alt="product-thumb">
-							</li>
-						</ul>
-					</div> -->
-					<!-- <div id="about-slider" class="flexslider col-md-9 col-sm-9 col-xs-9 product-slider">
-						<ul class="slides">
-							<li>
-								<img class="magniflier" src="images/single-product/product-large-1.jpg"
-									alt="product-thumb" />
-							</li>
-							<li>
-								<img class="magniflier" src="images/single-product/product-large-2.jpg"
-									alt="product-thumb" />
-							</li>
-							<li>
-								<img class="magniflier" src="images/single-product/product-large-3.jpg"
-									alt="product-thumb" />
-							</li>
-							<li>
-								<img class="magniflier" src="images/single-product/product-large-2.jpg"
-									alt="product-thumb" />
-							</li>
-						</ul>
-					</div> -->
-				<!-- </div> -->
-				<!-- Section Header /- -->
-				<div class="page-header ow-bottom-padding categories">
-					<h3><span>Beauty & Style</span>Products To Cart</h3>
-				</div><!-- Section Header /- -->
 				
-				<div class="category-box-main product-box-main">
-					
-					{% for i in images %}
-					<div class="col-md-6 col-sm-6 col-xs-6 main-product">
-						<h1>{{i.id}}</h1>
-						<h1>{{i.product}}</h1>
-						<h1>{{i.product.brand}}</h1>
-						<h1>{{i.product_variant.price}}</h1>
-						<div class="category-box product-box">
-							
-							<div class="inner-product">
-
-								<img src="{{ i.images.url }}" alt="featured-img" />
-
-								<div class="product-box-inner">
-									<ul>
-										<li><a title="Eye Icon" href="images/featured/featured-2.jpg"><i
-													class="fa fa-eye"></i></a></li>
-										<li><a title="Heart Icon" href="#"><i class="fa fa-heart"></i></a></li>
-									</ul>
-									<a title="Add to cart" href="{% url 'cart:add_cart' %}" class="btn">add to cart</a>
-								</div>
-
-							</div>
-                  
-						</div>
-						<a title="Fashionable Pink Top" href="#" class="product-title">Fashionable Pink Top</a>
-						<ul class="star">
-							<li>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o"></i>
-								<i class="fa fa-star-o"></i>
-							</li>
-						</ul>
-						<span class="amount"><del>&dollar;24.99</del> &dollar;19.99</span>
-					</div>
-
-					
-						{% endfor %}
-					<div class="drop-line bottom-shadow"></div>
-					
-				</div>
 				
 			</div><!-- col-md-7 /- -->
 			
@@ -215,6 +103,7 @@
 					</li>
 				</ul>
 				<h4>Color</h4>
+			
 
 				<ul id="color-widget" class="single-side-widget color-widget top-social ow-left-padding">
 					{% for rs in colors %}
@@ -228,19 +117,12 @@
 
 					{% endfor %}
 				</ul>
-
-				<h4>Sizes</h4>
-				<ul id="size-append" class="single-side-widget size-widget top-social ow-left-padding">
-					{% for rs in sizes %}
-					<li>
-						<a title="{{ rs.size.name }}" href="#"
-							class="size-option {% if variant.size_id == rs.size_id %}active{% endif %}">
-							{{ rs.size.name }}
-						</a>
-					</li>
-					{% endfor %}
-				</ul>
-
+				<form method="POST" id="add-to-cart" >
+					{% csrf_token %}
+				<button type="submit" class="btn">Add to Cart</button>
+			    </form>
+				
+			
 
 				<h4>Brand or Sponsored</h4>
 
@@ -252,16 +134,8 @@
 					</li>
 				</ul>
 
-
-				<aside class="widget widget_recent_post">
-					<div role="tabpanel">
-
-						<div class="tab-content">
-
-						</div>
-					</div>
-				</aside>
 			</div>
+			
 
 		</div>
 	</div><!-- Container /- -->
@@ -289,50 +163,40 @@
 	</div><!-- Add Banner /- -->
 	<script src="{% static 'user/assets/libraries/jquery.min.js' %}"></script>
 	<script>
-		$(document).ready(function () {
-			$('.color').on('click', function () {
-				// Get the selected color from the data attribute
-				var selectedColor = $(this).data('color');
-				console.log('color')
-				// Do something with the selectedColor, such as updating the UI or making an AJAX request.
-				console.log('Selected color: ' + selectedColor);
-				var csrfToken = "{{ csrf_token|escapejs }}";
-				console.log(csrfToken, 'crs')
+
+		var selectedColor = '{{initial_color}}';
+		console.log(selectedColor)
+		const colorElements = document.querySelectorAll('.color');
+		colorElements.forEach(function(colorElement) {
+			colorElement.addEventListener('click', function(event) {
+				const dataColor = colorElement.getAttribute('data-color');
+				selectedColor = dataColor
+				console.log('Selected Color: ' + dataColor);
+			});
+		});
+		
+
+		const form = document.getElementById("add-to-cart");
+		form.addEventListener("submit", function(event) {
+			event.preventDefault();
+			console.log(document.getElementById("add-to-cart"))
+			const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
 				$.ajax({
 					type: 'POST',
-					url: '{% url "shop:ajaxcolor" %}',
+					url: '{% url "cart:add_cart_ajax" %}',
 					data: {
-						productid: "{{product.id}}",
-						size: selectedColor,
-						csrfmiddlewaretoken: csrfToken,
+						product: "{{product.id}}",
+						color: selectedColor,
+						user_id: '{{request.user.id}}',
+						csrfmiddlewaretoken: csrfTokenInput.value,
 					},
 					success: function (data) {
-
 						console.log("success", data);
-
-						data.forEach((item) => {
-							console.log(item)
-						})
-						var html = ''
-						data.forEach((item, index) => {
-							html += `
-							  <li>
-								<a title="${item}" href="#" class="size-option ${index === 0 ? 'active' : ''}">
-								  ${item}
-								</a>
-							  </li>
-							`;
-						});
-
-						const ul = document.getElementById("size-append");
-						ul.innerHTML = html;
 					},
 					error: function (data) {
 						alert("Got an error dude " + data);
 					}
 				});
-
-			});
 		});
 
 	</script>

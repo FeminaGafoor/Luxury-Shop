@@ -31,18 +31,23 @@
 		<div class="row">
 			<div class="col-md-6 col-sm-6"><!-- User Form -->
 				<div class="section-header">
-					<h3>New User</h3>
+					<h3>Your Profile</h3>
 				</div><!-- Section Header /- -->
 				<div class="contact-form">
 					<form class="form-horizontal" action="{% url 'account:profile' %}" method="POST">
-
-
+						{% if user.user_profile.image %}
+                        <div class="form-group">
+                            <label for="profile_image" class="col-md-4"></label>
+                            <div class="col-md-8">
+                                <img src="{{ user.user_profile.image.url }}" alt="Profile Image" style="max-width: 30%; margin-left: 209px;">
+                            </div>
+                        </div>
+                    {% endif %}
+						
 						<div class="form-group">
 							<label for="username" class="col-md-4">User Name</label>
 							<div class="col-md-8">
-
-								<input type="text" class="form-control" name="username" id="username"
-									value="{{ user.user_name }}" />
+									<p>{{ user_pro.user_name }}</p>
 							</div>
 						</div>
 
@@ -50,40 +55,41 @@
 							<label for="email" class="col-md-4">Email Address</label>
 							<div class="col-md-8">
 
-								<input type="email" class="form-control" name="email" id="email" />
+								<p>{{ user.email }}</p>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label for="email" class="col-md-4">Phone</label>
 							<div class="col-md-8">
-								<input type="email" class="form-control" name="phone" id="phone" />
+								<p>{{ user_pro.phone }}</p>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label for="username" class="col-md-4">Address</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="address" id="address" />
+								<p>{{ user_pro.address }}</p>
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="username" class="col-md-4">City</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="city" id="city" />
+								<p>{{ user_pro.city }}</p>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label for="username" class="col-md-4">Country</label>
 							<div class="col-md-8" style="margin-left: 171px;margin-top: -40px;width: 350px" ;>
-								<input type="text" class="form-control" name="country" id="country" />
+								<p>{{ user_pro.country }}</p>
 							</div>
 						</div>
 
 					</form>
 				</div>
 			</div><!-- User Form /- -->
+			
 
 			<div class="col-md-6 col-sm-6">
 				<!-- Section Header -->
@@ -91,20 +97,12 @@
 					<h3> User Panel</h3>
 				</div><!-- Section Header /- -->
 				<div class="contact-details register-user">
-					<!-- <div class="register-user-banner">
-							<img src="images/register/register-user.png" alt="register-user">
-							<h2>100% Satisfied Customers </h2>
-						</div>						 -->
-					<!-- <h3>If You Already Have an Account, Login Directly</h3>
-						<p>Already have an account? Log in now to access exclusive features and enjoy a seamless shopping experience.</p> -->
-					<!-- <div class="drop-line bottom-shadow"></div> -->
-					<div class="register-user-banner">
-						<img src="images/register/register-user.png" alt="register-user">
 
-					</div>
+			
+			
 					<a title="sign in" href="{% url 'account:edit_profile' %}" class="btn btn-default"
 						style="width: 439px;    margin-left: 23px;">Update Profile</a>
-					<a title="sign in" href="#" class="btn btn-default" style="width: 439px; margin-left: 23px;">Change
+					<a title="sign in" href="{% url 'account:change_password' %}" class="btn btn-default" style="width: 439px; margin-left: 23px;">Change
 						Password</a>
 					<a title="sign in" href="#" class="btn btn-default"
 						style="width: 439px; margin-left: 23px;">Orders</a>
@@ -132,3 +130,4 @@
 	</div><!-- Add Banner /- -->
 
 	{% endblock %}
+

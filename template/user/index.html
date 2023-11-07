@@ -431,6 +431,7 @@
 		</div>
 
 		<div class="col-md-3 col-sm-4">
+			
 			<div class="badge-box">
 				<img src="static/user/assets/images/Jardins du Paradis – Nouvelle Collection de Haute Parfumerie Chopard.jpg"
 					alt="offer img" style="width:270px; height:472 px;" />
@@ -439,6 +440,7 @@
 					<a title="Read More" href="#" class="read-more">Read More</a>
 				</div>
 			</div>
+		
 		</div>
 	</div> <!-- Container /- -->
 </section>
@@ -449,10 +451,12 @@
 	<!---------------- Add Banner ------------------------------------------------------------------------------------>
 	<div id="add-banner-section" class="add-banner-section bottom-shadow">
 		<!-- container -->
+		{% for i in banner %}
 		<div class="container">
-			<a title="Add-banner" href="#"><img src="static/user/assets/images/banner20231009_143002_0000-01.jpeg.jpg"
+			<a title="Add-banner" href="#"><img src=""
 					alt="add-banner" /></a>
 		</div><!-- container /- -->
+		{% endfor %}
 	</div><!-- Add Banner /- -->
 
 	<!-- Our Partner -->

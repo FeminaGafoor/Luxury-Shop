@@ -33,35 +33,29 @@ def product(request, id):
                 
     product_colors = Product_variant.objects.filter(product_id=id)
     colors = set()
-    # for i in product_colors:
-    #     print(i.colors.name)
-    #     colors.add(i.colors.code)
+   
     for product_variant in product_colors:
         colors.add(product_variant.colors.code)
-        print(product_variant.colors.name)
-
-    print(colors)
                 
-    sizes = Product_variant.objects.filter(product_id=id, colors=product_colors[0].colors)
-    print("calling")
+    colors= list(colors)
+    sizes_ids = Product_variant.objects.filter(product_id=id, colors=product_colors[0].colors).values_list('size', flat=True)
+    sizes = Size.objects.filter(id__in=sizes_ids)
     variant =Product_variant.objects.get(id=variants[0].id)
-
-    print(images)
-    for i in images:
-        print(i.images)
-        
-        
+    product_variant=Product_variant.objects.all()
+    print('Product Id ---->',id)
+    print('Color    ---->',colors[0])
+    initial_size = Product_variant.objects.filter(product_id=id, colors__code=colors[0]).first().size.name
     context={
         'category':category,
         'product':product,
-       
+        'product_variant':product_variant,
         'images':images,
         'sizes': sizes, 
         'colors': colors,
+        'initial_color':colors[0] ,
         'variant': variant,
         'brand' : brand,
         'query': query,
-    
     }
     
     return render(request, 'user/product.html',context)    
@@ -109,16 +103,13 @@ import json
 def ajaxcolor(request):
     data = {}
     if request.method == 'POST':
-        size_id = request.POST.get('size')
         productid = request.POST.get('productid')
-        s = Color.objects.get(code=size_id)
-        print(s, 'size')
-        colors = Product_variant.objects.filter(product_id=productid, colors=s)
-        print(colors,   "color")
-        # Serialize the QuerySet to JSON
-        colors_json = serializers.serialize('json', colors)
-        print(colors, 'colors')
-        size = [item.size.name for item in colors]
-        size_json = json.dumps(size)
-        
-        return HttpResponse(size_json, content_type='application/json')
+        colorid = request.POST.get('color')
+        product_colors = Product_variant.objects.filter(product_id=productid,colors__code=colorid)
+        size_ids = Product_variant.objects.filter(product_id=productid, colors=product_colors[0].colors).values_list('size', flat=True)
+        sizes = Size.objects.filter(id__in=size_ids)
+        sizes_serializer = []
+        for size in sizes:
+            sizes_serializer.append({'name':size.name,'id':size.id})
+        sizes_json = json.dumps(sizes_serializer)
+        return HttpResponse( sizes_json,content_type='application/json')

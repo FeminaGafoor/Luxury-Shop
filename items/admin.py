@@ -22,13 +22,15 @@ class ProductAdmin(admin.ModelAdmin):
 class ImageAdmin(admin.ModelAdmin):
     list_display=['title','images','id']    
     
-class Product_variantAdmin(admin.ModelAdmin):
-    list_display=['title','product','price','colors','size','image_id','stock','image_tag']
+
     
 class ColorAdmin(admin.ModelAdmin):
     list_display=['name','code','color_tag']   
     
-    
+class ProductVariantAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'product', 'price', 'colors', 'size', 'image_id', 'stock')
+
+
          
 # Register your models here.
 admin.site.register(Category)
@@ -36,5 +38,7 @@ admin.site.register(Brand)
 admin.site.register(Color,ColorAdmin)
 admin.site.register(Size)
 admin.site.register(Products, ProductAdmin)
-admin.site.register(Product_variant,Product_variantAdmin)
+admin.site.register(Product_variant, ProductVariantAdmin)  
 admin.site.register(MutipleImage,ImageAdmin)
+
+admin.site.register(Banner)

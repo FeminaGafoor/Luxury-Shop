@@ -108,3 +108,8 @@ class MutipleImage(models.Model):
     
     
 
+
+class Banner(models.Model):
+    ban_image = models.ImageField(upload_to="banner_images", null=True, blank=True)
+    fb_images = models.ImageField(upload_to="fb_images", null=True, blank=True)
+    partners_images = models.ImageField(upload_to="fb_images", null=True, blank=True)

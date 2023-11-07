@@ -33,85 +33,76 @@
 				<div class="section-header">
 					<h3>User Details</h3>
 				</div><!-- Section Header /- -->
+				
 				<div class="contact-form">
-					<form class="form-horizontal" action="{% url 'account:edit_profile' %}" method="POST"
-						enctype="multipart/form-data"> {% csrf_token %}
+					<form class="form-horizontal" action="{% url 'account:edit_profile' %}" method="POST" enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="form-group">
-							<label for="username" class="col-md-4">User Name</label>
+							<label for="user_name" class="col-md-4">User Name</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="user_name" id="user_name"
-									placeholder="enter your username" />
+								<input type="text" class="form-control" name="user_name" id="user_name" value="{{ user.user_profile.user_name }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group">
-							<label for="username" class="col-md-4">First Name</label>
+							<label for="first_name" class="col-md-4">First Name</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="first_name" id="first_name"
-									placeholder="enter your firstname" />
+								<input type="text" class="form-control" name="first_name" id="first_name" value="{{ user.user_profile.first_name }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group">
-							<label for="username" class="col-md-4">Last Name</label>
+							<label for="last_name" class="col-md-4">Last Name</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="last_name" id="last_name"
-									placeholder="enter your lastname" />
+								<input type="text" class="form-control" name="last_name" id="last_name" value="{{ user.user_profile.last_name }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group">
 							<label for="email" class="col-md-4">Email Address</label>
 							<div class="col-md-8">
-								<input type="email" class="form-control" name="email" id="email"
-									placeholder="enter your email" />
+								<input type="email" class="form-control" name="email" id="email" value="{{ user.user_profile.email }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group">
-							<label for="username" class="col-md-4">Phone</label>
+							<label for="phone" class="col-md-4">Phone</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="phone" id="phone"
-									placeholder="enter your phone number" />
+								<input type="text" class="form-control" name="phone" id="phone" value="{{ user.user_profile.phone }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group">
-							<label for="username" class="col-md-4">Address</label>
+							<label for="address" class="col-md-4">Address</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="address" id="address"
-									placeholder="enter your address" />
+								<input type="text" class="form-control" name="address" id="address" value="{{ user.user_profile.address }}" />
 							</div>
 						</div>
+				
 						<div class="form-group">
-							<label for="username" class="col-md-4">City</label>
+							<label for="city" class="col-md-4">City</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="city" id="city"
-									placeholder="enter your city" />
+								<input type="text" class="form-control" name="city" id="city" value="{{ user.user_profile.city }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group">
-							<label for="username" class="col-md-4">Country</label>
+							<label for="country" class="col-md-4">Country</label>
 							<div class="col-md-8">
-								<input type="text" class="form-control" name="country" id="country"
-									placeholder="enter your country" />
+								<input type="text" class="form-control" name="country" id="country" value="{{ user.user_profile.country }}" />
 							</div>
 						</div>
-
+				
 						<div class="form-group row">
 							<label for="image" class="col-md-4 col-form-label">Profile Photo</label>
 							<div class="col-md-8">
 								<input type="file" class="form-control" id="image" name="image" required>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-default"
-							style="width: 219px; margin-bottom: -45px;">Update</button>
-
-
+						<button type="submit" class="btn btn-default" style="width: 219px; margin-bottom: -45px;">Update</button>
 					</form>
 				</div>
+				
 			</div><!-- User Form /- -->
 
 			<div class="col-md-6 col-sm-6">
@@ -120,15 +111,8 @@
 					<h3> User Panel</h3>
 				</div><!-- Section Header /- -->
 				<div class="contact-details register-user">
-					<!-- <div class="register-user-banner">
-							<img src="images/register/register-user.png" alt="register-user">
-							<h2>100% Satisfied Customers </h2>
-						</div>						 -->
-					<!-- <h3>If You Already Have an Account, Login Directly</h3>
-						<p>Already have an account? Log in now to access exclusive features and enjoy a seamless shopping experience.</p> -->
-					<!-- <div class="drop-line bottom-shadow"></div> -->
-					<!-- <a title="sign in" href="#" class="btn btn-default"     style="width: 439px;    margin-left: 23px;">Update Profile</a> -->
-					<a title="sign in" href="#" class="btn btn-default" style="width: 439px; margin-left: 23px;">Change
+	
+					<a title="sign in" href="{% url 'account:change_password' %}" class="btn btn-default" style="width: 439px; margin-left: 23px;">Change
 						Password</a>
 					<a title="sign in" href="#" class="btn btn-default"
 						style="width: 439px; margin-left: 23px;">Orders</a>

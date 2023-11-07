@@ -33,6 +33,7 @@
 	<!-- container -->
 	<div class="container">
 		<!-- Shopping-cart-table -->
+		<form action="{% url 'cart:cart' %}" method="POST">
 		<div class="shopping-cart-table bottom-shadow">
 			<table class="shop_table cart">
 				<thead>
@@ -50,40 +51,59 @@
 					</tr>
 				</thead>
 				<tbody>
+					{% for item in cart %}
 					<tr>
-						
-						<td data-title="Product" class="product-tdumbnail">
-							<a title="Summary" href="#"><img src="images/summary/summary-1.png" alt="summary" /></a>
+					<td data-title="Product" class="product-tdumbnail">
+							<a title="Summary" href="#"><img src="{{ item.product_variant.product.image.url }}" alt="{{ product_description }}" /></a>
 						</td>
 						<td data-title="Description" class="product-description">
 							<a title="Order No" href="#">
-								<b>Fashionable Pink Top</b>
+								<b>{{ item.product_description }}</b>
 								Order No. 10101987 - 26
 							</a>
 						</td>
 						<td data-title="brand" class="product-brand">
-							<span><img src="images/summary/gucci-icon.png" alt="gucci" /></span>
+							<span><img src="{{ item.product_brand_image.url }}" alt="{{ product_brand }}" /></span>
 						</td>
 						<td data-title="Color" class="product-color">
-							<span class="choose-color color1"></span>
+							<span class="choose-color color1">{{ item.product_color_name }}</span>
 						</td>
 						<td data-title="Size" class="product-size">
-							<span class="choose-size">xs</span>
+							<span class="choose-size">{{ item.product_size_name }}</span>
 						</td>
 						<td data-title="" class="blank-space"></td>
 						<td data-title="Price" class="product-price">
-							<span class="price-amount">&euro;3,200.00</span>
+							<span class="price-amount">&euro;{{ item.product_price }}</span>
 						</td>
+<!-- 
 						<td data-title="Quantity" class="product-quantity">
+							<div class="quantity">
+								<input type="button" value="+" id="qtyplus" class="qtyplus" />
+								<input type="text" name="quantity" value="{{ product_quantity }}" class="qty" id="quantity" />
+								<input type="button" value="-" id="qtyminus" class="qtyminus" />
+							</div>
+						</td> -->
+						<!-- <td data-title="Quantity" class="product-quantity">
 							<div class="quantity">
 								<input type="button" value="+" id="qtyplus-1" class="qtyplus" data-field="quantity1" />
 								<input type="text" name="quantity1" value="0" class="qty" />
 								<input type="button" value="-" class="qtyminus" data-field="quantity1" />
 							</div>
+						</td> -->
+						<td data-title="Quantity" class="product-quantity">
+							<div class="quantity">
+								<input type="button" value="+" class="qtyplus" id="qtyplus{{ forloop.counter }}" />
+
+								<input type="text" name="quantity{{ forloop.counter }}" value="{{ item.product_quantity }}" class="qty" id="quantity{{ forloop.counter }}" />
+								<input type="button" value="-" class="qtyminus" id="qtyminus{{ forloop.counter }}" />
+							</div>
 						</td>
-						<td data-title="subtotal" class="product-subtotal">
-							<span class="amount">&dollar; 19.99</span>
+						<td data-title="Subtotal" class="product-subtotal">
+							<span class="amount" id="subtotal">&dollar; {{ item.product_price }}</span>
 						</td>
+						
+
+						
 						<td data-title="edit/delete" class="product-edit">
 							<a title="Pencil Icon" href="#"><span class="product-edit"><i
 										class="fa fa-pencil-square-o"></i></span></a>
@@ -91,17 +111,14 @@
 										class="fa fa-trash-o"></i></span></a>
 						</td>
 					</tr>
-
-
-
-					
+					{% endfor %}
 				</tbody>
 			</table>
 			<div class="shopping-cart-footer">
-				<a title="Continue Shopping" href="#" class="btn btn-default">Continue Shopping</a>
-				<a title="Update Shopping Cart" href="#" class="btn btn-default">Update Shopping Cart</a>
+				<a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default">Continue Shopping</a>
 			</div>
 		</div>
+	</form>
 	</div>
 </div>
 <!-- Cart estimate -->
@@ -139,7 +156,6 @@
 								<option value="AZ">Arizona</option>
 								<option value="AR">Arkansas</option>
 								<option value="CA">California</option>
-								
 							</select>
 						</div>
 						<div class="form-group">
@@ -198,5 +214,52 @@
 		</div>
 	</div>
 </div><!-- Cart estimate -->
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.product-quantity').each(function() {
+            var $row = $(this).closest('tr');
+            var $quantityInput = $row.find('.qty');
+            var $qtyPlus = $row.find('.qtyplus');
+            var $qtyMinus = $row.find('.qtyminus');
+            var $subtotalElement = $row.find('.amount');
+
+            // Get the initial product price and quantity for each item
+            var productPrice = parseFloat($subtotalElement.text().replace(/[^0-9.]/g, ''));
+            var currentQuantity = parseInt($quantityInput.val());
+
+            // Function to update subtotal based on quantity
+            function updateSubtotal() {
+                var newQuantity = parseInt($quantityInput.val());
+                var newSubtotal = productPrice * newQuantity;
+                $subtotalElement.text('$ ' + newSubtotal.toFixed(2)); // $ symbol for dollars
+            }
+
+            // Increment the quantity and update subtotal
+            $qtyPlus.click(function() {
+                currentQuantity++;
+                $quantityInput.val(currentQuantity);
+                updateSubtotal();
+            });
+
+            // Decrement the quantity and update subtotal
+            $qtyMinus.click(function() {
+                if (currentQuantity > 1) {
+                    currentQuantity--;
+                    $quantityInput.val(currentQuantity);
+                    updateSubtotal();
+                }
+            });
+
+            // Initialize subtotal for each item
+            updateSubtotal();
+        });
+    });
+</script>
+
 
 {% endblock %}

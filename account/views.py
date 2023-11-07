@@ -1,5 +1,6 @@
 import random
 import re
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate ,login,logout
 from django.contrib.auth.models import User
@@ -10,6 +11,13 @@ from django.contrib import auth
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
+from django.views.decorators.cache import never_cache
+from .models import User_Profile
+from .forms import UserProfileForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -57,10 +65,7 @@ def register(request):
             email=request.POST['email']
             password=request.POST['password']
             repassword=request.POST['re_password']
-            # if password != repassword:
-            #     messages.error(request,'Invalid Password')
-
-                        #validation field is empty
+          
             if username.strip() == '' or email.strip() == '' or   password.strip() == '' or repassword.strip() == '': 
                 messages.info(request , ' field is empty!')
                 return render(request, 'user/register.html')
@@ -167,12 +172,6 @@ def verify_otp(request):
 
 
 
-# def verify_otp(request):
-#     if request.method == 'POST':
-#         return redirect('account:user_login')  # Redirect the user to the home page after successful verification.
-#     return render(request, 'user/otp.html')  
-
-
 def user_login(request):
     if request.method == "POST":
         # Get the input values from the form
@@ -202,83 +201,67 @@ def user_logout(request):
     return redirect('account:user_login')
 
 
-
 def profile(request):
-    
-     return render(request, 'user/profile.html')
+    # Retrieve the user's profile data
+    current_user = request.user
+    user_pro = User_Profile.objects.get(user=current_user)
+    print(user_pro)
+    context = {
+        'user_pro': user_pro,
+    }
+    return render(request, 'user/profile.html', context)
  
-# def edit_profile(request):
-    
-#     if request.method == "POST":
-#         user_name = request.POST.get('user_name')
-#         first_name = request.POST.get('first_name')
-#         last_name = request.POST.get('last_name')
-#         phone = request.POST.get('phone')
-#         address = request.POST.get('address')
-       
-#         city = request.POST.get('city')
-#         country = request.POST.get('country')
-#         image = request.FILES.get('image')
-       
-#         if not user_name or not first_name or not last_name or not phone or not address or not city or not country or image is None:
-#             messages.error(request,"Field is empty!")
-#             return redirect('account:edit_profile')
-#         else:
-#             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        
-#             user_profile, created = User_Profile.objects.get_or_create(user=request.user)
-#             print("User Profile:", user_profile)
 
-#             user_profile.user_name = user_name
-#             user_profile.first_name = first_name
-#             user_profile.last_name = last_name
-#             user_profile.phone = phone
-#             user_profile.address = address
-#             user_profile.city = city
-#             user_profile.country = country
-#             user_profile.image = image
-#             user_profile.save()
-            
-#             messages.success(request, "Profile updated successfully!")
 
-#         return redirect('account:profile')
-        
-        
-#     return render(request, 'user/edit_profile.html')
+
+# views.py
+
+@login_required(login_url='/user_login')
 def edit_profile(request):
-    if request.method == "POST":
-        user_name = request.POST.get('user_name')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')  # Add email field
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        country = request.POST.get('country')
-        image = request.FILES.get('image')
+    try:
+        user_profile, created = User_Profile.objects.get_or_create(user=request.user)
+    except User_Profile.DoesNotExist:
+   
+        user_profile = User_Profile(user=request.user)
 
-        if not user_name or not first_name or not last_name or not email or not phone or not address or not city or not country:
-            messages.error(request, "Field is empty!")
-            return redirect('account:edit_profile')
-        else:
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            user_profile, created = User_Profile.objects.get_or_create(user=request.user)
-            user_profile.user_name = user_name
-            user_profile.first_name = first_name
-            user_profile.last_name = last_name
-            user_profile.phone = phone
-            user_profile.address = address
-            user_profile.city = city
-            user_profile.country = country
-            user_profile.image = image
-            user_profile.save()
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+
+        if form.is_valid():
+            form.save()
 
             # Update the user's email
             user = request.user
-            user.email = email
+            user.email = form.cleaned_data['email']
             user.save()
 
             messages.success(request, "Profile updated successfully!")
             return redirect('account:profile')
+        else:
+            messages.error(request, "Please correct the errors in the form.")
+    
+    else:
+        form = UserProfileForm(instance=user_profile)
 
-    return render(request, 'user/edit_profile.html')
+    context = {
+        'form': form,
+    }
+    return render(request, 'user/edit_profile.html', context)
+
+
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your Password was successfully updated!")
+            return redirect('account:change_password')
+        else:
+            messages.error(request,'Please correct the error below.<br>'+ str(form.errors))
+            return redirect('account:change_password')
+    else:
+        form = PasswordChangeForm(request.user)
+        return render(request, 'user/change_password.html',{'form':form})
+    
+   

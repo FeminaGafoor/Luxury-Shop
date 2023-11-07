@@ -4,6 +4,7 @@ from functools import reduce
 from tkinter import Image
 from django.shortcuts import render,redirect, get_object_or_404
 from items.models import Category
+from items.models import Banner
 from .models import Brand, Color, MutipleImage, Product_variant, Products ,Size
 
 from django.contrib import messages
@@ -751,3 +752,32 @@ def delete_variant(request,variant_id):
     else:
         return redirect('for_admin:ad_login')
         
+        
+        
+def banner_manage(request):
+    banners = Banner.objects.all()
+    context= {
+        'banner_images' : banners
+    }
+    return render(request,'admini/banner.html',context)
+
+def add_banner(request):
+    if request.user.is_superuser:
+        if request.method == 'POST' :
+            
+            banner_image = request.FILES.get('image')
+            if not banner_image:
+                messages.error(request, 'image is not uploaded!')
+                return redirect('items:add_banner')
+                
+            else:
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                new_banner = Banner.objects.create(image=banner_image)
+                new_banner.save()
+                messages.success(request, 'Banner is added successfully')
+                return redirect('items:banner_manage')
+        else:
+            return redirect('items:category_manage')
+    else:
+        return redirect('for_admin:ad_login')    
+    
