@@ -1,13 +1,9 @@
-from decimal import Decimal, InvalidOperation
-from turtle import update
 from django.db.models import Q 
-from functools import reduce
 from tkinter import Image
 from django.shortcuts import render,redirect, get_object_or_404
 from items.models import Category
 from items.models import Banner
-from .models import Brand, Color, MultipleImage, Product_variant, Products ,Size
-
+from .models import Brand, Color, MultipleImage, Product_variant,  Products, Size 
 from django.contrib import messages
 
 # Create your views here.
@@ -42,11 +38,7 @@ def add_categories(request):
             if category_name.strip() == '':
                 messages.error(request, 'field is empty!')
                 return redirect('items:add_categories')
-           
-            # elif Category.objects.filter(name=category_name).exists():
-            #     messages.error(request, 'The entered category is already taken')
-            #     return redirect('items:add_categories')
-            
+        
             existing_category = Category.objects.filter(
                 Q(name__iexact=category_name)
             ).first()
@@ -255,7 +247,7 @@ def color(request):
 
 
 
-#ADD-COLOR-----------------------------------------------------------------------------------  
+# #ADD-COLOR-----------------------------------------------------------------------------------  
     
 
 def add_color(request):
@@ -288,7 +280,7 @@ def add_color(request):
         return redirect('for_admin:ad_login')     
     
     
-#EDIT-COLOR-----------------------------------------------------------------------------------    
+# #EDIT-COLOR-----------------------------------------------------------------------------------    
     
     
     
@@ -326,7 +318,7 @@ def edit_color(request,color_id):
     
  
  
-#DELETE-COLOR-----------------------------------------------------------------------------------    
+# #DELETE-COLOR-----------------------------------------------------------------------------------    
     
     
     
@@ -355,7 +347,7 @@ def size(request):
 
 
 
-#ADD-SIZE-----------------------------------------------------------------------------------  
+# #ADD-SIZE-----------------------------------------------------------------------------------  
 
 
 
@@ -389,7 +381,7 @@ def add_size(request):
     
    
     
-#EDIT-SIZE-----------------------------------------------------------------------------------  
+# #EDIT-SIZE-----------------------------------------------------------------------------------  
 
 
 
@@ -424,7 +416,7 @@ def edit_size(request,id):
     
     
     
-#DELETE-SIZE-----------------------------------------------------------------------------------      
+# #DELETE-SIZE-----------------------------------------------------------------------------------      
     
     
 def delete_size(request,id):
@@ -586,65 +578,46 @@ def delete_product(request, product_id):
 
 
 def variant(request):
-    context = {}
-    variant = Product_variant.objects.all()
-    colors = Color.objects.all()
-    products = Products.objects.all()
-    sizes = Size.objects.all()
-    context = {
-        'variant' : variant,
-        'colors': colors,
-        'products': products,
-        'sizes': sizes,
-        
-    }
-    return render(request,'admini/variant.html',context)
+    if request.user.is_superuser:
+        variant = Product_variant.objects.all()
+        colors = Color.objects.all()
+        products = Products.objects.all()
+        sizes = Size.objects.all()
+   
+        context = {
+            'variant': variant,
+            'colors': colors,
+            'products': products,
+            'sizes': sizes,
+        }
+        return render(request, 'admini/variant.html', context)
+    else:
+        return redirect('for_admin:ad_login')
 
 
    
-# ADD-VARIANT-----------------------------------------------------------------------------------------
+# # ADD-VARIANT-----------------------------------------------------------------------------------------
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db.models import Q
+from .models import Product_variant, Products, Color, Size, MultipleImage
 
 def add_variant(request):
     if request.user.is_superuser:
-       
         if request.method == "POST":
-            
             product_name = request.POST.get('product')
             price = request.POST['price']
             stock = request.POST.get('stock')
             images = request.FILES.getlist('images')
             
             selected_color_ids = request.POST.get('color')
-            color = Color.objects.get(id=selected_color_ids)
             selected_size_ids = request.POST.get('size')
-            size = Size.objects.get(id=selected_size_ids)
-            
+         
             # Validate the form data
-            if not product_name:
-                messages.error(request, 'Product name is required.')
-            if not price:
-                messages.error(request, 'Price is required.')
-            if not selected_color_ids:
-                messages.error(request, 'Select at least one color.')
-            if not selected_size_ids:
-                messages.error(request, 'Select at least one size.')
-
-            # Check if there are any validation errors
-            if messages.get_messages(request):
+            if not all([product_name, price, selected_color_ids, selected_size_ids]):
+                messages.error(request, 'All fields are required.')
                 return redirect('items:variant')  # Redirect back to the form page
-            
-            existing_variant = Product_variant.objects.filter(
-                Q(product__name=product_name) &
-                Q(colors=color) &
-                Q(size=size)
-            ).first()
-
-            if existing_variant:
-                messages.error(request, 'A variant with the same product, color, and size already exists.')
-                return redirect('items:variant')
-
-
-
 
             try:
                 product_instance = Products.objects.get(name=product_name)
@@ -653,39 +626,51 @@ def add_variant(request):
                 messages.error(request, 'Product does not exist.')
                 return redirect('items:variant')
 
+            # Check if the variant already exists
+            existing_variant = Product_variant.objects.filter(
+                Q(product=product_instance) &
+                Q(colors__id=selected_color_ids) &
+                Q(size__id=selected_size_ids)
+            ).first()
+
+            if existing_variant:
+                messages.error(request, 'A variant with the same product, color, and size already exists.')
+                return redirect('items:variant')
+
+
+            color = Color.objects.get(name=selected_color_ids) 
+            size = Size.objects.get(name=selected_size_ids)
             
-            
-            
+        #    Create the product variant
             product_variant = Product_variant.objects.create(
-                        product=product_instance,
-                        price=price,
-                        stock=stock,
-                    )
-            product_variant.colors.add(color)
-            product_variant.size.add(size)
-            product_variant.save()
-            if images:
-                
-                for image in images:
-                    MultipleImage.objects.create(
-                        product_variant=product_variant,
-                        images=image,
-                    )
-                print('saved')
-                
-          
+            product=product_instance,
+            price=price,
+            stock=stock,
+            colors=color, 
+            size=size,
+            
+            )
         
+            
+            # Save the product variant
             product_variant.save()
+
+            # Add images to the product variant
+            for image in images:
+                MultipleImage.objects.create(
+                    product_variant=product_variant,
+                    images=image,
+                )
+
             messages.success(request, 'Variant added successfully.')
             return redirect('items:variant')
     
-    
-    else:   
+    else:
         return redirect('for_admin:ad_login')
-    
+
     
    
-# EDIT-VARIANT----------------------------------------------------------------------------------------    
+# # EDIT-VARIANT----------------------------------------------------------------------------------------    
         
 
 def edit_variant(request, variant_id):
@@ -755,7 +740,7 @@ def edit_variant(request, variant_id):
 
 
    
-# DELETE-VARIANT-----------------------------------------------------------------------------------------
+# # DELETE-VARIANT-----------------------------------------------------------------------------------------
 
 
 def delete_variant(request,variant_id): 

@@ -177,29 +177,17 @@
                   </thead>
                     <tbody class="table-border-bottom-0">
                     {% for item in variant %}
-              
-    
                     <tr>
                       <td><i class="fab fa-react fa-lg text-info me-3"></i> <strong>{{ forloop.counter }}</strong></td>
                       <td>{{item.product}}</td>
                       <td>{{item.price}}</td>
 
-                      <!-- <td>
-                        {{ item.colors.name }}
-                      </td>
                       <td>
-                        {{item.size.name }}
-                      </td> -->
-                      <td>
-                        {% for color in item.colors.all %}
-                            {{ color.name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
+                          {{ item.colors.name }}
                     </td>
                     <td>
-                        {% for size in item.size.all %}
-                            {{ size.name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
+                        {{ item.size.name }}
+                     </td>
                     
                       <td>{{item.stock}}</td>
                       
@@ -271,7 +259,7 @@
             <select class="form-control" id="color" name="color" required>
               <!-- Loop through the available colors from your database and generate options -->
               {% for color in colors %}
-                <option value="{{ color.id }}">{{ color.name }}</option>
+                <option value="{{ color.name }}">{{ color.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -281,7 +269,7 @@
             <select class="form-control" id="size" name="size" required>
               <!-- Loop through the available colors from your database and generate options -->
               {% for size in sizes %}
-                <option value="{{ size.id }}">{{ size.name }}</option>
+                <option value="{{ size.name }}">{{ size.name }}</option>
               {% endfor %}
             </select>
           </div>

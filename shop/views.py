@@ -26,35 +26,59 @@ def product(request, id):
     category = Category.objects.all()
     product = Products.objects.get(id=id)
     brand = Brand.objects.all()
+    
+    ajax_color = request.GET.get('color')
+    
+    print(ajax_color, "ajax color")
 
-    variants = Product_variant.objects.filter(product_id=id)
-    product_variant = variants.first()  # Select the first variant for simplicity
-
+    product_variants = Product_variant.objects.filter(product_id=id)
+    product_variant = product_variants.first()  # Select the first variant for simplicity
+    
     product_colors = Product_variant.objects.filter(product_id=id)
     colors = set()
+    sizes = set()
     colors_var_id = set()
+    sizes_var_id = set()
 
-    for product_variant in product_colors:
-        color = product_variant.colors.first()
+    for product_variant in product_variants:
+        color = product_variant.colors
+        size = product_variant.size  # Access the color directly
         if color:
             colors.add(color.code)
             colors_var_id.add(product_variant.id)
+            
+        if size:
+            sizes.add(size.name)
+            sizes_var_id.add(product_variant.id)
 
     colors = list(colors)
+    
+    sizes = list(sizes)
+    
+    selected_color = Color.objects.get(code=colors[0])
+    size = Product_variant.objects.get(product_id=id, colors=selected_color)
+    
+    if ajax_color:
+        selected_color = Color.objects.get(code=ajax_color)
+        filtered_data = Product_variant.objects.get(product_id=id, colors=selected_color)
+        filtered_image = MultipleImage.objects.get(product_variant=filtered_data)
 
-    data = zip(colors, list(colors_var_id))
-
+        print(filtered_image, 'new size')
+        
+        return JsonResponse({ "size": filtered_data.size.name, "image": filtered_image.images.url, "variant_id": filtered_data.id})
+    print(product_variants[0].id, "product variant id")
     context = {
+        'variant_id': product_variants[0].id,
         'category': category,
         'product': product,
         'product_variant': product_variant,
         'colors': colors,
+        'sizes': size.size.name,
         'brand': brand,
-        'query': query,
-        'data': data,
     }
 
     return render(request, 'user/product.html', context)
+
 
   
 

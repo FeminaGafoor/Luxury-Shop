@@ -80,8 +80,8 @@ class Product_variant(models.Model):
     title = models.CharField(max_length=100,blank=True,null=True)
     product = models.ForeignKey(Products, blank=True, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    colors = models.ManyToManyField(Color, blank=True)  
-    size = models.ManyToManyField(Size, blank=True)  
+    size = models.ForeignKey(Size, on_delete=models.CASCADE,blank=True,null=True)  
+    colors = models.ForeignKey(Color, on_delete=models.CASCADE,blank=True,null=True)  
     image_id = models.IntegerField(blank=True,null=True,default=0)
     stock = models.CharField(max_length=100,blank=True)                         
     

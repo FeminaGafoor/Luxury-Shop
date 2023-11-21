@@ -11,11 +11,11 @@ class ProductVariantAdmin(admin.ModelAdmin):
     list_display = ('variant_id', 'product', 'price', 'get_colors', 'get_sizes', 'stock', 'display_image')
 
     def get_colors(self, obj):
-        return ', '.join([color.name for color in obj.colors.all()])
+        return obj.colors.name if obj.colors else ''
     get_colors.short_description = 'Colors'
 
     def get_sizes(self, obj):
-        return ', '.join([size.name for size in obj.size.all()])
+        return obj.size.name if obj.size else ''
     get_sizes.short_description = 'Sizes'
 
     # Add a method to display the Variant ID
@@ -34,6 +34,7 @@ class ProductVariantAdmin(admin.ModelAdmin):
         return ''
     display_image.allow_tags = True
     display_image.short_description = 'IMAGE'
+
 
 
          

@@ -24,7 +24,9 @@ def add_cart(request, product_id):
      
     product = Products.objects.get(id = product_id)
    
-   
+    variant_id = request.POST.get('variant_id')
+    
+    print(variant_id, 'varaint id')
     
 
     try :
@@ -41,6 +43,7 @@ def add_cart(request, product_id):
        
         variant_id = request.POST.get('variant_id')
         check_variant = Cart_Product.objects.filter(product_variant = variant_id ,cart = cart)
+        print(check_variant,"check_variant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         if check_variant:
             control = 1
         else:

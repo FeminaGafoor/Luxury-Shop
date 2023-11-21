@@ -35,7 +35,7 @@
 						<ul class="slides">
 							{% for image in product_variant.multipleimage_set.all %}
 							<li>
-								<a href=""><img class="" src="{{ image.images.url }}" alt="product-thumb"></a>
+								<a href=""><img class="cover_image" src="{{ image.images.url }}" alt="product-thumb"></a>
 							</li>
 							{% endfor %}
 
@@ -45,7 +45,7 @@
 						<ul class="slides">
 							{% for image in product_variant.multipleimage_set.all %}
 							<li class="magniflier">
-								<a href=""><img class="" src="{{ image.images.url }}" alt="product-thumb"
+								<a href=""><img class="cover_image"   src="{{ image.images.url }}" alt="product-thumb"
 										style="width: 526px; height: 567px; "></a>
 							</li>
 							{% endfor %}
@@ -106,34 +106,30 @@
 			
 
 				<ul id="color-widget" class="single-side-widget color-widget top-social ow-left-padding">
-					{% for rs,i in data %}
+					{% for item in colors %}
 					<li>
-						
-						<a title="{{ rs}}" onclick="sndcolor('{{ rs }}', '{{ i }}')" data-color="{{rs}}" class="color {% if forloop.first %}active{% endif %}"
-							style="background-color: {{ rs }}">
-
+						<a title="{{ item }}" onclick="sndcolor('{{ item }}', '{{ item.i }}')" data-color="{{ item }}" class="color {% if forloop.first %}active{% endif %}" style="background-color: {{ item }}">
 							<i class="fa fa-check"></i>
-							
-							
 						</a>
-						
 					</li>
-
-					{% endfor %}
+				{% endfor %}
 				</ul> 
 			
-				
+				<h4>Sizes</h4>
+					<ul id="size-widget" class="single-side-widget size-widget top-social ow-left-padding">
+					<li><a id="size_product" title="{{sizes}}" href="#" class="">{{sizes}}</a></li>
+					</ul>
 
 
 				<form class="formmy" action="{% url 'cart:add_cart' product.id %}" method="post" id="myFormPlaceholder">
 					{% csrf_token %}
 					<div id="SelectedProduct">
-						<input type="hidden" name="variant_id" value="{{ product_variant.id }}">
+						<input type="hidden" id="input_variant_id" name="variant_id" value="{{ product_variant.id }}">
 						<p><strong>Availability:</strong> {% if product.amount > 0 %} In Stock {% else %} Out of Stock {% endif %}</p>
 						<h3 class="product-price">{{ request.session.currency }}</h3>
 						
 						<div class="qty-input">
-							<button type="submit" {% if product.amount < 1 %} disabled {% endif %} class="primary-btn add-to-cart">
+							<button id="cart_button" type="submit" {% if product.amount < 1 %} disabled {% endif %} class="primary-btn add-to-cart">
 								<i class="fa fa-shopping-cart"></i> Add to Cart
 							</button>
 						</div>
@@ -212,19 +208,37 @@
 		function sndcolor(color, variant_id) {
 			console.log("Color:", color);
 			console.log("Variant ID:", variant_id);
-			const form = document.getElementById('myFormPlaceholder');
-			form.action = `/cart/add_cart/${variant_id}`;
-			
+
+			const currentUrl = window.location.href;
+
+			// Split the URL using '/' as a separator
+			const urlParts = currentUrl.split('/');
+
+			// Get the last part of the URL, which should be the product id
+			const productId = urlParts[urlParts.length - 2];
+
+			// Now, 'productId' contains the value '104'
+			console.log(productId);
+			//const form = document.getElementById('myFormPlaceholder');
+			//form.action = `/cart/add_cart/${variant_id}`;
+				//url: `/get_image_url/${variant_id}/${color}`,
+				const produtSize = document.getElementById('size_product')
+				const image = document.getElementsByClassName('cover_image');
+				const inputVaraint = document.getElementById('input_variant_id')
 			$.ajax({
 				type: 'GET',
-				url: `/get_image_url/${variant_id}/${color}`,
-				success: function(data) {
-					const imageUrl = data.image_url;
-					const thumbnailImage = document.querySelector('#about-carousel img');
-					const mainImage = document.querySelector('#about-slider img');
-		
-					thumbnailImage.src = imageUrl;
-					mainImage.src = imageUrl;
+				url: `/shop/product/${productId}/`,
+				data: {
+					color: color
+				},
+				success: function(res) {
+
+					console.log(res, 'repsones')
+					produtSize.textContent = res.size;
+					
+					image[0].src = res.image
+					image[1].src = res.image
+                    inputVaraint.value = res.variant_id
 				},
 				error: function(data) {
 					console.error('Error fetching image:', data);
@@ -233,6 +247,7 @@
 			});
 		}
 		
+
 		
 		
 
