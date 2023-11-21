@@ -188,6 +188,8 @@ def user_login(request):
         if user and check_password(password, user.password):
             # User found, and the password matches
             login(request, user)
+            request.session['user'] = email
+            # if user in request.session:
             return redirect('home:home')
         else:
             messages.error(request, 'Invalid Credentials')
@@ -201,25 +203,35 @@ def user_logout(request):
     return redirect('account:user_login')
 
 
-def profile(request):
-    # Retrieve the user's profile data
-    current_user = request.user
-    user_pro = User_Profile.objects.get(user=current_user)
-    print(user_pro)
-    context = {
-        'user_pro': user_pro,
-    }
-    return render(request, 'user/profile.html', context)
- 
 
+
+def profile(request):
+    
+    if request.user.is_authenticated:
+        user=request.user
+        
+      
+        user_pro = User_Profile.objects.get(user=user)
+
+
+        context = {
+            
+            'user_pro': user_pro,
+        }
+        return render(request, 'user/profile.html', context)
+       
+        
+    return render(request, 'user/login.html')
 
 
 # views.py
 
-@login_required(login_url='/user_login')
+@login_required(login_url='user_login')
 def edit_profile(request):
     try:
+        # user_profile, created = User_Profile.objects.get_or_create(user=request.user)
         user_profile, created = User_Profile.objects.get_or_create(user=request.user)
+
     except User_Profile.DoesNotExist:
    
         user_profile = User_Profile(user=request.user)

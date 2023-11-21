@@ -76,9 +76,9 @@
         <!-- Header Section -->
         <header id="header" class="header">
             <!-- top-header -->
-            <div class="top-header">
-                <!-- container -->
-                <div class="container">
+            <!-- <div class="top-header">
+                
+                 <div class="container">
                     <ul class="top-social col-md-6 col-sm-4">
                         <li><a title="Facebook" href="#"><i class="fa fa-facebook"></i></a></li>
                         <li><a title="Twitter" href="#"><i class="fa fa-twitter"></i></a></li>
@@ -93,11 +93,11 @@
                         <ul class="top-menu">
                             <li><a title="Login" href="{% url 'account:user_login' %}">Login</a></li>
                             <li><a title="Register" href="{% url 'account:register' %}">Register</a></li>
-                            <!-- <li><a title="Register" href="{% url 'account:user_logout' %}">Logout</a></li> -->
-                        </ul>
+                            <li><a title="Register" href="{% url 'account:user_logout' %}">Logout</a></li> -->
+                        <!-- </ul>
                     </div>
-                </div><!-- container /- -->
-            </div><!-- top-header /- -->
+                </div>container /- -->
+            <!-- </div>top-header--> 
 
             <!-- logo-search-block -->
             <div class="logo-search-block">
@@ -124,52 +124,60 @@
                             Luxury Shop
                         </a>
                     </div>
-                    <div class="col-md-3 ow-right-padding col-sm-3 col-xs-3">
+                    <!-- <div class="col-md-3 ow-right-padding col-sm-3 col-xs-3">
+
                         <form class="col-md-8 col-sm-12 col-xs-12" style=" padding-right: 91px;
                         padding-top: 10px;">
-                            <!-- <div class="select"> -->
-                            <!-- <select class="minimal"> -->
-                            <!-- <option>Profile </option> -->
-                            <a style="color:#b3aa9b" href="{% url 'account:profile' %}">PROFILE</a>
-                            <!-- </select> -->
-                            <!-- </div> -->
+                            
+                            {% if user.is_authenticated %}
+                                <a style="color:#b3aa9b" href="{% url 'account:profile' %}">PROFILE</a>
+                            {% endif %}
+                            
                         </form>
-                        <div class="col-md-4 col-sm-12 col-xs-12 cart-link ow-right-padding">
+
+                        <a style="color:#b3aa9b" href="{% url 'account:user_login' %}">LOGIN</a>
+
+                        {% if user.is_authenticated %}
+                       
                             <svg width="16px" height="15px" viewBox="0 0 533.334 533.335">
                                 <g>
                                     <path
                                         d="M441.26,300.001c18.333,0,37.454-14.423,42.49-32.052l48.353-169.231c5.036-17.627-5.844-32.05-24.177-32.05H166.667   c0-36.819-29.848-66.667-66.667-66.667H0v66.667h100v283.333c0,27.614,22.386,50,50,50h316.667   c18.409,0,33.334-14.924,33.334-33.333s-14.925-33.334-33.334-33.334h-300v-33.333H441.26z M166.667,133.334h301.461l-28.573,100   H166.667V133.334z M200,491.668c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.917,0-41.667-18.75-41.667-41.666v-16.667   c0-22.917,18.75-41.667,41.667-41.667h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z M500,491.668   c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.916,0-41.666-18.75-41.666-41.666v-16.667c0-22.917,18.75-41.667,41.666-41.667   h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z" />
                                 </g>
                             </svg>
-                            <!-- cart  -->
-                            <a style="color:#b3aa9b" href="{% url 'cart:cart' %}">cart</a>
-                            <!-- <div class="cart-dropdown"> -->
-                            <!-- <table>
-                                    <tr>
-                                        <td class="product-thumb"><a href="#"><img src="images/cart-hover-1.png" alt="cart-hover" /></a></td>
-                                        <td><a title="Red Cotton Top" href="#">Red Cotton Top</a></td>
-                                        <td>x1</td>
-                                        <td>$92.00</td>
-                                        <td><a title="close" href="#"><i class="fa fa-close"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="product-thumb"><a href="#"><img src="images/cart-hover-2.png" alt="cart-hover" /></a></td>
-                                        <td><a title="Red Cotton Top" href="#">Red Cotton Top</a></td>
-                                        <td>x1</td>
-                                        <td>$92.00</td>        
-                                        <td><a title="close" href="#"><i class="fa fa-close"></i></a></td>
-                                    </tr>
-                                </table>
-                                <div class="sub-total">
-                                    <p><span>Sub Total</span> $160.00</p>
-                                    <p><span>Total</span> $160.00</p>
-                                </div> -->
-                            <!-- <div class="cart-button">
-                                    <a title="Add to cart" href="{% url 'cart:cart' %}">add to cart</a>
-                                    <a title="Checkout" href="#">Checkout</a> -->
-                            <!-- </div> -->
+                          
+                            <a style="color:#b3aa9b" href="{% url 'cart:cart_page' %}">cart</a>
+                          
                         </div>
+                        {% endif %}
+
+                        
+
+                    </div> -->
+
+
+
+                    <div class="col-md-3 ow-right-padding col-sm-3 col-xs-3">
+                        {% if user.is_authenticated %}
+                            <form class="col-md-8 col-sm-12 col-xs-12" style="padding-right: 91px; padding-top: 10px;">
+                                <a style="color:#b3aa9b" href="{% url 'account:profile' %}">PROFILE</a>
+                            </form>
+                            
+                            <svg width="16px" height="15px" viewBox="0 0 533.334 533.335">
+                                <g>
+                                    <path
+                                        d="M441.26,300.001c18.333,0,37.454-14.423,42.49-32.052l48.353-169.231c5.036-17.627-5.844-32.05-24.177-32.05H166.667   c0-36.819-29.848-66.667-66.667-66.667H0v66.667h100v283.333c0,27.614,22.386,50,50,50h316.667   c18.409,0,33.334-14.924,33.334-33.333s-14.925-33.334-33.334-33.334h-300v-33.333H441.26z M166.667,133.334h301.461l-28.573,100   H166.667V133.334z M200,491.668c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.917,0-41.667-18.75-41.667-41.666v-16.667   c0-22.917,18.75-41.667,41.667-41.667h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z M500,491.668   c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.916,0-41.666-18.75-41.666-41.666v-16.667c0-22.917,18.75-41.667,41.666-41.667   h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z" />
+                                </g>
+                            </svg>
+                          
+                            <a style="color:#b3aa9b" href="{% url 'cart:cart_page' %}">CART</a>
+                        {% else %}
+                            <a style="color:#b3aa9b" href="{% url 'account:user_login' %}">LOGIN</a>
+                        {% endif %}
                     </div>
+                    
+
+ 
                 </div>
             </div><!-- container /- -->
             </div><!-- logo-add-block /- -->

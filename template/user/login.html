@@ -9,8 +9,8 @@
 
 <!-- Page Breadcrumb -->
 <!-- container -->
-<div class="container">
-	<div class="page-breadcrumb">
+<!-- <div class="container"> -->
+	<!-- <div class="page-breadcrumb">
 		<ol class="breadcrumb">
 			<li><a title="Home" href="index.html">Home</a></li>
 			<li class="active">Create Account</li>
@@ -18,30 +18,31 @@
 		<div class="return-home-link pull-right">
 			<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
 		</div>
-	</div>
+	</div> -->
 	<div class="page-header bottom-shadow">
 		<h3>Log-in</h3>
 		<p> Theme Login</p>
 	</div><!-- Section Header /- -->
-</div><!-- container /- -->
+<!-- </div> -->
+<!-- container /- -->
 <!-- Page Breadcrumb /- -->
 
 <div class="page-wizard">
 	<!-- container -->
 	<div class="container">
-		<ul class="bottom-shadow">
+		<!-- <ul class="bottom-shadow">
 			<li class="active"><a href="{% url 'account:user_login' %}">1# login</a></li>
 			<li><a title="login" href=" {% url 'outgoing:checkout' %}">2# Shipping Address</a></li>
 			<li><a title="Shipping Address" href="{% url 'outgoing:payments' %}">3# Payments</a></li>
 			<li><a title="summary" href="{% url 'outgoing:summary' %}">4# summary</a></li>
 			<li><a title="Finish" href="{% url 'outgoing:finish' %}">5# Finish</a></li>
-		</ul>
+		</ul> -->
 		<!-- contact-form-details -->
 		<div class="contact-form-details row">
 			<!-- col-md-6 -->
 			<div class="col-md-6 col-sm-6">
 				<div class="section-header">
-					<h3>Registered User</h3>
+					<h3>If you are a Registered User</h3>
 				</div><!-- Section Header Over -->
 				<div class="contact-form bottom-shadow">
 					<form class="form-horizontal login-page" action="{% url 'account:user_login' %}" method='POST'>
@@ -86,7 +87,7 @@
 			<!-- col-md-6 -->
 			<div class="col-md-6 col-sm-6">
 				<div class="section-header">
-					<h3>New User/ No registration</h3>
+					<h3>If you are a new user</h3>
 				</div><!-- Section Header Over -->
 				<div class="contact-details new-user-register register-user bottom-shadow">
 					<h3>"Unlock Beauty Benefits"</h3>

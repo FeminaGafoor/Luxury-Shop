@@ -10,7 +10,9 @@ urlpatterns = [
     path('womens/',views.womens,name='womens'),
     path('mens/',views.mens,name='mens'),
     path('kids/',views.kids,name='kids'),
-    path('ajaxcolor/',views.ajaxcolor,name='ajaxcolor'),
+    path('get_image_url/<int:variant_id>/<str:color>/', views.get_image_url, name='get_image_url'),
+
+
     
     
 ]

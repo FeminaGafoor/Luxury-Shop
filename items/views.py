@@ -1,11 +1,12 @@
 from decimal import Decimal, InvalidOperation
+from turtle import update
 from django.db.models import Q 
 from functools import reduce
 from tkinter import Image
 from django.shortcuts import render,redirect, get_object_or_404
 from items.models import Category
 from items.models import Banner
-from .models import Brand, Color, MutipleImage, Product_variant, Products ,Size
+from .models import Brand, Color, MultipleImage, Product_variant, Products ,Size
 
 from django.contrib import messages
 
@@ -468,7 +469,7 @@ def add_product(request):
             product_image = request.FILES.get('image')
             brand_name = request.POST.get('brand')
             category_name = request.POST.get('category')
-            images = request.FILES.getlist('images')  # Use 'images' instead of 'image' for multiple images
+           
             
             if not product_image:
                 messages.error(request, 'Image is not uploaded!')
@@ -492,21 +493,25 @@ def add_product(request):
                 category=category_instance,
             )
             
-            if images:
-                for image in images:
-                    MutipleImage.objects.create(
-                        product=product,
-                        images=image,
-                    )
             
-            messages.success(request, 'Product added successfully.')
-            return redirect('items:product_manage')
+            
+         
+            # if images:
+                
+            #     for image in images:
+            #         MultipleImage.objects.create(
+            #             product_variant=product,
+            #             images=image,
+            #         )
+            #     print('saved')
+            # messages.success(request, 'Product added successfully.')
+            # return redirect('items:product_manage')
 
         context = {
             'brand': brand,
             'category': category,
         }
-        return render(request, 'admini/product/add_pro.html', context)
+        return render(request, 'admini/pro_manage.html', context)
     else:
         return redirect('for_admin:ad_login')    
     
@@ -595,6 +600,10 @@ def variant(request):
     }
     return render(request,'admini/variant.html',context)
 
+
+   
+# ADD-VARIANT-----------------------------------------------------------------------------------------
+
 def add_variant(request):
     if request.user.is_superuser:
        
@@ -651,19 +660,19 @@ def add_variant(request):
                         product=product_instance,
                         price=price,
                         stock=stock,
-                        colors=color,
-                        size=size
                     )
-            
-            # if images:
-            #     for image in images:
-            #         MutipleImage.objects.create(
-            #             product=product_instance,
-            #             images=image,
-            #         )
-            
-            
-             # Add the selected colors and sizes to the many-to-many fields
+            product_variant.colors.add(color)
+            product_variant.size.add(size)
+            product_variant.save()
+            if images:
+                
+                for image in images:
+                    MultipleImage.objects.create(
+                        product_variant=product_variant,
+                        images=image,
+                    )
+                print('saved')
+                
           
         
             product_variant.save()
@@ -675,7 +684,8 @@ def add_variant(request):
         return redirect('for_admin:ad_login')
     
     
-    
+   
+# EDIT-VARIANT----------------------------------------------------------------------------------------    
         
 
 def edit_variant(request, variant_id):
@@ -720,6 +730,7 @@ def edit_variant(request, variant_id):
             variant.price = price
             variant.stock = stock
             variant.colors.set(selected_color_ids)
+            
             variant.size.set(selected_size_ids)
 
             variant.save()
@@ -743,6 +754,9 @@ def edit_variant(request, variant_id):
         return redirect('for_admin:ad_login')
 
 
+   
+# DELETE-VARIANT-----------------------------------------------------------------------------------------
+
 
 def delete_variant(request,variant_id): 
     if request.user.is_superuser:
@@ -751,33 +765,82 @@ def delete_variant(request,variant_id):
         return redirect('items:variant')
     else:
         return redirect('for_admin:ad_login')
-        
-        
+    
+ 
+ 
+#BANNER-----------------------------------------------------------------------------------     
         
 def banner_manage(request):
-    banners = Banner.objects.all()
-    context= {
-        'banner_images' : banners
+    banner_image = Banner.objects.all()
+    print(banner_image)
+    context = {
+        'banner_image':banner_image
     }
     return render(request,'admini/banner.html',context)
 
+#ADD-BANNER----------------------------------------------------------------------------------- 
+
+
 def add_banner(request):
-    if request.user.is_superuser:
-        if request.method == 'POST' :
-            
-            banner_image = request.FILES.get('image')
-            if not banner_image:
-                messages.error(request, 'image is not uploaded!')
-                return redirect('items:add_banner')
-                
-            else:
-                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                new_banner = Banner.objects.create(image=banner_image)
-                new_banner.save()
-                messages.success(request, 'Banner is added successfully')
-                return redirect('items:banner_manage')
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to add banners.')
+        return redirect('for_admin:ad_login')
+
+    if request.method == 'POST':
+        
+        banner_image = request.FILES.get('image')
+        if banner_image:
+            new_banner = Banner(ban_image=banner_image) 
+            new_banner.save()
+            messages.success(request, 'Banner is added successfully.')
+            return redirect('items:banner_manage')
         else:
-            return redirect('items:category_manage')
-    else:
-        return redirect('for_admin:ad_login')    
+            messages.error(request, 'Image is not uploaded.')
+    return render(request, 'admini/banner.html')
+
+#DELETE-BANNER-----------------------------------------------------------------------------------  
+ 
     
+def delete_banner(request,banner_id):
+    
+    if request.user.is_superuser:
+        banner_image = get_object_or_404(Banner, id=banner_id)
+        banner_image.delete()
+        return redirect('items:banner_manage')
+    else:
+        return redirect('for_admin:ad_login')
+    
+    
+#PARTNER-MANAGE----------------------------------------------------------------------------------- 
+
+       
+def partner_manage(request):
+    partners_images = Banner.objects.exclude(partners_images__isnull=True).exclude(partners_images='').values_list('partners_images', flat=True)
+    print(partners_images)
+    
+    context = {
+        'partners_images': partners_images
+    }
+    return render(request, 'admini/partners.html', context)
+
+
+#ADD-PARTNERS-----------------------------------------------------------------------------------  
+
+
+def add_partner(request):
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to add partners.')
+        return redirect('for_admin:ad_login')
+
+    if request.method == 'POST':
+        
+        partners_images = request.FILES.get('image')
+        if partners_images:
+            new_partner = Banner(partners_images=partners_images) 
+            new_partner.save()
+            messages.success(request, 'Partner is added successfully.')
+            return redirect('items:partner_manage')
+        else:
+            messages.error(request, 'Image is not uploaded.')
+    return render(request, 'admini/partners.html')
+

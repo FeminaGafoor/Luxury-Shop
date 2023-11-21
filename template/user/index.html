@@ -449,15 +449,16 @@
 <div id="footer-section" class="footer-section">
 
 	<!---------------- Add Banner ------------------------------------------------------------------------------------>
+	
 	<div id="add-banner-section" class="add-banner-section bottom-shadow">
 		<!-- container -->
-		{% for i in banner %}
-		<div class="container">
-			<a title="Add-banner" href="#"><img src=""
-					alt="add-banner" /></a>
-		</div><!-- container /- -->
-		{% endfor %}
+	    {% if banner_image %}
+            <a title="Add-banner" href="#"><img src="{{ banner_image.ban_image.url }}" alt="add-banner" /></a>
+        {% else %}
+            <p>No image available</p>
+        {% endif %}
 	</div><!-- Add Banner /- -->
+	
 
 	<!-- Our Partner -->
 	<div id="our-partner-section" class="our-partner-section bottom-shadow">

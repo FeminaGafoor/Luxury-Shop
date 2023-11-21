@@ -1,97 +1,156 @@
 import colorsys
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
-
-from items.models import Brand, Color, MutipleImage, Product_variant, Products
-from cart.models import CartItem
+import decimal
+from pyexpat.errors import messages
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.core.exceptions import ObjectDoesNotExist
+from items.models import Brand, Color, Product_variant, Products
 from account.models import User_Profile
 from django.contrib.auth import get_user_model
-
-
-def cart(request):
-    UserModel = get_user_model()
-    user_instance = UserModel.objects.get(id=request.user.id)
-    user_profile_instance = User_Profile.objects.get(user=user_instance)
-    brand = Brand.objects.all()
-    product = CartItem.objects.filter(customer=user_profile_instance)
-    product_display = Product_variant.objects.all()
-    print(product)
-    context = {
-        'cart' : product,
-        'brand' : brand,
-        'product_display' : product_display,
-     }
-    
-    return render(request,'user/cart.html',context)
+from cart.models import Cart, Cart_Product
 
 
 
-
-# def add_cart(request):
-#     if request.method == "POST":
-#         cart = []
-#         id = request.POST['size_option']
-#         print(id,"+++++++++++++++++++++++++++++++++++++++")
-#         product_quantity = 1
-#         product_variant = Product_variant.objects.get(id=id)
-#         product_image = product_variant.product.image
-#         product_description = product_variant.product.description
-#         product_brand_image = product_variant.product.brand.brand_image
-#         product_color = product_variant.colors.name
-#         product_size = product_variant.size.name
-#         product_price = product_variant.price
-        
-#         print(product_image,"))))))))))))))))))))))))))))))))))))))))))))")
-#         print(product_description,"))))))))))))))))))))))))))))))))))))))))))))")
-#         print(product_brand_image,"))))))))))))))))))))))))))))))))))))))))))))")
-#         print(product_color,"))))))))))))))))))))))))))))))))))))))))))))")
-#         print(product_size,"))))))))))))))))))))))))))))))))))))))))))))")
-#         print(product_price,"))))))))))))))))))))))))))))))))))))))))))))")
-        
-#         subtotal = product_price * product_quantity
-        
-#         item = {
-#            'product_quantity' : product_quantity,
-#            'product_image' : product_image,
-#            'product_description' : product_description,
-#            'product_brand_image' : product_brand_image,
-#            'product_color' : product_color,
-#            'product_size' : product_size,
-#            'product_price' : product_price,
-#            'subtotal' : subtotal,
-           
-#        }
-#         cart.append(item)
-        
-#         context = {
-#             'cart': cart, 
-#         }
-  
-#         return render(request,'user/cart.html',context)   
-    
-    
-    
-def add_cart_ajax(request):
-    if request.method == "POST":
-        color = request.POST.get('color')
-        product = request.POST.get('product')
-        user_id = request.POST.get('user_id')
-        print(user_id,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        UserModel = get_user_model()
-        user_instance = UserModel.objects.get(id=user_id)
-        user_profile_instance = User_Profile.objects.get(user=user_instance)
-   
-       
-        product = Product_variant.objects.filter(product__id=product,colors__code=color).first()
-        
-        print(product,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!+++++++++++++++++")
-        if product:
-            CartItem.objects.create(product_variant=product,customer=user_profile_instance)
-            return JsonResponse(data={'message':'success'})
-        return JsonResponse(data={'message':'product not get'})
-    else:
-        return JsonResponse({'error': 'Invalid request method'})
+def _cart_id(request):
+    cart = request.session.session_key
+    if not cart:
+        cart = request.session.create()
+    return cart
+              
 
 
+
+def add_cart(request, product_id):
      
+    product = Products.objects.get(id = product_id)
    
+   
+    
+
+    try :
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(
+            cart_id = _cart_id(request)
+           
+        )
+        
+        cart.save()
+        
+    if product.variant != 'None':
+       
+        variant_id = request.POST.get('variant_id')
+        check_variant = Cart_Product.objects.filter(product_variant = variant_id ,cart = cart)
+        if check_variant:
+            control = 1
+        else:
+            control = 0
+            
+        if control == 1:  
+            print('start')       
+            cart_pro = Cart_Product.objects.get(product=product,cart=cart,product_variant=variant_id)
+             
+            cart_pro.quantity += 1
+            cart_pro.save()
+        else:  
+            print('end')   
+            product = get_object_or_404(Products,id=product_id)
+            variant = get_object_or_404(Product_variant,id=variant_id)
+            data = Cart_Product()
+            data.product = product
+            data.product_variant = variant
+            data.cart=cart
+            data.save()
+        
+
+    # return HttpResponse(cart_pro.product.price)
+    # exit()
+    return redirect('cart:cart_page')
+    
+    
+def cart_page(request, total=0, quantity=0, cart_pro=None):
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_products = Cart_Product.objects.filter(cart=cart, is_active=True)
+        
+
+        # Initialize cart_products before the loop
+        for cart_pro in cart_products:
+            # Assuming cart_pro.product_variant is a Product_variant object
+            if cart_pro.product_variant:
+                total += (cart_pro.product_variant.price * cart_pro.quantity)
+                quantity += cart_pro.quantity
+
+    except ObjectDoesNotExist:
+        # Initialize cart_products if the cart doesn't exist
+        cart_products = []
+
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_products': cart_products,
+    }
+    
+    return render(request, 'user/cart.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def remove_cart(request, id):
+#     cart = Cart.objects.get(cart_id=cart_id(request))
+#     variant = get_object_or_404(Product_variant, id=id)
+#     cart_item = CartItem.objects.get(variant=variant, cart_item=cart)
+
+#     if cart_item.quantity > 1:
+#         cart_item.quantity -= 1
+#         print(cart_item.quantity)
+#         cart_item.save()
+#     else:
+#         cart_item.delete()
+    
+#     return redirect('cart:cart_page')
+
+
+
+
+# def delete_cart_item(request,id):
+#     cart=CartView.objects.get(cart_id=cart_id(request))
+#     variant=get_object_or_404(Variants,id=id)
+#     cart_item= ShopCart.objects.get(variant=variant,cart_item=cart)
+#     cart_item.delete()
+    
+#     return HttpResponseRedirect('/cart_page')
+
+
+
+
+
+# def orderproduct(request):
+#         return render(request,'order_form.html')

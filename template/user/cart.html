@@ -33,7 +33,7 @@
 	<!-- container -->
 	<div class="container">
 		<!-- Shopping-cart-table -->
-		<form action="{% url 'cart:cart' %}" method="POST">
+		<form action="{% url 'cart:cart_page' %}" method="POST">
 		<div class="shopping-cart-table bottom-shadow">
 			<table class="shop_table cart">
 				<thead>
@@ -42,7 +42,7 @@
 						<th class="product-description">Description</th>
 						<th class="product-brand">brand</th>
 						<th class="product-color">Color</th>
-						<th class="product-size">Size</th>
+						
 						<th class="blank-space"></th>
 						<th class="product-price">Price</th>
 						<th class="product-quantity">Quantity</th>
@@ -51,29 +51,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for item in cart %}
+					
+					
+                        {% for cart_pro in cart_products %}
+					
 					<tr>
 					<td data-title="Product" class="product-tdumbnail">
-							<a title="Summary" href="#"><img src="{{ item.product_variant.product.image.url }}" alt="{{ product_description }}" /></a>
+						
+							<a title="Summary" href="#"><img src="{{ cart_pro.product.image.url }}" alt="{{ product_description }}" /></a>
 						</td>
 						<td data-title="Description" class="product-description">
 							<a title="Order No" href="#">
-								<b>{{ item.product_description }}</b>
+								<b>{{ cart_pro.product_variant.title }}</b>
 								Order No. 10101987 - 26
 							</a>
 						</td>
 						<td data-title="brand" class="product-brand">
-							<span><img src="{{ item.product_brand_image.url }}" alt="{{ product_brand }}" /></span>
+							<span><img src="{{ cart_pro.product.brand.image.url }}" alt="{{ product_brand }}" /></span>
 						</td>
 						<td data-title="Color" class="product-color">
-							<span class="choose-color color1">{{ item.product_color_name }}</span>
+							<span class="choose-color "><p style="background-color:{{ cart_pro.product_variant.colors.code }};">Color </p></span>
 						</td>
-						<td data-title="Size" class="product-size">
-							<span class="choose-size">{{ item.product_size_name }}</span>
-						</td>
+						
 						<td data-title="" class="blank-space"></td>
 						<td data-title="Price" class="product-price">
-							<span class="price-amount">&euro;{{ item.product_price }}</span>
+							<span class="price-amount">&euro;{{ cart_pro.product_variant.price }}</span>
 						</td>
 <!-- 
 						<td data-title="Quantity" class="product-quantity">
@@ -94,12 +96,12 @@
 							<div class="quantity">
 								<input type="button" value="+" class="qtyplus" id="qtyplus{{ forloop.counter }}" />
 
-								<input type="text" name="quantity{{ forloop.counter }}" value="{{ item.product_quantity }}" class="qty" id="quantity{{ forloop.counter }}" />
+								<input type="text" name="quantity{{ forloop.counter }}" value="{{ cart_pro.product_quantity }}" class="qty" id="quantity{{ forloop.counter }}" />
 								<input type="button" value="-" class="qtyminus" id="qtyminus{{ forloop.counter }}" />
 							</div>
 						</td>
 						<td data-title="Subtotal" class="product-subtotal">
-							<span class="amount" id="subtotal">&dollar; {{ item.product_price }}</span>
+							<span class="amount" id="subtotal">&dollar; {{ cart_pro.product_price }}</span>
 						</td>
 						
 
@@ -112,6 +114,7 @@
 						</td>
 					</tr>
 					{% endfor %}
+					
 				</tbody>
 			</table>
 			<div class="shopping-cart-footer">
@@ -127,12 +130,12 @@
 	<div class="container">
 		<div class="row">
 			<!-- col-md-4 -->
-			<div class="col-md-4 col-sm-6">
-				<!-- Section Header -->
-				<div class="section-header">
+			<!-- <div class="col-md-4 col-sm-6">
+				 Section Header -->
+				<!-- <div class="section-header">
 					<h3>estimate shipping and tax</h3>
-				</div><!-- Section Header /- -->
-				<div class="estimate-details shopping-cart-table">
+				</div>Section Header /- -->
+				<!-- <div class="estimate-details shopping-cart-table">
 					<h4>Enter your destination to get a shipping estimate</h4>
 					<form>
 						<div class="form-group">
@@ -163,15 +166,15 @@
 						</div>
 						<input type="submit" value="get a quote" class="btn btn-default">
 					</form>
-				</div>
-			</div><!-- col-md-4 /- -->
+				</div> -->
+			<!-- </div>col-md-4 /- --> 
 			<!-- col-md-4 -->
-			<div class="col-md-4 col-sm-6">
+			<!-- <div class="col-md-4 col-sm-6"> -->
 				<!-- section-header -->
-				<div class="section-header">
+				<!-- <div class="section-header">
 					<h3>discount codes</h3>
-				</div><!-- Section Header /- -->
-				<div class="estimate-details shopping-cart-table coupon">
+				</div>Section Header /- -->
+				<!-- <div class="estimate-details shopping-cart-table coupon">
 					<h4>Enter your coupon code if you have</h4>
 					<form>
 						<div class="form-group">
@@ -179,8 +182,8 @@
 							<input type="submit" value="apply" class="btn">
 						</div>
 					</form>
-				</div>
-			</div><!-- col-md-4 /- -->
+				</div> -->
+			<!-- </div>col-md-4 /- -->
 			<!-- col-md-4 -->
 			<div class="col-md-4 col-sm-6">
 				<div class="estimate-details shopping-cart-table">

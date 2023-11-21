@@ -30,5 +30,9 @@ urlpatterns = [
     path('edit_variant/<int:variant_id>',views.edit_variant,name='edit_variant'),
     path('delete_variant/<int:variant_id>',views.delete_variant,name='delete_variant'),
     path('banner_manage/',views.banner_manage,name='banner_manage'),
+    path('add_banner/', views.add_banner, name='add_banner'),
+    path('delete_banner/<int:banner_id>', views.delete_banner, name='delete_banner'),
+    path('partner_manage/',views.partner_manage,name='partner_manage'),
+    path('add_partner/', views.add_partner, name='add_partner'),
    
 ]

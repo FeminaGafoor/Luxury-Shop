@@ -184,12 +184,23 @@
                       <td>{{item.product}}</td>
                       <td>{{item.price}}</td>
 
-                      <td>
+                      <!-- <td>
                         {{ item.colors.name }}
                       </td>
                       <td>
                         {{item.size.name }}
-                      </td>
+                      </td> -->
+                      <td>
+                        {% for color in item.colors.all %}
+                            {{ color.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for size in item.size.all %}
+                            {{ size.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    
                       <td>{{item.stock}}</td>
                       
                       <!-- <td><span class="badge bg-label-success me-1"></span></td> -->
@@ -275,11 +286,13 @@
             </select>
           </div>
 
-<!--           
+
+         
           <div class="mb-3">
-            <label for="images" class="form-label">Images</label>
+            <label for="images" class="form-label">Variant Images</label>
             <input type="file" name="images" id="images" multiple required>
-        </div> -->
+        </div>
+      
 
           <div class="mb-3">
             <label for="name" class="form-label">Stock</label>
@@ -351,10 +364,10 @@
           </div>
 
           
-          <!-- <div class="mb-3">
+          <div class="mb-3">
             <label for="images" class="form-label">Images</label>
             <input type="file" name="images" id="images" multiple required>
-        </div> -->
+        </div>
         <script>
           document.getElementById("images").addEventListener("change", function() {
               var files = this.files;

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
-from items.models import Brand, Category, Color, MutipleImage, Product_variant, Products, Size
+from items.models import Banner, Brand, Category, Color, MultipleImage, Product_variant, Products, Size
 
 
 # Create your views here.
@@ -10,10 +10,12 @@ from items.models import Brand, Category, Color, MutipleImage, Product_variant, 
 
 def shop(request):
     product = Products.objects.all()
-    # image = ProductImage.objects.all()
+    image = MultipleImage.objects.all()
+    # banner_images = Banner.objects.all()
     context = {
         'product': product,
-        # 'image': image,
+        'image': image,
+        # 'banner_images' : banner_images,
     }
     return render(request, 'user/shop.html', context)
 
@@ -22,50 +24,48 @@ def shop(request):
 def product(request, id):
     query = request.GET.get('q')
     category = Category.objects.all()
-    product = get_object_or_404(Products, id=id)
-
-  
-    images = MutipleImage.objects.filter(product=id)
+    product = Products.objects.get(id=id)
     brand = Brand.objects.all()
 
-    print("no variant")
     variants = Product_variant.objects.filter(product_id=id)
-                
+    product_variant = variants.first()  # Select the first variant for simplicity
+
     product_colors = Product_variant.objects.filter(product_id=id)
     colors = set()
-   
+    colors_var_id = set()
+
     for product_variant in product_colors:
-        colors.add(product_variant.colors.code)
-                
-    colors= list(colors)
-    sizes_ids = Product_variant.objects.filter(product_id=id, colors=product_colors[0].colors).values_list('size', flat=True)
-    sizes = Size.objects.filter(id__in=sizes_ids)
-    variant =Product_variant.objects.get(id=variants[0].id)
-    product_variant=Product_variant.objects.all()
-    print('Product Id ---->',id)
-    print('Color    ---->',colors[0])
-    initial_size = Product_variant.objects.filter(product_id=id, colors__code=colors[0]).first().size.name
-    context={
-        'category':category,
-        'product':product,
-        'product_variant':product_variant,
-        'images':images,
-        'sizes': sizes, 
+        color = product_variant.colors.first()
+        if color:
+            colors.add(color.code)
+            colors_var_id.add(product_variant.id)
+
+    colors = list(colors)
+
+    data = zip(colors, list(colors_var_id))
+
+    context = {
+        'category': category,
+        'product': product,
+        'product_variant': product_variant,
         'colors': colors,
-        'initial_color':colors[0] ,
-        'variant': variant,
-        'brand' : brand,
+        'brand': brand,
         'query': query,
+        'data': data,
     }
-    
-    return render(request, 'user/product.html',context)    
+
+    return render(request, 'user/product.html', context)
+
+  
 
 
 def category(request):
     category = Category.objects.all()
+    # banner_images = Banner.objects.all()
  
     context = {
-        'category':category
+        'category':category,
+        # 'banner_images' : banner_images,
     }
     return render(request,'user/categories.html',context)
 
@@ -98,18 +98,39 @@ def kids(request):
     }
     return render(request,'user/kids.html',context)
 
-from django.core import serializers
-import json
-def ajaxcolor(request):
-    data = {}
-    if request.method == 'POST':
-        productid = request.POST.get('productid')
-        colorid = request.POST.get('color')
-        product_colors = Product_variant.objects.filter(product_id=productid,colors__code=colorid)
-        size_ids = Product_variant.objects.filter(product_id=productid, colors=product_colors[0].colors).values_list('size', flat=True)
-        sizes = Size.objects.filter(id__in=size_ids)
-        sizes_serializer = []
-        for size in sizes:
-            sizes_serializer.append({'name':size.name,'id':size.id})
-        sizes_json = json.dumps(sizes_serializer)
-        return HttpResponse( sizes_json,content_type='application/json')
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
+def get_image_url(request, variant_id, color):
+    image = get_object_or_404(MultipleImage, product_variant__id=variant_id, color__code=color)
+    
+    if image:
+        image_url = image.images.url  # Assuming 'images' is the field holding the image URL
+        return JsonResponse({'image_url': image_url})
+    else:
+        return JsonResponse({'error': 'Image not found'}, status=404)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

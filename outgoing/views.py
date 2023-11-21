@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from items.models import Brand, MutipleImage, Product_variant, Products
+from items.models import Brand, Product_variant, Products
 
 # Create your views here.
 

@@ -57,7 +57,7 @@ def user_manage(request):
     }
     return render(request,'admini/user_manage.html',context )
 
-def user_block(requset,user_id):
+def user_block(request,user_id):
     
     #user is block
     user=User.objects.get(id = user_id)

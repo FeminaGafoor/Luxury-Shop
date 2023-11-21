@@ -80,36 +80,34 @@ class Product_variant(models.Model):
     title = models.CharField(max_length=100,blank=True,null=True)
     product = models.ForeignKey(Products, blank=True, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    colors = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
-    size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
+    colors = models.ManyToManyField(Color, blank=True)  
+    size = models.ManyToManyField(Size, blank=True)  
     image_id = models.IntegerField(blank=True,null=True,default=0)
     stock = models.CharField(max_length=100,blank=True)                         
     
     
     def __str__(self):
         return str(self.product)
-       
-    def image_tag(self):
-        img=MutipleImage.objects.get(id=self.image_id)
-        if img.id is not None:
-            return mark_safe('<img src="{}" height="50"/>'.format(img.image.url)) 
-        else:
-            return ""
     
     
-class MutipleImage(models.Model):
-    
-    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
-    images = models.FileField(null=True, blank=True)
-    title = models.CharField(max_length=100,blank=True,null=True)
+class MultipleImage(models.Model):
+    product_variant = models.ForeignKey(Product_variant, on_delete=models.SET_NULL,blank =True, null=True)
+    images=models.ImageField(upload_to='variantproduct_images',blank=True)
+  
+
+    def display_images(self):
+        images_html = ""                
+        for image in self.images.all():
+            images_html += f'<img src="{image.url}" height="50" />'
+        return mark_safe(images_html)
     
     def __str__(self):
-        return self.product.name
-    
-    
+        if self.product_variant:
+            return f"{self.product_variant.product.name} - {self.pk}"
+        return f"MultipleImage object ({self.pk})"
 
 
 class Banner(models.Model):
     ban_image = models.ImageField(upload_to="banner_images", null=True, blank=True)
     fb_images = models.ImageField(upload_to="fb_images", null=True, blank=True)
-    partners_images = models.ImageField(upload_to="fb_images", null=True, blank=True)
+    partners_images = models.ImageField(upload_to="partners_images", null=True, blank=True)
