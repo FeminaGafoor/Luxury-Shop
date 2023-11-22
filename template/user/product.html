@@ -125,11 +125,11 @@
 					{% csrf_token %}
 					<div id="SelectedProduct">
 						<input type="hidden" id="input_variant_id" name="variant_id" value="{{ product_variant.id }}">
-						<p><strong>Availability:</strong> {% if product.amount > 0 %} In Stock {% else %} Out of Stock {% endif %}</p>
+						{% comment %} <p><strong>Availability:</strong> </p> {% endcomment %}
 						<h3 class="product-price">{{ request.session.currency }}</h3>
 						
 						<div class="qty-input">
-							<button id="cart_button" type="submit" {% if product.amount < 1 %} disabled {% endif %} class="primary-btn add-to-cart">
+							<button id="cart_button" type="submit" class="primary-btn add-to-cart">
 								<i class="fa fa-shopping-cart"></i> Add to Cart
 							</button>
 						</div>
@@ -217,11 +217,9 @@
 			// Get the last part of the URL, which should be the product id
 			const productId = urlParts[urlParts.length - 2];
 
-			// Now, 'productId' contains the value '104'
+			
 			console.log(productId);
-			//const form = document.getElementById('myFormPlaceholder');
-			//form.action = `/cart/add_cart/${variant_id}`;
-				//url: `/get_image_url/${variant_id}/${color}`,
+			
 				const produtSize = document.getElementById('size_product')
 				const image = document.getElementsByClassName('cover_image');
 				const inputVaraint = document.getElementById('input_variant_id')

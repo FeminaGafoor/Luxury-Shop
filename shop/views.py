@@ -64,6 +64,8 @@ def product(request, id):
         filtered_image = MultipleImage.objects.get(product_variant=filtered_data)
 
         print(filtered_image, 'new size')
+        print(product_variant.price,"product_variant.price")
+      
         
         return JsonResponse({ "size": filtered_data.size.name, "image": filtered_image.images.url, "variant_id": filtered_data.id})
     print(product_variants[0].id, "product variant id")

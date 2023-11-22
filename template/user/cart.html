@@ -42,18 +42,18 @@
 						<th class="product-description">Description</th>
 						<th class="product-brand">brand</th>
 						<th class="product-color">Color</th>
-						
+						<th class="product-size">Size</th>
 						<th class="blank-space"></th>
 						<th class="product-price">Price</th>
 						<th class="product-quantity">Quantity</th>
 						<th class="product-subtotal">subtotal</th>
-						<th class="product-change">edit/delete</th>
+						<th class="product-change">delete</th>
 					</tr>
 				</thead>
 				<tbody>
 					
 					
-                        {% for cart_pro in cart_products %}
+                {% for cart_pro in cart_products %}
 					
 					<tr>
 					<td data-title="Product" class="product-tdumbnail">
@@ -62,58 +62,57 @@
 						</td>
 						<td data-title="Description" class="product-description">
 							<a title="Order No" href="#">
-								<b>{{ cart_pro.product_variant.title }}</b>
-								Order No. 10101987 - 26
+								<b>{{ cart_pro.product_variant.product.name }}</b>
+								<p>{{ cart_pro.product_variant.product.description }}</p>
 							</a>
 						</td>
 						<td data-title="brand" class="product-brand">
-							<span><img src="{{ cart_pro.product.brand.image.url }}" alt="{{ product_brand }}" /></span>
+							{% if cart_pro.brand_image %}
+							 <img src="{{ cart_pro.brand_image }}" alt="{{ product_brand }}" style="width: 80px; height: 60px;"/>
+						    {% endif %}
 						</td>
 						<td data-title="Color" class="product-color">
-							<span class="choose-color "><p style="background-color:{{ cart_pro.product_variant.colors.code }};">Color </p></span>
+							<span class="choose-color" style="background-color:{{ cart_pro.product_variant.colors.code }};">
+								
+							</span>
+						</td>
+
+						</td>							
+						<td data-title="Size" class="product-size">
+							<span class="choose-size">{{ cart_pro.product_variant.size.name }}</span>
 						</td>
 						
 						<td data-title="" class="blank-space"></td>
 						<td data-title="Price" class="product-price">
-							<span class="price-amount">&euro;{{ cart_pro.product_variant.price }}</span>
+							<span class="price-amount">${{ cart_pro.product_variant.price }}</span>
 						</td>
-<!-- 
-						<td data-title="Quantity" class="product-quantity">
-							<div class="quantity">
-								<input type="button" value="+" id="qtyplus" class="qtyplus" />
-								<input type="text" name="quantity" value="{{ product_quantity }}" class="qty" id="quantity" />
-								<input type="button" value="-" id="qtyminus" class="qtyminus" />
-							</div>
-						</td> -->
-						<!-- <td data-title="Quantity" class="product-quantity">
-							<div class="quantity">
-								<input type="button" value="+" id="qtyplus-1" class="qtyplus" data-field="quantity1" />
-								<input type="text" name="quantity1" value="0" class="qty" />
-								<input type="button" value="-" class="qtyminus" data-field="quantity1" />
-							</div>
-						</td> -->
-						<td data-title="Quantity" class="product-quantity">
-							<div class="quantity">
-								<input type="button" value="+" class="qtyplus" id="qtyplus{{ forloop.counter }}" />
 
-								<input type="text" name="quantity{{ forloop.counter }}" value="{{ cart_pro.product_quantity }}" class="qty" id="quantity{{ forloop.counter }}" />
-								<input type="button" value="-" class="qtyminus" id="qtyminus{{ forloop.counter }}" />
+						<td data-title="Quantity" class="product-quantity">
+							<div class="quantity">
+
+								<input type="button" value="-" class="qtyminus" id="qtyminus{{ forloop.counter }}" data-field="quantity{{ forloop.counter }}" />
+								<input type="text"  name="quantity{{ forloop.counter }}" value="{{ cart_pro.quantity }}" class="qty" />
+								<input type="button" value="+" class="qtyplus" id="qtyplus{{ forloop.counter }}"  data-field="quantity{{ forloop.counter }}" />
+								
 							</div>
 						</td>
+
+
+						
 						<td data-title="Subtotal" class="product-subtotal">
-							<span class="amount" id="subtotal">&dollar; {{ cart_pro.product_price }}</span>
+							<span class="amount" id="subtotal">$ {{ cart_pro.sub_total }}</span>
 						</td>
 						
 
 						
-						<td data-title="edit/delete" class="product-edit">
-							<a title="Pencil Icon" href="#"><span class="product-edit"><i
-										class="fa fa-pencil-square-o"></i></span></a>
-							<a title="Trash Icon" href="#"><span class="product-delete"><i
+						<td data-title="delete" class="product-edit">
+							<!-- <a title="Pencil Icon" href="#"><span class="product-edit"><i
+										class="fa fa-pencil-square-o"></i></span></a> -->
+							<a title="Trash Icon" href="{% url 'cart:delete_cart_product' product_id=cart_pro.product.id variant_id=cart_pro.product_variant.id %}"><span class="product-delete"><i
 										class="fa fa-trash-o"></i></span></a>
 						</td>
 					</tr>
-					{% endfor %}
+				{% endfor %}
 					
 				</tbody>
 			</table>
@@ -129,74 +128,27 @@
 	<!-- container -->
 	<div class="container">
 		<div class="row">
-			<!-- col-md-4 -->
-			<!-- <div class="col-md-4 col-sm-6">
-				 Section Header -->
-				<!-- <div class="section-header">
-					<h3>estimate shipping and tax</h3>
-				</div>Section Header /- -->
-				<!-- <div class="estimate-details shopping-cart-table">
-					<h4>Enter your destination to get a shipping estimate</h4>
-					<form>
-						<div class="form-group">
-							<select class="form-control minimal">
-								<option selected="selected" value="">Select a country....</option>
-								<option value="Afghanistan">Afghanistan</option>
-								<option value="Albania">Albania</option>
-								<option value="Algeria">Algeria</option>
-								<option value="American Samoa">American Samoa</option>
-								<option value="Andorra">Andorra</option>
-								<option value="Angola">Angola</option>
-								<option value="Anguilla">Anguilla</option>
-							
-							</select>
-						</div>
-						<div class="form-group">
-							<select class="form-control minimal">
-								<option value="default">STATE/PROVINCE</option>
-								<option value="AL">Alabama</option>
-								<option value="AK">Alaska</option>
-								<option value="AZ">Arizona</option>
-								<option value="AR">Arkansas</option>
-								<option value="CA">California</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<input type="text" name="zip" class="form-control" placeholder="zip/postal-code">
-						</div>
-						<input type="submit" value="get a quote" class="btn btn-default">
-					</form>
-				</div> -->
-			<!-- </div>col-md-4 /- --> 
-			<!-- col-md-4 -->
-			<!-- <div class="col-md-4 col-sm-6"> -->
-				<!-- section-header -->
-				<!-- <div class="section-header">
-					<h3>discount codes</h3>
-				</div>Section Header /- -->
-				<!-- <div class="estimate-details shopping-cart-table coupon">
-					<h4>Enter your coupon code if you have</h4>
-					<form>
-						<div class="form-group">
-							<input type="text" name="" class="form-control" placeholder="">
-							<input type="submit" value="apply" class="btn">
-						</div>
-					</form>
-				</div> -->
-			<!-- </div>col-md-4 /- -->
-			<!-- col-md-4 -->
+			
 			<div class="col-md-4 col-sm-6">
 				<div class="estimate-details shopping-cart-table">
 					<table>
 						<tbody>
+							
 							<tr class="cart-subtotal">
 								<th>Subtotal</th>
-								<td><span class="amount">&dollar;99.95</span></td>
+								<td><span class="amount">${{ total }}</span></td>
+								
+							</tr>
+							<tr class="tax">
+								<th>Tax</th>
+								<td><span class="amount">${{ tax }}</span></td>
+								
 							</tr>
 							<tr class="order-total">
 								<th>Grand Total</th>
-								<td><strong><span class="total-amount">99.95</span></strong> </td>
+								<td><strong><span class="total-amount">{{ grand_total }}</span></strong> </td>
 							</tr>
+							
 						</tbody>
 					</table>
 
@@ -222,6 +174,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('.product-quantity').each(function() {
@@ -241,7 +194,7 @@
                 var newSubtotal = productPrice * newQuantity;
                 $subtotalElement.text('$ ' + newSubtotal.toFixed(2)); // $ symbol for dollars
             }
-
+            
             // Increment the quantity and update subtotal
             $qtyPlus.click(function() {
                 currentQuantity++;
@@ -262,7 +215,11 @@
             updateSubtotal();
         });
     });
-</script>
+
+	
+</script> 
+
+
 
 
 {% endblock %}

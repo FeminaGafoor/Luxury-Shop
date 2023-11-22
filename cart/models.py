@@ -18,6 +18,15 @@ class Cart_Product(models.Model):
     quantity = models.PositiveBigIntegerField(default=0)
     created_date = models.DateField(default=timezone.now)
     is_active = models.BooleanField(default=True)
+    
+    
+    @property
+    def sub_total(self):
+        return self.product_variant.price*self.quantity
+        
+    def __str__(self):
+        return self.product.name
+        
 
 
 

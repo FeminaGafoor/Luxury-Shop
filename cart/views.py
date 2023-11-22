@@ -1,3 +1,4 @@
+from audioop import reverse
 import colorsys
 import decimal
 from pyexpat.errors import messages
@@ -18,32 +19,28 @@ def _cart_id(request):
     return cart
               
 
-
-
 def add_cart(request, product_id):
      
     product = Products.objects.get(id = product_id)
-   
     variant_id = request.POST.get('variant_id')
-    
-    print(variant_id, 'varaint id')
-    
-
+    print("produc:",product)
+    print("variant_id",variant_id)
     try :
         cart = Cart.objects.get(cart_id=_cart_id(request))
+        
     except Cart.DoesNotExist:
         cart = Cart.objects.create(
             cart_id = _cart_id(request)
-           
         )
         
         cart.save()
         
-    if product.variant != 'None':
-       
+    if product.variant:
+        
         variant_id = request.POST.get('variant_id')
+        print(variant_id,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         check_variant = Cart_Product.objects.filter(product_variant = variant_id ,cart = cart)
-        print(check_variant,"check_variant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("check_variant:",check_variant)
         if check_variant:
             control = 1
         else:
@@ -52,16 +49,21 @@ def add_cart(request, product_id):
         if control == 1:  
             print('start')       
             cart_pro = Cart_Product.objects.get(product=product,cart=cart,product_variant=variant_id)
-             
+            
             cart_pro.quantity += 1
+            print("cart_pro.quantity:",cart_pro.quantity)
             cart_pro.save()
         else:  
             print('end')   
             product = get_object_or_404(Products,id=product_id)
+            print(product,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
             variant = get_object_or_404(Product_variant,id=variant_id)
+            print(variant,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
             data = Cart_Product()
+            data.quantity+=1
             data.product = product
             data.product_variant = variant
+            print("data.product_variant :",data.product_variant )
             data.cart=cart
             data.save()
         
@@ -75,25 +77,45 @@ def cart_page(request, total=0, quantity=0, cart_pro=None):
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
         cart_products = Cart_Product.objects.filter(cart=cart, is_active=True)
-        
-
+        print("cart_products:",cart_products)
         # Initialize cart_products before the loop
         for cart_pro in cart_products:
             # Assuming cart_pro.product_variant is a Product_variant object
             if cart_pro.product_variant:
-                total += (cart_pro.product_variant.price * cart_pro.quantity)
                 quantity += cart_pro.quantity
+                total += cart_pro.sub_total
+                print(cart_pro.product_variant,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+                
+                print(f"Product: {cart_pro.product.name}")
+                print(f"Price: {cart_pro.product_variant.price}")
+                print(f"Quantity: {cart_pro.quantity}")
+                print(f"Subtotal: {cart_pro.sub_total}")
+                
+            tax = (2 * total)/100
+            grand_total = total + tax
+        context = {
+            'total': total,
+            'quantity': quantity,
+            'cart_products': cart_products,
+            'tax' : tax,
+            'grand_total' : grand_total,
+        }
 
     except ObjectDoesNotExist:
-        # Initialize cart_products if the cart doesn't exist
-        cart_products = []
+        # Initialize context if the cart doesn't exist
+        context = {
+            'total': total,
+            'quantity': quantity,
+            'cart_products': [],
+            'tax': 0,
+            
+        }
 
-    context = {
-        'total': total,
-        'quantity': quantity,
-        'cart_products': cart_products,
-    }
-    
+    # Add brand_image information to each cart_pro in context
+    for cart_pro in context['cart_products']:
+        # Assuming cart_pro.product.brand is a Brand object
+        cart_pro.brand_image = cart_pro.product.brand.brand_image.url if cart_pro.product.brand else None
+
     return render(request, 'user/cart.html', context)
 
 
@@ -101,56 +123,17 @@ def cart_page(request, total=0, quantity=0, cart_pro=None):
 
 
 
+def delete_cart_product(request, product_id, variant_id):
+    if variant_id:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        product = get_object_or_404(Products, id=product_id)
+        variant = get_object_or_404(Product_variant, id=variant_id)
+        
+        cart_pro = Cart_Product.objects.get(product=product, cart=cart, product_variant=variant)
+        
+        cart_pro.delete()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def remove_cart(request, id):
-#     cart = Cart.objects.get(cart_id=cart_id(request))
-#     variant = get_object_or_404(Product_variant, id=id)
-#     cart_item = CartItem.objects.get(variant=variant, cart_item=cart)
-
-#     if cart_item.quantity > 1:
-#         cart_item.quantity -= 1
-#         print(cart_item.quantity)
-#         cart_item.save()
-#     else:
-#         cart_item.delete()
-    
-#     return redirect('cart:cart_page')
-
-
-
-
-# def delete_cart_item(request,id):
-#     cart=CartView.objects.get(cart_id=cart_id(request))
-#     variant=get_object_or_404(Variants,id=id)
-#     cart_item= ShopCart.objects.get(variant=variant,cart_item=cart)
-#     cart_item.delete()
-    
-#     return HttpResponseRedirect('/cart_page')
-
+    return HttpResponseRedirect(reverse('cart_page'))
 
 
 
