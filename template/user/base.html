@@ -103,14 +103,19 @@
             <div class="logo-search-block">
                 <!-- container -->
                 <div class="container">
+                    
                     <div class="col-md-3 ow-left-padding col-sm-3 col-xs-3">
+                        <form class="form-inline form-row" action="{% url 'shop:search' %}" method="GET" >
+                        
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
-                            <input type="text" class="form-control" placeholder="Search products">
+                            <input name="query" type="text" class="form-control" placeholder="Search products">
                         </div><!-- /input-group -->
+                    </form>
                     </div>
+
                     <div class="col-md-6 logo-block col-sm-6 col-xs-6">
                         <a title="Logo" href="{% url 'home:home' %}">
                             <svg viewBox="0 0 60.666 57.701">
@@ -124,53 +129,33 @@
                             Luxury Shop
                         </a>
                     </div>
-                    <!-- <div class="col-md-3 ow-right-padding col-sm-3 col-xs-3">
 
-                        <form class="col-md-8 col-sm-12 col-xs-12" style=" padding-right: 91px;
-                        padding-top: 10px;">
-                            
-                            {% if user.is_authenticated %}
-                                <a style="color:#b3aa9b" href="{% url 'account:profile' %}">PROFILE</a>
-                            {% endif %}
-                            
-                        </form>
-
-                        <a style="color:#b3aa9b" href="{% url 'account:user_login' %}">LOGIN</a>
-
-                        {% if user.is_authenticated %}
-                       
-                            <svg width="16px" height="15px" viewBox="0 0 533.334 533.335">
-                                <g>
-                                    <path
-                                        d="M441.26,300.001c18.333,0,37.454-14.423,42.49-32.052l48.353-169.231c5.036-17.627-5.844-32.05-24.177-32.05H166.667   c0-36.819-29.848-66.667-66.667-66.667H0v66.667h100v283.333c0,27.614,22.386,50,50,50h316.667   c18.409,0,33.334-14.924,33.334-33.333s-14.925-33.334-33.334-33.334h-300v-33.333H441.26z M166.667,133.334h301.461l-28.573,100   H166.667V133.334z M200,491.668c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.917,0-41.667-18.75-41.667-41.666v-16.667   c0-22.917,18.75-41.667,41.667-41.667h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z M500,491.668   c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.916,0-41.666-18.75-41.666-41.666v-16.667c0-22.917,18.75-41.667,41.666-41.667   h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z" />
-                                </g>
-                            </svg>
-                          
-                            <a style="color:#b3aa9b" href="{% url 'cart:cart_page' %}">cart</a>
-                          
-                        </div>
-                        {% endif %}
-
-                        
-
-                    </div> -->
 
 
 
                     <div class="col-md-3 ow-right-padding col-sm-3 col-xs-3">
                         {% if user.is_authenticated %}
-                            <form class="col-md-8 col-sm-12 col-xs-12" style="padding-right: 91px; padding-top: 10px;">
+                            <form class="col-md-8 col-sm-12 col-xs-12 cart-link ow-right-padding" style="padding-right: 91px; padding-top: 10px; color:#b3aa9b">
                                 <a style="color:#b3aa9b" href="{% url 'account:profile' %}">PROFILE</a>
                             </form>
-                            
+                             
+                       
                             <svg width="16px" height="15px" viewBox="0 0 533.334 533.335">
                                 <g>
-                                    <path
-                                        d="M441.26,300.001c18.333,0,37.454-14.423,42.49-32.052l48.353-169.231c5.036-17.627-5.844-32.05-24.177-32.05H166.667   c0-36.819-29.848-66.667-66.667-66.667H0v66.667h100v283.333c0,27.614,22.386,50,50,50h316.667   c18.409,0,33.334-14.924,33.334-33.333s-14.925-33.334-33.334-33.334h-300v-33.333H441.26z M166.667,133.334h301.461l-28.573,100   H166.667V133.334z M200,491.668c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.917,0-41.667-18.75-41.667-41.666v-16.667   c0-22.917,18.75-41.667,41.667-41.667h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z M500,491.668   c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.916,0-41.666-18.75-41.666-41.666v-16.667c0-22.917,18.75-41.667,41.666-41.667   h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z" />
+                                    <path d="M441.26,300.001c18.333,0,37.454-14.423,42.49-32.052l48.353-169.231c5.036-17.627-5.844-32.05-24.177-32.05H166.667   c0-36.819-29.848-66.667-66.667-66.667H0v66.667h100v283.333c0,27.614,22.386,50,50,50h316.667   c18.409,0,33.334-14.924,33.334-33.333s-14.925-33.334-33.334-33.334h-300v-33.333H441.26z M166.667,133.334h301.461l-28.573,100   H166.667V133.334z M200,491.668c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.917,0-41.667-18.75-41.667-41.666v-16.667   c0-22.917,18.75-41.667,41.667-41.667h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z M500,491.668   c0,22.916-18.75,41.666-41.667,41.666h-16.667c-22.916,0-41.666-18.75-41.666-41.666v-16.667c0-22.917,18.75-41.667,41.666-41.667   h16.667c22.917,0,41.667,18.75,41.667,41.667V491.668z"  fill="#b3aa9b"/>
                                 </g>
                             </svg>
-                          
-                            <a style="color:#b3aa9b" href="{% url 'cart:cart_page' %}">CART</a>
+                            <!-- <div role="tooltip" class="tooltip top">
+                                <div class="tooltip-arrow"></div>
+                                <div class="tooltip-inner">New</div>
+                            </div> -->
+                            
+                            <a style="color:#b3aa9b" href="{% url 'cart:cart_page' %}">CART</a>({{cart_count}})
+                             
+
+
+  
+
                         {% else %}
                             <a style="color:#b3aa9b" href="{% url 'account:user_login' %}">LOGIN</a>
                         {% endif %}

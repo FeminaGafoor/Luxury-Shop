@@ -20,214 +20,126 @@
 </div><!-- container /- -->
 <!-- Page Breadcrumb /- -->
 
+
+
+
+
 <div class="page-wizard">
     <!-- container -->
     <div class="container">
-        <ul class="bottom-shadow">
-            <li class="active"><a title="login" href="07_login_register.html">1# login</a></li>
-            <li class="active"><a title="Shipping Address" href="08_Shipping_Address.html">2# Checkout</a></li>
-            <li><a title="Payments" href="09_payment.html">3# Payments</a></li>
-            <li><a title="summary" href="10_summary.html">4# summary</a></li>
-            <li><a title="Finish" href="11_finish.html">5# Finish</a></li>
-        </ul>
-        <!-- contact-form-details -->
-        <div class="contact-form-details shipping-transports row">
-            <div class="col-md-6 col-sm-6">
-                <div class="section-header">
-                    <h3>Choose a mode of Transport</h3>
-                </div><!-- Section Header /- -->
-                <div class="contact-form bottom-shadow">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label data-for="title" class="col-md-4">Title</label>
-                            <div class="col-md-8">
-                                <select class="minimal">
-                                    <option value="default">TITLE</option>
-                                    <option value="option1">option1</option>
-                                    <option value="option2">option2</option>
-                                    <option value="option3">option3</option>
-                                </select>
+        
+        
+            <div class="contact-form-details row">
+                <!-- col-md-6 -->
+                <div class="col-md-6 col-sm-6">
+                    <div class="section-header">
+                        <h3>Shipping Details</h3>
+                    </div><!-- Section Header Over -->
+                    <div class="contact-form bottom-shadow">
+                        <form action="" method="POST" class="form-horizontal">
+                          {% csrf_token %}
+                            <div class="form-group">
+                                <label class="col-md-4"> First Name</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="firstname-1" placeholder="your first name"
+                                        required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="name" class="col-md-4">Name</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="firstname" placeholder="your first name">
+                            <div class="form-group">
+                                <label class="col-md-4">Last Name</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="lastname-1" placeholder="your last name"
+                                        required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="lastname" class="col-md-4">Last Name</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="lastname" placeholder="your last name"
-                                    required />
+                            <div class="form-group">
+                                <label class="col-md-4">Email</label>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" id="email2" placeholder="your email here"
+                                        required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="address1" class="col-md-4">Address #1</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="address1" placeholder="Address Here"
-                                    required />
+                            <div class="form-group">
+                                <label class="col-md-4">Address</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="address11" placeholder="Address Here"
+                                        required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="address2" class="col-md-4">Address #2</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="address2" placeholder="Address Here"
-                                    required />
+                         
+                            <div class="form-group">
+                                <label for="city" class="col-md-4">City</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="city1" placeholder="your city" required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="city" class="col-md-4">City</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="city" placeholder="your city" required />
+                            <div class="form-group">
+                                <label for="state" class="col-md-4">State</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="state" placeholder="your state" required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="zip" class="col-md-4">Zip</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="zip" placeholder="zip code here" required />
+                            <div class="form-group">
+                                <label for="city" class="col-md-4">Country</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="country" placeholder="your country" required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="country" class="col-md-4">Country</label>
-                            <div class="col-md-8">
-                                <select class="minimal">
-                                    <option value="selected">SELECT YOUR COUNTRY</option>
-                                    <option value="Afghanistan">Afghanistan</option>
-                                    <option value="Albania">Albania</option>
-                                    <option value="Algeria">Algeria</option>
-                                    <option value="American Samoa">American Samoa</option>
-                                    <option value="Andorra">Andorra</option>
-                      
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="email" class="col-md-4">Email</label>
-                            <div class="col-md-8">
-                                <input type="email" class="form-control" id="txt_email" placeholder="your email here"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label data-for="confirm email" class="col-md-4">Confirm Email</label>
-                            <div class="col-md-8">
-                                <input type="email" class="form-control" id="cemail" placeholder="confirm your email"
-                                    required />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-sm-6">
-                <!-- Section Header -->
-                <div class="section-header">
-                    <h3>Select a Payment Method</h3>
-                </div><!-- Section Header /- -->
-                <div class="contact-form bottom-shadow">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4">Redirect</label>
-                            <div class="col-md-8">
-                                <select class="minimal">
-                                    <option value="default" selected>TITLE</option>
-                                    <option value="INDIA">1</option>
-                                    <option value="RILANKA">2</option>
-                                    <option value="AMERICA">3</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Title</label>
-                            <div class="col-md-8">
-                                <select class="minimal">
-                                    <option value="default" selected>TITLE</option>
-                                    <option value="option1">option1</option>
-                                    <option value="option2">option2</option>
-                                    <option value="option3">option3</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Name</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="firstname-1" placeholder="your first name"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Last Name</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="lastname-1" placeholder="your last name"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Address #1</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="address11" placeholder="Address Here"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Address #2</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="address22" placeholder="Address Here"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="city" class="col-md-4">City</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="city1" placeholder="your city" required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="zip" class="col-md-4">Zip</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="zip1" placeholder="zip code here"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Country</label>
-                            <div class="col-md-8">
-                                <select class="minimal">
-                                    <option value="selected">SELECT YOUR COUNTRY</option>
-                                    <option value="Afghanistan">Afghanistan</option>
-                                    <option value="Albania">Albania</option>
-                                    <option value="Algeria">Algeria</option>
-                                    <option value="American Samoa">American Samoa</option>
-                                    <option value="Andorra">Andorra</option>
-                                    <option value="Angola">Angola</option>
-                                    <option value="Anguilla">Anguilla</option>
-                                    <option value="Antarctica">Antarctica</option>
-                                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Armenia">Armenia</option>
-                                    <option value="Aruba">Aruba</option>
+                         
                            
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Email</label>
-                            <div class="col-md-8">
-                                <input type="email" class="form-control" id="email2" placeholder="your email here"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4">Confirm Email</label>
-                            <div class="col-md-8">
-                                <input type="email" class="form-control" id="cemail2" placeholder="confirm your email"
-                                    required />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                        </form>
+                    </div>
+                </div><!-- col-md-6 /- -->
+                <!-- col-md-6 -->
+                <div class="col-md-6 col-sm-6">
+                    <div class="section-header">
+                        <h3>Your Orders</h3>
+                    </div><!-- Section Header Over -->
+                    <div class="contact-form bottom-shadow shopping-cart-table bottom-shadow">
+                        <div class="col-md-4 "></div>
+                                <table class="col-md-12 shop_table cart ">
+                        <!-- <table class="shop_table cart"> -->
+                        <thead>
+        
+                           
+                            <tr>
+                                <th class="product-name">Product</th>
+                            
+                                <th class="blank-space"></th>
+                                
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-price">Price</th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart_pro, cart_image in cart_products %}
+                            <tr>
+                                <td data-title="Product" class="product-tdumbnail">
+                                    <a title="Summary" href="#"><img src="{{ cart_image.images.url }}" alt="{{ cart_pro.product.name }}" style="width: 100px; height: 90px;" /></a>
+                                </td>
+                              
+                               
+                                <td data-title="" class="blank-space"></td>
+                             
+                                <td data-title="Quantity" class="productqty" >
+                                    <div class="qty">
+                                        <span class="qty">{{ cart_pro.quantity }}</span>
+                                    </div>
+                                </td>
+                                <td data-title="Price" class="product-price">
+                                    <span class="price-amount">${{ cart_pro.sub_total }}</span>
+                                </td>
+                             
+                            </tr>	
+                            
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div><!-- col-md-6 /- -->
+            </div><!-- Contact Form details /- -->
+            
         </div><!-- Contact Form Details /- -->
         <div class="wizard-footer">
             <a title="Back" href="07_login_register.html"

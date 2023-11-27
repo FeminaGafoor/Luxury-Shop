@@ -6,7 +6,61 @@
 
 
 
-<!doctype html>
+<style>
+    .product-quantity {
+        text-align: center;
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+		
+		padding-left: 27px;
+	
+	
+    }
+
+    .decrement-button{
+		display: inline-block;
+        padding: 5px 10px;
+        background-color:#ffffff;
+        color:#cbcbcb;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 3px;
+        margin: 0 5px;
+		height: 34px;
+		margin-left: -27px;
+	}
+    .increment-button {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color:#ffffff;
+        color:#cbcbcb;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 3px;
+        margin: 0 5px;
+		height: 34px;
+		margin-left: 19px;
+	
+	}
+		
+    
+
+    .quantity-input {
+        width: 36px;
+        text-align: center;
+        
+        padding: 5px;
+        margin: 0 5px;
+		margin-left: -8px;
+		height: 38px;
+		margin-right: -29px;
+	}
+</style>
+
 
 
 
@@ -30,11 +84,23 @@
 <!-- Page Breadcrumb /- -->
 
 <div class="page-wizard shopping-cart shopping-product-table">
-	<!-- container -->
+	
+
+
 	<div class="container">
-		<!-- Shopping-cart-table -->
-		<form action="{% url 'cart:cart_page' %}" method="POST">
+
+
+	
 		<div class="shopping-cart-table bottom-shadow">
+			
+			{% if not cart_products %}
+			<h3 class="text-center">Your Cart is empty</h3>
+			<br>
+			<div class="shopping-cart-footer" style="text-align: center;">
+				<a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default" >Continue Shopping</a>
+			</div>
+			{% else %}
+			
 			<table class="shop_table cart">
 				<thead>
 					<tr>
@@ -53,12 +119,10 @@
 				<tbody>
 					
 					
-                {% for cart_pro in cart_products %}
-					
+					{% for cart_pro, i in cart_data %}
 					<tr>
 					<td data-title="Product" class="product-tdumbnail">
-						
-							<a title="Summary" href="#"><img src="{{ cart_pro.product.image.url }}" alt="{{ product_description }}" /></a>
+							<a title="Summary" href="#"><img src="{{ i.images.url }}" alt="{{ product_description }}" style="width: 200px; height: 200px;" /></a>
 						</td>
 						<td data-title="Description" class="product-description">
 							<a title="Order No" href="#">
@@ -67,9 +131,7 @@
 							</a>
 						</td>
 						<td data-title="brand" class="product-brand">
-							{% if cart_pro.brand_image %}
-							 <img src="{{ cart_pro.brand_image }}" alt="{{ product_brand }}" style="width: 80px; height: 60px;"/>
-						    {% endif %}
+							<img src="{{ cart_pro.product.brand.brand_image.url }}" alt="{{ product_brand }}" style="width: 80px; height: 60px;"/>
 						</td>
 						<td data-title="Color" class="product-color">
 							<span class="choose-color" style="background-color:{{ cart_pro.product_variant.colors.code }};">
@@ -84,23 +146,23 @@
 						
 						<td data-title="" class="blank-space"></td>
 						<td data-title="Price" class="product-price">
-							<span class="price-amount">${{ cart_pro.product_variant.price }}</span>
+							<span class="price-amount">${{ cart_pro.price }}</span>
 						</td>
+
 
 						<td data-title="Quantity" class="product-quantity">
 							<div class="quantity">
-
-								<input type="button" value="-" class="qtyminus" id="qtyminus{{ forloop.counter }}" data-field="quantity{{ forloop.counter }}" />
-								<input type="text"  name="quantity{{ forloop.counter }}" value="{{ cart_pro.quantity }}" class="qty" />
-								<input type="button" value="+" class="qtyplus" id="qtyplus{{ forloop.counter }}"  data-field="quantity{{ forloop.counter }}" />
-								
+								<a type="button" class="qtyplus decrement-button"  data-action="decrement" data-product-id="1" data-field="quantity2" onclick="updateQuantity('{{cart_pro.product_variant.id}}','decrease')">-</a>
+								<input type="text" id='product_qty_{{cart_pro.product_variant.id}}' name="quantity2 product_count" value="{{ cart_pro.quantity }}" class="qty quantity-input" min="1" data-product-id="1" fdprocessedid="169ehu" readonly/>
+                                <a type="button" id="yourButtonId" class="qtyminus increment-button" data-action="increment" data-product-id="1" data-field="quantity2" onclick="updateQuantity('{{cart_pro.product_variant.id}}','increase')">+</a> 
 							</div>
-						</td>
-
-
+						</td>	
 						
-						<td data-title="Subtotal" class="product-subtotal">
-							<span class="amount" id="subtotal">$ {{ cart_pro.sub_total }}</span>
+						
+						<!-- Adding a placeholder for displaying the updated price -->
+						
+						<td  id="priceElement" data-title="Subtotal" class="product-subtotal">
+							<span class="amount" id="subtotal">$ {{ cart_pro.price }}</span>
 						</td>
 						
 
@@ -108,7 +170,7 @@
 						<td data-title="delete" class="product-edit">
 							<!-- <a title="Pencil Icon" href="#"><span class="product-edit"><i
 										class="fa fa-pencil-square-o"></i></span></a> -->
-							<a title="Trash Icon" href="{% url 'cart:delete_cart_product' product_id=cart_pro.product.id variant_id=cart_pro.product_variant.id %}"><span class="product-delete"><i
+							<a title="Trash Icon" href=""><span class="product-delete"><i
 										class="fa fa-trash-o"></i></span></a>
 						</td>
 					</tr>
@@ -116,12 +178,17 @@
 					
 				</tbody>
 			</table>
+	
+			
 			<div class="shopping-cart-footer">
 				<a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default">Continue Shopping</a>
 			</div>
 		</div>
-	</form>
+
+    {% endif %}
+	
 	</div>
+
 </div>
 <!-- Cart estimate -->
 <div class="shopping-cart-estimate">
@@ -136,7 +203,7 @@
 							
 							<tr class="cart-subtotal">
 								<th>Subtotal</th>
-								<td><span class="amount">${{ total }}</span></td>
+								<td><span id= "subTotal" class="amount">${{ total }}</span></td>
 								
 							</tr>
 							<tr class="tax">
@@ -173,53 +240,143 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    $(document).ready(function() {
-        $('.product-quantity').each(function() {
-            var $row = $(this).closest('tr');
-            var $quantityInput = $row.find('.qty');
-            var $qtyPlus = $row.find('.qtyplus');
-            var $qtyMinus = $row.find('.qtyminus');
-            var $subtotalElement = $row.find('.amount');
+    function updateQuantity(productId, action) {
+        const url = `/cart/update_cart/${action}/${productId}/`;
+        const csrfToken = getCookie("csrftoken");
+        console.log("CSRF Token:", csrfToken);
+        console.log("URL:", url);
 
-            // Get the initial product price and quantity for each item
-            var productPrice = parseFloat($subtotalElement.text().replace(/[^0-9.]/g, ''));
-            var currentQuantity = parseInt($quantityInput.val());
+        const qtyInput = document.getElementById(`product_qty_${productId}`);
+        const priceElement = document.getElementById("priceElement");
+		console.log("qtyInput:", qtyInput);
+        console.log("priceElement:", priceElement);
 
-            // Function to update subtotal based on quantity
-            function updateSubtotal() {
-                var newQuantity = parseInt($quantityInput.val());
-                var newSubtotal = productPrice * newQuantity;
-                $subtotalElement.text('$ ' + newSubtotal.toFixed(2)); // $ symbol for dollars
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken,
+            },
+        })
+        .then((response) => {
+            console.log("Response:", response);
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
-            // Increment the quantity and update subtotal
-            $qtyPlus.click(function() {
-                currentQuantity++;
-                $quantityInput.val(currentQuantity);
-                updateSubtotal();
-            });
-
-            // Decrement the quantity and update subtotal
-            $qtyMinus.click(function() {
-                if (currentQuantity > 1) {
-                    currentQuantity--;
-                    $quantityInput.val(currentQuantity);
-                    updateSubtotal();
-                }
-            });
-
-            // Initialize subtotal for each item
-            updateSubtotal();
+        })
+        .then((data) => {
+            console.log("Data:", data);
+            if (data !== undefined) {
+                qtyInput.value = data.full;
+                priceElement.textContent = data.price;
+                // Update other elements as needed
+            } else {
+                console.error("Invalid response format");
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
         });
-    });
+    }
 
-	
-</script> 
+    // Function to update the cart total
+    function updateCartTotal(subTotal, total) {
+        // Update the UI elements with the new subtotal and total values
+        $("#subTotal").text(subTotal);
+        $("#cartTotal").text(total);
+    }
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            var cookies = document.cookie.split(";");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+<!-- <script>
+var single_price;
+document.addEventListener('DOMContentLoaded', function() {
+$('.changequantity').off('click').click(function(e) {
+    e.preventDefault();
+    var action = $(this).data('action');
+    var productId = $(this).data('product-id');
+    var input = $('#product_qty' + productId);
+    var qty = parseInt(input.val(), 10) || 0;
+    console.log(action)
+    console.log(productId)
+    if (action === 'increment') {
+        qty += 1;
+    } else if (action === 'decrement' && qty > 0) {
+        qty -= 1;
+    }
+
+    $.ajax({
+        method: "POST",
+        url: "/update_quantity/",
+        data: {
+            'product_id': productId,
+            'quantity': qty,
+            'action': action,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(response) {
+            single_price = response.single_price;
+            if (response.status === 'Requested quantity exceeds available quantity') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.status,
+                    footer: '<a href="">Why do I have this issue?</a>'
+
+                });
+
+            } else if (response.status === 'Zero quantity not allowed' || response.status === 'Invalid request method') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.status,
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
+            } else {
+                // Update single price and grand total
+                if (qty === 0) {
+                    // If the quantity becomes zero, set it to 1
+                    qty = 1;
+                }
+
+                // Update the quantity in the text field
+                input.val(qty);
+
+                // Update single price and grand total
+                $('#singlePriceDisplay' + productId).text(response.single_price);
+                $('#grandTotalDisplay').text(response.grand_total);
+                $('#taxDisplay').text('$' + response.tax);
+                $('#shippingDisplay').text(response.shipping);
 
 
 
 
+                console.log("Single Price:", response.single_price);
+                console.log("Tax:", response.tax);
+                console.log("Shipping:", response.shipping);
+            }
+        },
+        error: function(error) {
+            alert("Error updating cart.");
+        }
+});
+});
+});
+</script> -->
 {% endblock %}

@@ -77,7 +77,7 @@
 				</ul>
 				<p>Transform your daily routine into a beauty ritual. Explore our curated selection of beauty
 					essentials. Unleash your inner glow!""</p>
-				<ul class="single-side-widget top-social ow-left-padding">
+				<!-- <ul class="single-side-widget top-social ow-left-padding">
 					<li><a title="Facebook" href="#"><i class="fa fa-facebook"></i></a></li>
 					<li><a title="Twitter" href="#"><i class="fa fa-twitter"></i></a></li>
 					<li><a title="Google Plus" href="#"><i class="fa fa-google-plus"></i></a></li>
@@ -101,7 +101,7 @@
 							</svg>
 						</a>
 					</li>
-				</ul>
+				</ul> -->
 				<h4>Color</h4>
 			
 
@@ -126,13 +126,28 @@
 					<div id="SelectedProduct">
 						<input type="hidden" id="input_variant_id" name="variant_id" value="{{ product_variant.id }}">
 						{% comment %} <p><strong>Availability:</strong> </p> {% endcomment %}
-						<h3 class="product-price">{{ request.session.currency }}</h3>
+						<h3 class="product-price">$ {{ product_variant.price }}</h3>
 						
+
+					{% if product_variant.stock <= 0 %}
+						<h1>{{product_variant.stock}}</h1>
+						<h5>Out of Stock</h5>
+						{% else %}
+						  {% if in_cart %}
+						<!-- ----added to cart----- -->
 						<div class="qty-input">
+							<button id="cart_button" type="submit" class="btn btn-success add-to-cart">
+								<i class="fa fa-shopping-cart"></i> Added to Cart
+							</button>
+						  </div>
+						  {% else %}
+						  <div class="qty-input">
 							<button id="cart_button" type="submit" class="primary-btn add-to-cart">
 								<i class="fa fa-shopping-cart"></i> Add to Cart
 							</button>
-						</div>
+						  </div>
+						  {% endif %}
+					{% endif %}
 					</div>
 				</form>
 				

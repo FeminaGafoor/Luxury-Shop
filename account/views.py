@@ -12,6 +12,9 @@ from django.core.mail import send_mail
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.views.decorators.cache import never_cache
+from cart.models import Cart, Cart_Product
+
+from cart.views import _cart_id
 from .models import User_Profile
 from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
@@ -182,18 +185,39 @@ def user_login(request):
         # Try to retrieve a user based on either the username or email
         try:
             user = Customer.objects.get(Q(username=username) | Q(email=email))
+            print(user,"user_______________________________")
         except Customer.DoesNotExist:
             user = None
+            
+        if user is not None:
+            try:
+                print("entering inside except__________________________")
 
-        if user and check_password(password, user.password):
-            # User found, and the password matches
-            login(request, user)
-            request.session['user'] = email
-            # if user in request.session:
-            return redirect('home:home')
-        else:
-            messages.error(request, 'Invalid Credentials')
-            return redirect('account:user_login')
+                # variant_id = request.POST.get('variant_id')
+                # print(variant_id,"variant_id__________________________")
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                print(cart,"cart++++++++++++++++++++++++++++++")
+                check_variant = Cart_Product.objects.filter(cart=cart)
+                print(check_variant,"check_variant@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                if check_variant:
+                    cart_pro = Cart_Product.objects.filter(cart=cart)
+                    print(cart_pro,"cart_pro++++++++++++++++++++++++++++++")
+                    for product in cart_pro:
+                        product.user = user
+                        product.save()
+            except:
+                print("entering inside except")
+                pass
+
+            if user and check_password(password, user.password):
+                # User found, and the password matches
+                login(request, user)
+                request.session['user'] = email
+                # if user in request.session:
+                return redirect('home:home')
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('account:user_login')
 
     return render(request, 'user/login.html')
 

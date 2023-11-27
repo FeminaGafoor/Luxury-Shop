@@ -1,0 +1,141 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<!doctype html>
+
+
+
+
+
+<!-- Page Breadcrumb -->
+<!-- container -->
+<div class="container">
+	<div class="page-breadcrumb">
+		<ol class="breadcrumb">
+			<li><a title="Home" href="index.html">Home</a></li>
+			<li class="active">ALL Categories</li>
+		</ol>
+		<div class="return-home-link pull-right">
+			<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
+		</div>
+	</div>
+	<div class="page-header ow-bottom-padding categories">
+		<h3>Searches</h3>
+		{% if products_count == 1 %}
+		   <p>{{ products_count }} Product</p>
+		{% else %}
+		<p>{{ products_count }} Products</p>
+		{% endif %}
+	</div><!-- Section Header /- -->
+</div><!-- container /- -->
+<!-- Page Breadcrumb /- -->
+
+<!-- Category Section -->
+<div id="category-section" class="category-section categories">
+	<!-- container -->
+	<div class="container">
+		<!-- category box main -->
+		<div id="category-section" class="category-section categories">
+			<div class="container">
+				<div class="category-box-main">
+					{% for item in products %}
+					<div class="col-md-3 col-sm-3 col-xs-6">
+						<div class="category-box">
+							
+							<a title="{{ item.name }}" href="{% url 'shop:product' id=item.id %}">
+								
+										<img src="{{ item.image.url }}" alt="{{ item.name }}"
+											style="width: 556.33px; height: 357.33px;" />
+										<span>{{item.name }}</span>
+										<div class="cat-hover"></div>
+									</a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<!-- Other content here -->
+			</div>
+		</div>
+
+		<div class="drop-line bottom-shadow"></div>
+		<div class="loading">
+			<a title="Click here for more products" href="#">
+				<img src="images/load.gif" alt="loading icon" />
+				<p>click here for more products</p>
+			</a>
+		</div>
+	</div><!-- container /- -->
+</div><!-- Category Section /- -->
+
+<!-- Footer Section -->
+<div id="footer-section" class="footer-section">
+
+
+
+
+	<!---------------- Add Banner ------------------------------------------------------------------------------------>
+	
+	<div id="add-banner-section" class="add-banner-section bottom-shadow">
+		<!-- container -->
+		{% for banner in banner_images %}
+		<div class="container">
+			<a title="Add-banner" href="#"><img src="{{ banner.ban_image.url }}" alt="add-banner" /></a>
+		</div><!-- container /- -->
+		{% endfor %}
+	</div><!-- Add Banner /- -->
+
+	<!-- Our Partner -->
+	<div id="our-partner-section" class="our-partner-section bottom-shadow">
+		<!-- container -->
+		<div class="container">
+			<!-- Section Header -->
+			<div class="section-header">
+				<h3>Partners with us</h3>
+				<p>Nam ac egestas est. Mauris et pulvinar risus, at tincidunt lorem. Maecenas tristique sit amet odio
+					sit amet aliquet. Quisque a pharetra quam. Sed in ultrices diam, eget sodales ligula. Sed ut
+					tincidunt lacus.</p>
+			</div><!-- Section Header /- -->
+			<!-- Owl Carousel -->
+			<div id="our-partner" class="owl-carousel owl-theme our-partner">
+				<div class="item">
+					<a title="Partner" href="#" class="partner-box">
+						<img src="images/partner/partner-1.png" alt="partner-1" />
+					</a>
+				</div>
+				<div class="item">
+					<a title="Partner" href="#" class="partner-box">
+						<img src="images/partner/partner-2.png" alt="partner-1" />
+					</a>
+				</div>
+				<div class="item">
+					<a title="Partner" href="#" class="partner-box">
+						<img src="images/partner/partner-3.png" alt="partner-1" />
+					</a>
+				</div>
+				<div class="item">
+					<a title="Partner" href="#" class="partner-box">
+						<img src="images/partner/partner-4.png" alt="partner-1" />
+					</a>
+				</div>
+				<div class="item">
+					<a title="Partner" href="#" class="partner-box">
+						<img src="images/partner/partner-1.png" alt="partner-1" />
+					</a>
+				</div>
+				<div class="item">
+					<a title="Partner" href="#" class="partner-box">
+						<img src="images/partner/partner-2.png" alt="partner-1" />
+					</a>
+				</div>
+			</div><!-- Owl Carousel /- -->
+		</div><!-- container /- -->
+	</div><!-- Our Partner /- -->
+
+
+ 
+	{% endblock %}

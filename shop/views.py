@@ -3,6 +3,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from items.models import Banner, Brand, Category, Color, MultipleImage, Product_variant, Products, Size
+from cart.models import Cart_Product
+from cart.views import _cart_id
+from django.db.models import Q
 
 
 # Create your views here.
@@ -26,7 +29,13 @@ def product(request, id):
     category = Category.objects.all()
     product = Products.objects.get(id=id)
     brand = Brand.objects.all()
-    
+    product_variants = Product_variant.objects.filter(product_id=id)
+    product_variant = product_variants.first()
+
+    # Ensure you have a valid product_variant before proceeding
+    if product_variant:
+        in_cart = Cart_Product.objects.filter(cart__cart_id=_cart_id(request), product_variant=product_variant).exists()
+        print(in_cart, "in_cart+++++++++++++++++++++++++++++++++++++")
     ajax_color = request.GET.get('color')
     
     print(ajax_color, "ajax color")
@@ -77,6 +86,7 @@ def product(request, id):
         'colors': colors,
         'sizes': size.size.name,
         'brand': brand,
+        'in_cart': in_cart,
     }
 
     return render(request, 'user/product.html', context)
@@ -124,19 +134,21 @@ def kids(request):
     }
     return render(request,'user/kids.html',context)
 
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 
-def get_image_url(request, variant_id, color):
-    image = get_object_or_404(MultipleImage, product_variant__id=variant_id, color__code=color)
-    
-    if image:
-        image_url = image.images.url  # Assuming 'images' is the field holding the image URL
-        return JsonResponse({'image_url': image_url})
-    else:
-        return JsonResponse({'error': 'Image not found'}, status=404)
-
-
+def search(request):
+    if 'query' in request.GET:
+        query = request.GET['query']
+        if query:
+            products=Products.objects.order_by('create').filter(name__icontains=query)
+            print(products,"products+++++++++++++++++++++++++++++")
+            products_count = products.count()
+            print(products_count,"products_count+++++++++++++++++++++++++++++")
+    context = {
+        'products' : products,
+        'products_count' : products_count
+    }        
+  
+    return render(request,'user/search.html',context)
 
 
 
