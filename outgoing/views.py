@@ -34,16 +34,18 @@ def checkout(request):
             # Assuming cart_pro.product_variant is a Product_variant object
             if cart_pro.product_variant:
                 quantity += cart_pro.quantity
-                total += cart_pro.product_variant.price
-                print(cart_pro.product_variant,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                
+                # total += cart_pro.product_variant.price
+                sub_total = sum(cart_pro.product_variant.price * cart_pro.quantity for cart_pro in cart_products)
+                shipping=40
                 print(f"Product: {cart_pro.product.name}")
                 print(f"Price: {cart_pro.product_variant.price}")
                 print(f"Quantity: {cart_pro.quantity}")
-                print(f"Subtotal: {cart_pro.product_variant}")
+                print(f"Subtotal: {sub_total}")
                 
-            tax = (2 * total)/100
-            grand_total = total + tax
+            tax = (2 * sub_total)/100
+            grand_total = sub_total + shipping + tax
+            print(f"Grandtotal: {grand_total }")
+                
             
         context = {
             'total': total,
@@ -65,10 +67,6 @@ def checkout(request):
 
     return render(request,'user/checkout.html',context)
 
-
-
-def payments(request):
-    return render(request,'user/payments.html')
 
 
 def summary(request):

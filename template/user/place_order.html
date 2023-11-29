@@ -1,0 +1,133 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<!-- Page Breadcrumb -->
+<!-- container -->
+<div class="container">
+	<div class="page-breadcrumb">
+		<ol class="breadcrumb">
+			<li><a title="Home" href="{% url 'home:home' %}">Home</a></li>
+			<li class="active">Payment</li>
+		</ol>
+		<div class="return-home-link pull-right">
+			<a title="Return Home Page" href="{% url 'home:home' %}">return to home page</a>
+		</div>
+	</div>
+	<div class="page-header bottom-shadow">
+		<h3>Payment</h3>
+		<p>Choose Payment Option</p>
+	</div><!-- Section Header /- -->
+</div><!-- container /- -->
+<!-- Page Breadcrumb /- -->
+
+<div class="page-wizard">
+	<!-- container -->
+	<div class="container">
+		
+		<div class="shopping-cart-estimate">
+			<!-- container -->
+			<div class="container">
+				<div class="row">
+					<!-- col-md-4 -->
+					<div class="col-md-8 col-sm-6">
+						<!-- Section Header -->
+						<div class="section-header">
+							<h3>estimate shipping and tax</h3>
+						</div><!-- Section Header /- -->
+						<div class="contact-form bottom-shadow">
+							<form>
+								<div class="radio">
+									<input type="radio" name="r" id="radio1"><label for="radio1">Cash on Delivery <span>7,86 Dollar </span></label> 
+								</div>
+								<div class="radio">
+									<input type="radio" name="r" id="radio2"><label for="radio2">Secure Payment by Credit Card - CardPay</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="r" id="radio3"><label for="radio3">Paypal</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="r" id="radio4"><label for="radio4">Bank Transfer</label>
+								</div>
+								<div class="col-md-3 col-sm-3">
+									<a title="Payment-getway" href="#"><img src="media/images/footer/payment-getway-icon.png"
+											alt="payment-getway-icon"></a>
+								</div>
+							</form>
+						</div>
+					</div><!-- col-md-4 /- -->
+					<!-- col-md-4 -->
+					<!-- <div class="col-md-4 col-sm-6"> -->
+						<!-- section-header -->
+						<!-- <div class="section-header">
+							<h3>discount codes</h3>
+						</div> Section Header /- -->
+						<!-- <div class="estimate-details shopping-cart-table coupon">
+							<h4>Enter your coupon code if you have</h4>
+							<form>
+								<div class="form-group">
+									<input type="text" name="" class="form-control" placeholder="">
+									<input type="submit" value="apply" class="btn">	
+								</div>
+							</form>
+						</div>  -->
+					<!-- </div>col-md-4 /- -->
+					<!-- col-md-4 -->
+					<div class="col-md-4 col-sm-6">
+						<div class="section-header">
+							<h3>your payment details</h3>
+						</div>
+						<div class="estimate-details shopping-cart-table">
+							<table>
+								<tbody>
+									
+									<tr class="cart-subtotal">
+										<th>Subtotal</th>
+										<td><span id= "subTotal" class="amount">${{ total }}</span></td>
+										
+									</tr>
+									<tr class="tax">
+										<th>Tax</th>
+										<td><span class="amount">${{ tax }}</span></td>
+										
+									</tr>
+									<tr class="order-total">
+										<th>Grand Total</th>
+										<td><strong><span class="total-amount">{{ grand_total }}</span></strong> </td>
+									</tr>
+									
+								</tbody>
+							</table>
+		
+							<a href="{% url 'outgoing:checkout' %}" class="btn btn-default" id="checkout-link">proceed to
+								checkout</a>
+		
+							<script>
+								document.getElementById("checkout-link").addEventListener("click", function (event) {
+									event.preventDefault(); // Prevent the default behavior of the link
+									// Perform any other actions or validations you may need before submitting
+									// For example, you can use JavaScript to check some conditions before proceeding to the checkout URL.
+									// If conditions are met, navigate to the checkout URL:
+									window.location.href = this.getAttribute("href");
+								});
+							</script>
+						</div>
+					</div><!-- col-md-4 /- -->
+				</div>
+			</div>
+		</div><!-- Cart estimate -->
+		<div class="wizard-footer">
+			<a title="Back" href="{% url 'outgoing:checkout' %}"
+				class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Back</a>
+			<a title="Continue" href=""
+				class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Continue</a>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

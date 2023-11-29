@@ -33,36 +33,51 @@
                 <!-- col-md-6 -->
                 <div class="col-md-6 col-sm-6">
                     <div class="section-header">
-                        <h3>Shipping Details</h3>
+                        <h3>Billing Address</h3>
                     </div><!-- Section Header Over -->
                     <div class="contact-form bottom-shadow">
                         <form action="" method="POST" class="form-horizontal">
-                          {% csrf_token %}
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label class="col-md-4"> First Name</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="firstname-1" placeholder="your first name"
+                                    <input type="text" class="form-control" name="first_name" id="firstname-1" value ="{{ user.user_profile.first_name }}" placeholder="your first name"
                                         required />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4">Last Name</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="lastname-1" placeholder="your last name"
+                                    <input type="text" class="form-control" name="last_name" id="lastname-1" value ="{{ user.user_profile.last_name }}" placeholder="your last name"
                                         required />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4">Email</label>
                                 <div class="col-md-8">
-                                    <input type="email" class="form-control" id="email2" placeholder="your email here"
+                                    <input type="email" class="form-control" name="email" id="email2" value = "{{ user.email }}" placeholder="your email here"
                                         required />
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label class="col-md-4">Address</label>
+                                <label class="col-md-4">Phone Number</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="address11" placeholder="Address Here"
+                                    <input type="tel" class="form-control" name="phone" id="phone" placeholder="{{ user.user_profile.phone }}" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Address_1</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="address_line_1" id="address_line_1" value= "{{ user.user_profile.address_line_1 }}" placeholder="Address Here"
+                                        required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4">Address_2</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="address_line_2" id="address_line_2" value= "{{ user.user_profile.address_line_2 }}" placeholder="Address Here"
                                         required />
                                 </div>
                             </div>
@@ -70,23 +85,36 @@
                             <div class="form-group">
                                 <label for="city" class="col-md-4">City</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="city1" placeholder="your city" required />
+                                    <input type="text" class="form-control" id="city1" value="{{ user.user_profile.city }}" placeholder="your city" required />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="state" class="col-md-4">State</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="state" placeholder="your state" required />
+                                    <input type="text" class="form-control" id="state" value="{{ user.user_profile.state }}" placeholder="your state" required />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="city" class="col-md-4">Country</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="country" placeholder="your country" required />
+                                    <input type="text" class="form-control" id="country" value="{{ user.user_profile.country }}" placeholder="your country" required />
                                 </div>
                             </div>
                          
-                           
+                            <div class="form-group">
+                                <label for="order_notes" class="col-md-4">Order Notes</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" id="order_notes" rows="2" placeholder="Add any notes to your order"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wizard-footer">
+                                <a title="Back" href="{% url 'cart:cart_page' %}"
+                                    class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Back</a>
+                                <a title="Continue" type="submit" href="{% url 'orders:place_order' %}"
+                                    class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Place Order</a>
+                            </div>
+
                         </form>
                     </div>
                 </div><!-- col-md-6 /- -->
@@ -127,8 +155,11 @@
                                         <span class="qty">{{ cart_pro.quantity }}</span>
                                     </div>
                                 </td>
-                                <td data-title="Price" class="product-price">
-                                    <span class="price-amount">${{ cart_pro.sub_total }}</span>
+                                <!-- <td data-title="Price" class="product-price">
+                                    <span class="price-amount">${{ grand_total }}</span>
+                                </td> -->
+                                <td data-title="Subtotal" class="product-subtotal">
+                                    <span class="amount" id="singlePrice">$ {{ grand_total }}</span>
                                 </td>
                              
                             </tr>	
@@ -141,12 +172,7 @@
             </div><!-- Contact Form details /- -->
             
         </div><!-- Contact Form Details /- -->
-        <div class="wizard-footer">
-            <a title="Back" href="07_login_register.html"
-                class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Back</a>
-            <a title="Continue" href="09_payment.html"
-                class="btn btn-next btn-fill btn-warning btn-wd btn-sm">Continue</a>
-        </div>
+     
     </div>
 </div>
 {% endblock %}

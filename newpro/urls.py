@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls.static import static
-
+from cart import views as cartviews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('home.urls')),
@@ -31,6 +31,10 @@ urlpatterns = [
     path('cart/',include('cart.urls')),
     path('outgoing/',include('outgoing.urls')),
     path('for_admin/',include('for_admin.urls')),
+    path('update_cart/', cartviews.update_cart, name='update_cart'),   
+    # ORDERS
+    
+    path('orders/',include('orders.urls')),
     
     
 ]

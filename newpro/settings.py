@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'cart',
     'outgoing',
     'for_admin',
+    'orders',
    
     
    

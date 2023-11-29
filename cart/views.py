@@ -118,7 +118,7 @@ def add_cart(request, product_id):
     
     
     
-def cart_page(request, total=0, quantity=0, cart_pro=None):
+def cart_page(request, sub_total=0, quantity=0, cart_pro=None):
     tax=0
     grand_total=0
     try:
@@ -135,7 +135,7 @@ def cart_page(request, total=0, quantity=0, cart_pro=None):
             image = MultipleImage.objects.get(product_variant=cart_product.product_variant)
             cart_data.append((cart_product, image))
             if cart_product.product_variant:
-                total +=(cart_product.product_variant.price * cart_product.quantity)
+                sub_total +=(cart_product.product_variant.price * cart_product.quantity)
                 quantity=cart_product.quantity
                 
 
@@ -156,13 +156,15 @@ def cart_page(request, total=0, quantity=0, cart_pro=None):
         #         print(f"Quantity: {cart_pro.quantity}")
         #         print(f"Subtotal: {cart_pro.sub_total}")
                 
-        tax = (2 * total)/100
-        grand_total = total + tax
+        tax = (2 * sub_total)/100
+        shipping = 40
+        grand_total = sub_total + tax + shipping
         context = {
-            'total': total,
+            'sub_total': sub_total,
             'quantity': quantity,
             'cart_products': cart_products,
             'tax' : tax,
+            'shipping' : shipping,
             'grand_total' : grand_total,
             'cart_data': cart_data,
         }
@@ -170,94 +172,218 @@ def cart_page(request, total=0, quantity=0, cart_pro=None):
     except ObjectDoesNotExist:
         # Initialize context if the cart doesn't exist
         context = {
-            'total': total,
+            'sub_total': sub_total,
             'quantity': quantity,
             'cart_products': [],
             'tax': 0,
+            'shipping' : 0,
             
         }
 
     return render(request, 'user/cart.html', context)
 
 
-def update_cart(request,action,product_id):
-    url = request.META.get('HTTP_REFERER')
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            print("hloo", product_id)
-            product_v = Product_variant.objects.get(id=product_id)
-            print(product_v, "product_v")
-            cart_items = Cart_Product.objects.get(user=request.user, product_variant=product_v)
-            print(cart_items, "cart")
-        else:              
-            cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_items =Cart_Product.objects.filter(cart=cart)
+# def update_cart(request,action,product_id):
+#     url = request.META.get('HTTP_REFERER')
+#     if request.method == 'POST':
+#         if request.user.is_authenticated:
+#             print("hloo", product_id)
+#             product_v = Product_variant.objects.get(id=product_id)
+#             print(product_v, "product_v")
+#             cart_items = Cart_Product.objects.get(user=request.user, product_variant=product_v)
+#             print(cart_items, "cart")
+#             print(cart_items.price)
+#         else:              
+#             cart = Cart.objects.get(cart_id=_cart_id(request))
+#             cart_items =Cart_Product.objects.filter(cart=cart)
+#             print(cart_items.price)
    
-        try:
-            print(cart_items, "cart_item")
-            cart_item = None
-            if cart_items:
-                print('if')
-                #for cart_item in cart_items:  # Iterate over cart_items
+#         try:
+#             print(cart_items, "cart_item")
+#             cart_item = None
+#             if cart_items:
+#                 print('if')
+#                 #for cart_item in cart_items:  # Iterate over cart_items
         
-                if action == "increase":
-                        print('inc', int(cart_items.product_variant.stock), cart_items.quantity)
-                        if int(cart_items.product_variant.stock) == cart_items.quantity:
-                            print("if inc")
-                            messages.error(request,'item empty')
-                            return HttpResponseRedirect(url)
+#                 if action == "increase":
+#                         print('inc', int(cart_items.product_variant.stock), cart_items.quantity)
+#                         if int(cart_items.product_variant.stock) == cart_items.quantity:
+#                             print("if inc")
+#                             messages.error(request,'item empty')
+#                             return HttpResponseRedirect(url)
                             
-                            # print(cart_item.variant.quantity)
-                            # response_data={
-                            #     'status':True,
-                            #     'full':cart_item.variant.quantity,
-                            # }
-                            # return JsonResponse(response_data);
+#                             # print(cart_item.variant.quantity)
+#                             # response_data={
+#                             #     'status':True,
+#                             #     'full':cart_item.variant.quantity,
+#                             # }
+#                             # return JsonResponse(response_data);
                             
-                        else:
-                            print("increa + ")
-                            cart_items.quantity += 1
+#                         else:
+#                             print("increa + ")
+#                             cart_items.quantity += 1
 
                         
-                elif action == "decrease":
-                        if cart_items.quantity > 1:
-                            cart_items.quantity -= 1
+#                 elif action == "decrease":
+#                         if cart_items.quantity > 1:
+#                             cart_items.quantity -= 1
                             
-                        else:
-                            messages.error(request, 'You can\'t order the product below 1')
-                            # If cart_item.quantity <= 0:
-                            # Remove the item from the cart if the quantity becomes zero or less
-                            # cart_item.delete()
-                else:
-                        return HttpResponseBadRequest("Invalid action")
+#                         else:
+#                             messages.error(request, 'You can\'t order the product below 1')
+#                             # If cart_item.quantity <= 0:
+#                             # Remove the item from the cart if the quantity becomes zero or less
+#                             # cart_item.delete()
+#                 else:
+#                         return HttpResponseBadRequest("Invalid action")
 
-                cart_items.price = cart_items.product_variant.price * cart_items.quantity
-                print(cart_items.price, cart_items.quantity)
-                cart_items.save()
+#                 cart_items.price = cart_items.product_variant.price * cart_items.quantity
+#                 print(cart_items.price, cart_items.quantity)
+#                 cart_items.save()
 
-            # cart_items = Cart_Product.objects.filter(user=request.user)
-            # cartQnty = sum(item.quantity for item in cart_items)
-            # total = sum(item.variant.price for item in cart_items)
-            # updated_price = cart_items.product_variant.price
+#             # cart_items = Cart_Product.objects.filter(user=request.user)
+#             # cartQnty = sum(item.quantity for item in cart_items)
+#             # total = sum(item.variant.price for item in cart_items)
+#             # updated_price = cart_items.product_variant.price
 
       
 
-            response_data = {
-                'success': True,
-                # 'qnty': cartQnty,
-                'full': cart_items.quantity,  
-                'price':cart_items.price,
+#             response_data = {
+#                 'success': True,
+#                 # 'qnty': cartQnty,
+#                 'full': cart_items.quantity,  
+#                 'price':cart_items.price,
                 
-              }
-            return JsonResponse(response_data, status=200)
-        except Exception as e:
-            # Log the exception for debugging
+#               }
+#             return JsonResponse(response_data, status=200)
+#         except Exception as e:
+#             # Log the exception for debugging
 
-            return JsonResponse({'error': 'Internal Server Error'}, status=500)
-    else:
-        return HttpResponseBadRequest("Cart item not found")
+#             return JsonResponse({'error': 'Internal Server Error'}, status=500)
+#     else:
+#         return HttpResponseBadRequest("Cart item not found")
     
+
+
+
+# def update_cart(request):
+#     print("||||||||||||||||||||||||")
+#     url = request.META.get("HTTP_REFERER")
+#     if request.method == "POST":
+#         product = int(request.POST.get("product_id"))
+#         action = request.POST.get("action")
+#         product_qty = int(request.POST.get("quantity", 0))
+#         cart_items = get_object_or_404(Cart_Product, user=request.user, variant=product)
+        
+
+#         if product_qty == 0:
+#             return JsonResponse({"status": "Zero quantity not allowed"})
+
+#         if product_qty > cart_items.product_variant.quantity:
+#             return JsonResponse(
+#                 {"status": "Requested quantity exceeds available quantity"}
+#             )
+
+#         cart_items.quantity = product_qty
+#         cart_items.save()
+
+#         try:
+#             if request.user.is_authenticated:
+#                 cart_items = Cart_Product.objects.filter(user=request.user)
+#             else:
+#                 cart = Cart.objects.get(cart_id=_cart_id(request))
+#                 cart_items = Cart_Product.objects.filter(cart_item=cart)
+
+#             total = sum(cart_items.product_variant.price * item.quantity for item in cart_items)
+#             tax = (2 * total) / 100
+#             shipping = 40
+#             grand_total = total + shipping + tax
+
+#             product_price = cart_items.variant.price
+#             single_price = product_price * cart_items.quantity
+
+#             return JsonResponse(
+#                 {
+#                     # 'status':"exceeds",
+#                     "single_price": single_price,
+#                     "grand_total": grand_total,
+#                     "tax": tax,
+#                     "shipping": shipping,
+#                 }
+#             )
+#         except ObjectDoesNotExist:
+#             pass
+#     return JsonResponse({"status": "Invalid request method"})  
+
+def update_cart(request):
+
+    url = request.META.get("HTTP_REFERER")
+    if request.method == "POST":
+        product = int(request.POST.get("product_id"))
+        action = request.POST.get("action")
+        quantity = int(request.POST.get("quantity",0))
+        cart_item = get_object_or_404(Cart_Product,user=request.user,product_variant=product)
+        
+        if quantity == 0:
+            return JsonResponse({"status":"Zero quantity not allowed"})
+        if quantity > int(cart_item.product_variant.stock):
+            return JsonResponse({"status": "stock not available"})
+        
+        product_instance = cart_item.product_variant
+        price = product_instance.price
+        
+        cart_item.quantity = quantity
+        cart_item.price = price
+        
+        cart_item.save()
+        
+        try:
+            if request.user.is_authenticated:
+                
+                cart_item = Cart_Product.objects.filter(user=request.user)
+                print("cart_item",cart_item)
+                
+            else:
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                cart_item = Cart_Product.objects.filter(cart=cart)
+            
+            # for item in cart_item:  
+            #     # if item.product_variant:
+            #     #     # sub_total +=(item.product_variant.price * item.quantity)
+            #     #     quantity=item.quantity
+            #     #     price=item.product_variant.price
+            #         print(quantity,"quantity")
+                    
+                    
+            sub_total = sum(item.product_variant.price * item.quantity for item in cart_item)
+            print("sub_total", sub_total)
+            tax = (2 * sub_total) / 100
+            shipping = 40
+            grand_total = sub_total + shipping + tax
+            print("grand_total",grand_total)
+            # sinlge_price = item.product_variant.price
+            # sub_total = sinlge_price * cart_item.quantity
+
+
+
+            return JsonResponse({
+                'status':"success",
+                'sub_total':sub_total,
+                'tax':tax,
+                'shipping':shipping,
+                'grand_total':grand_total,
+            })
+            
+            
+        except ObjectDoesNotExist:
+            pass 
+    return JsonResponse({"status":"invalid request method"})       
+        
+
+
    
+
+
+
 
 
 def delete_cart_product(request, product_id, variant_id):

@@ -15,50 +15,54 @@
         display: flex;
         align-items: center;
         justify-content: center;
-		
-		padding-left: 27px;
-	
-	
+
+        padding-left: 1.6875rem;
+
+
     }
 
-    .decrement-button{
-		display: inline-block;
-        padding: 5px 10px;
-        background-color:#ffffff;
-        color:#cbcbcb;
+    .decrement-button {
+        display: inline-block;
+        padding: .3125rem .625rem;
+        background-color: #ffffff;
+        color: #cbcbcb;
         text-decoration: none;
         cursor: pointer;
-        border-radius: 3px;
-        margin: 0 5px;
-		height: 34px;
-		margin-left: -27px;
-	}
+        border-radius: .1875rem;
+        margin: 0 .3125rem;
+        height: 2.125rem;
+        margin-left: -1.6875rem;
+    }
+
     .increment-button {
         display: inline-block;
-        padding: 5px 10px;
-        background-color:#ffffff;
-        color:#cbcbcb;
+        padding: 0.3125rem 0.625rem;
+
+        background-color: #ffffff;
+        color: #cbcbcb;
         text-decoration: none;
         cursor: pointer;
-        border-radius: 3px;
-        margin: 0 5px;
-		height: 34px;
-		margin-left: 19px;
-	
-	}
-		
-    
+        border-radius: .1875rem;
+        margin: 0 .3125rem;
+        height: 2.125rem;
+        margin-left: 3.1875rem
+
+    }
+
+
 
     .quantity-input {
-        width: 36px;
+        width:11.25rem;
         text-align: center;
-        
-        padding: 5px;
-        margin: 0 5px;
-		margin-left: -8px;
-		height: 38px;
-		margin-right: -29px;
-	}
+
+        padding: .3125rem;
+      
+        margin-left: -22px;
+        margin-top: -38px;
+        height: 2.375rem;
+        margin-right: -1.8125rem;
+       
+    }
 </style>
 
 
@@ -67,180 +71,229 @@
 <!-- Page Breadcrumb -->
 <!-- container -->
 <div class="container">
-	<div class="page-breadcrumb">
-		<ol class="breadcrumb">
-			<li><a title="Home" href="#">Home</a></li>
-			<li class="active">Shopping Cart</li>
-		</ol>
-		<div class="return-home-link pull-right">
-			<a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
-		</div>
-	</div>
-	<div class="page-header bottom-shadow">
-		<h3>Shopping Cart</h3>
-		<p>Selected Products </p>
-	</div><!-- Section Header /- -->
+    <div class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li><a title="Home" href="#">Home</a></li>
+            <li class="active">Shopping Cart</li>
+        </ol>
+        <div class="return-home-link pull-right">
+            <a title="Return to home page" href="{% url 'home:home' %}">return to home page</a>
+        </div>
+    </div>
+    <div class="page-header bottom-shadow">
+        <h3>Shopping Cart</h3>
+        <p>Selected Products </p>
+    </div><!-- Section Header /- -->
 </div><!-- container /- -->
 <!-- Page Breadcrumb /- -->
 
 <div class="page-wizard shopping-cart shopping-product-table">
-	
 
 
-	<div class="container">
+
+    <div class="container">
 
 
-	
-		<div class="shopping-cart-table bottom-shadow">
-			
-			{% if not cart_products %}
-			<h3 class="text-center">Your Cart is empty</h3>
-			<br>
-			<div class="shopping-cart-footer" style="text-align: center;">
-				<a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default" >Continue Shopping</a>
-			</div>
-			{% else %}
-			
-			<table class="shop_table cart">
-				<thead>
-					<tr>
-						<th class="product-name">Product</th>
-						<th class="product-description">Description</th>
-						<th class="product-brand">brand</th>
-						<th class="product-color">Color</th>
-						<th class="product-size">Size</th>
-						<th class="blank-space"></th>
-						<th class="product-price">Price</th>
-						<th class="product-quantity">Quantity</th>
-						<th class="product-subtotal">subtotal</th>
-						<th class="product-change">delete</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-					
-					{% for cart_pro, i in cart_data %}
-					<tr>
-					<td data-title="Product" class="product-tdumbnail">
-							<a title="Summary" href="#"><img src="{{ i.images.url }}" alt="{{ product_description }}" style="width: 200px; height: 200px;" /></a>
-						</td>
-						<td data-title="Description" class="product-description">
-							<a title="Order No" href="#">
-								<b>{{ cart_pro.product_variant.product.name }}</b>
-								<p>{{ cart_pro.product_variant.product.description }}</p>
-							</a>
-						</td>
-						<td data-title="brand" class="product-brand">
-							<img src="{{ cart_pro.product.brand.brand_image.url }}" alt="{{ product_brand }}" style="width: 80px; height: 60px;"/>
-						</td>
-						<td data-title="Color" class="product-color">
-							<span class="choose-color" style="background-color:{{ cart_pro.product_variant.colors.code }};">
-								
-							</span>
-						</td>
 
-						</td>							
-						<td data-title="Size" class="product-size">
-							<span class="choose-size">{{ cart_pro.product_variant.size.name }}</span>
-						</td>
-						
-						<td data-title="" class="blank-space"></td>
-						<td data-title="Price" class="product-price">
-							<span class="price-amount">${{ cart_pro.price }}</span>
-						</td>
+        <div class="shopping-cart-table bottom-shadow">
+
+            {% if not cart_products %}
+            <h3 class="text-center">Your Cart is empty</h3>
+            <br>
+            <div class="shopping-cart-footer" style="text-align: center;">
+                <a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default">Continue
+                    Shopping</a>
+            </div>
+            {% else %}
+
+            <table class="shop_table cart">
+                <thead>
+                    <tr>
+                        <th class="product-name">Product</th>
+                        <th class="product-description">Description</th>
+                        <th class="product-brand">brand</th>
+                        <th class="product-color">Color</th>
+                        <th class="product-size">Size</th>
+                        <th class="blank-space"></th>
+                        <th class="product-price">Price</th>
+                        <th class="product-quantity">Quantity</th>
+                        <th class="product-subtotal">subtotal</th>
+                        <th class="product-change">delete</th>
+                    </tr>
+                </thead>
+                <tbody>
 
 
-						<td data-title="Quantity" class="product-quantity">
+                    {% for cart_pro, i in cart_data %}
+                    <tr>
+                        <td data-title="Product" class="product-tdumbnail">
+                            <a title="Summary" href="#"><img src="{{ i.images.url }}" alt="{{ product_description }}"
+                                    style="width: 9.375rem; height: 9.375rem;" /></a>
+                        </td>
+                        <td data-title="Description" class="product-description">
+                            <a title="Order No" href="#">
+                                <b>{{ cart_pro.product_variant.product.name }}</b>
+                                <p>{{ cart_pro.product_variant.product.description }}</p>
+                            </a>
+                        </td>
+                        <td data-title="brand" class="product-brand">
+                            <img src="{{ cart_pro.product.brand.brand_image.url }}" alt="{{ product_brand }}"
+                                style="width: 5.375rem; height: 4.125rem;" />
+                        </td>
+                        <td data-title="Color" class="product-color">
+                            <span class="choose-color"
+                                style="background-color:{{ cart_pro.product_variant.colors.code }};">
+
+                            </span>
+                        </td>
+
+                        </td>
+                        <td data-title="Size" class="product-size">
+                            <span class="choose-size">{{ cart_pro.product_variant.size.name }}</span>
+                        </td>
+
+                        <td data-title="" class="blank-space"></td>
+                        <td data-title="Price" class="product-price">
+                            <span class="price-amount">${{ cart_pro.product_variant.price }}</span>
+                        </td>
+
+
+                        <!-- <td data-title="Quantity" class="product-quantity">
+                            <input type="hidden" class ="product_id" value="{{ cart_pro.product_variant }}">
+                             {% csrf_token %}
 							<div class="quantity">
 								<a type="button" class="qtyplus decrement-button"  data-action="decrement" data-product-id="1" data-field="quantity2" onclick="updateQuantity('{{cart_pro.product_variant.id}}','decrease')">-</a>
 								<input type="text" id='product_qty_{{cart_pro.product_variant.id}}' name="quantity2 product_count" value="{{ cart_pro.quantity }}" class="qty quantity-input" min="1" data-product-id="1" fdprocessedid="169ehu" readonly/>
                                 <a type="button" id="yourButtonId" class="qtyminus increment-button" data-action="increment" data-product-id="1" data-field="quantity2" onclick="updateQuantity('{{cart_pro.product_variant.id}}','increase')">+</a> 
 							</div>
-						</td>	
-						
-						
-						<!-- Adding a placeholder for displaying the updated price -->
-						
-						<td  id="priceElement" data-title="Subtotal" class="product-subtotal">
-							<span class="amount" id="subtotal">$ {{ cart_pro.price }}</span>
-						</td>
-						
+						</td>	 -->
 
-						
-						<td data-title="delete" class="product-edit">
-							<!-- <a title="Pencil Icon" href="#"><span class="product-edit"><i
+
+                        <td data-title="Quantity" class="product-quantity">
+
+                            {% csrf_token %}
+                            <div class="quantity">
+                                <a type="button" class="decrement-button changequantity" data-action="decrement"
+                                    data-product-id="{{cart_pro.product_variant.id}}">-</a>
+                                <input type="number" id='product_qty{{cart_pro.product_variant.id}}' name="product_count"
+                                    value="{{ cart_pro.quantity }}" class="qty quantity-input" min="1" readonly style="color:#cccccc; width: 11.25rem;"/>
+                                <a type="button" id="yourButtonId" class=" increment-button changequantity"
+                                    data-action="increment" data-product-id="{{cart_pro.product_variant.id}}">+</a>
+                            </div>
+                        </td>
+
+                        <!-- <div class="col-6 col-md-3">
+                            <input type="hidden" class ="prod_id" value="{{ item.variant }}">
+                             {% csrf_token %}
+                            <div class="quantity-control d-flex align-items-center">
+                                <div class="quantity" style="display: flex; align-items: center;">
+
+                                    <button class="decrement-button changequantity" data-action="decrement" data-product-id="{{ item.variant.id }}" style="background: #fe4c50; border: none; color: white; cursor: pointer;">
+                                        <span>-</span>
+                                    </button>
+                                
+                                    <input id="product_qty{{item.variant.id }}" name="product_count" type="number" class="quantity-input" value="{{ item.quantity }}" min="1" readonly style="width: 3.125rem; text-align: center; margin: 0 .625rem;">
+                                
+                                    <button id="yourButtonId" class="increment-button changequantity" data-action="increment" data-product-id="{{ item.variant.id }}" style="background: #fe4c50; border: none; color: white; cursor: pointer;">
+                                        <span>+</span>
+                                    </button>
+                                
+                                </div>
+                                
+
+
+                                
+                        </div> -->
+
+
+                        <!-- Adding a placeholder for displaying the updated price -->
+
+                        <td id="priceElement" data-title="Subtotal" class="product-subtotal">
+                            <span class="amount" id="singlePrice">$ {{ sub_total }}</span>
+                        </td>
+
+
+
+                        <td data-title="delete" class="product-edit">
+                            <!-- <a title="Pencil Icon" href="#"><span class="product-edit"><i
 										class="fa fa-pencil-square-o"></i></span></a> -->
-							<a title="Trash Icon" href=""><span class="product-delete"><i
-										class="fa fa-trash-o"></i></span></a>
-						</td>
-					</tr>
-				{% endfor %}
-					
-				</tbody>
-			</table>
-	
-			
-			<div class="shopping-cart-footer">
-				<a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default">Continue Shopping</a>
-			</div>
-		</div>
+                            <a title="Trash Icon" href=""><span class="product-delete"><i
+                                        class="fa fa-trash-o"></i></span></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
 
-    {% endif %}
-	
-	</div>
+                </tbody>
+            </table>
+
+
+            <div class="shopping-cart-footer">
+                <a title="Continue Shopping" href="{% url 'shop:category' %}" class="btn btn-default">Continue
+                    Shopping</a>
+            </div>
+        </div>
+
+        {% endif %}
+
+    </div>
 
 </div>
 <!-- Cart estimate -->
 <div class="shopping-cart-estimate">
-	<!-- container -->
-	<div class="container">
-		<div class="row">
-			
-			<div class="col-md-4 col-sm-6">
-				<div class="estimate-details shopping-cart-table">
-					<table>
-						<tbody>
-							
-							<tr class="cart-subtotal">
-								<th>Subtotal</th>
-								<td><span id= "subTotal" class="amount">${{ total }}</span></td>
-								
-							</tr>
-							<tr class="tax">
-								<th>Tax</th>
-								<td><span class="amount">${{ tax }}</span></td>
-								
-							</tr>
-							<tr class="order-total">
-								<th>Grand Total</th>
-								<td><strong><span class="total-amount">{{ grand_total }}</span></strong> </td>
-							</tr>
-							
-						</tbody>
-					</table>
+    <!-- container -->
+    <div class="container">
+        <div class="row">
 
-					<a href="{% url 'outgoing:checkout' %}" class="btn btn-default" id="checkout-link">proceed to
-						checkout</a>
+            <div class="col-md-4 col-sm-6">
+                <div class="estimate-details shopping-cart-table">
+                    <table>
+                        <tbody>
 
-					<script>
-						document.getElementById("checkout-link").addEventListener("click", function (event) {
-							event.preventDefault(); // Prevent the default behavior of the link
-							// Perform any other actions or validations you may need before submitting
-							// For example, you can use JavaScript to check some conditions before proceeding to the checkout URL.
-							// If conditions are met, navigate to the checkout URL:
-							window.location.href = this.getAttribute("href");
-						});
-					</script>
-				</div>
-			</div><!-- col-md-4 /- -->
-		</div>
-	</div>
+                            <tr class="cart-subtotal">
+                                <th>Subtotal</th>
+                                <td><span id="subTotal" class="amount">${{ sub_total }}</span></td>
+
+                            </tr>
+                            <tr class="tax">
+                                <th>Tax</th>
+                                <td><span id="taxDisplay" class="amount">${{ tax }}</span></td>
+
+                            </tr>
+                            <tr class="tax">
+                                <th>Shipping</th>
+                                <td><span id="shippingDisplay" class="amount">${{ shipping }}</span></td>
+
+                            </tr>
+                            <tr class="order-total">
+                                <th>Grand Total</th>
+                                <td><strong><span id="grandTotalDisplay" class="total-amount">{{ grand_total }}</span></strong> </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <a href="{% url 'outgoing:checkout' %}" class="btn btn-default" id="checkout-link">proceed to
+                        checkout</a>
+
+                    <script>
+                        document.getElementById("checkout-link").addEventListener("click", function (event) {
+                            event.preventDefault(); // Prevent the default behavior of the link
+                            // Perform any other actions or validations you may need before submitting
+                            // For example, you can use JavaScript to check some conditions before proceeding to the checkout URL.
+                            // If conditions are met, navigate to the checkout URL:
+                            window.location.href = this.getAttribute("href");
+                        });
+                    </script>
+                </div>
+            </div><!-- col-md-4 /- -->
+        </div>
+    </div>
 </div><!-- Cart estimate -->
 
 
 
 
-<script>
+<!-- <script>
     function updateQuantity(productId, action) {
         const url = `/cart/update_cart/${action}/${productId}/`;
         const csrfToken = getCookie("csrftoken");
@@ -303,80 +356,64 @@
         }
         return cookieValue;
     }
-</script>
-<!-- <script>
-var single_price;
-document.addEventListener('DOMContentLoaded', function() {
-$('.changequantity').off('click').click(function(e) {
-    e.preventDefault();
-    var action = $(this).data('action');
-    var productId = $(this).data('product-id');
-    var input = $('#product_qty' + productId);
-    var qty = parseInt(input.val(), 10) || 0;
-    console.log(action)
-    console.log(productId)
-    if (action === 'increment') {
-        qty += 1;
-    } else if (action === 'decrement' && qty > 0) {
-        qty -= 1;
-    }
-
-    $.ajax({
-        method: "POST",
-        url: "/update_quantity/",
-        data: {
-            'product_id': productId,
-            'quantity': qty,
-            'action': action,
-            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
-        },
-        success: function(response) {
-            single_price = response.single_price;
-            if (response.status === 'Requested quantity exceeds available quantity') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.status,
-                    footer: '<a href="">Why do I have this issue?</a>'
-
-                });
-
-            } else if (response.status === 'Zero quantity not allowed' || response.status === 'Invalid request method') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.status,
-                    footer: '<a href="">Why do I have this issue?</a>'
-                });
-            } else {
-                // Update single price and grand total
-                if (qty === 0) {
-                    // If the quantity becomes zero, set it to 1
-                    qty = 1;
-                }
-
-                // Update the quantity in the text field
-                input.val(qty);
-
-                // Update single price and grand total
-                $('#singlePriceDisplay' + productId).text(response.single_price);
-                $('#grandTotalDisplay').text(response.grand_total);
-                $('#taxDisplay').text('$' + response.tax);
-                $('#shippingDisplay').text(response.shipping);
-
-
-
-
-                console.log("Single Price:", response.single_price);
-                console.log("Tax:", response.tax);
-                console.log("Shipping:", response.shipping);
-            }
-        },
-        error: function(error) {
-            alert("Error updating cart.");
-        }
-});
-});
-});
 </script> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.changequantity').off('click').click(function (e) {
+            e.preventDefault();
+            var action = $(this).data('action');
+            var productId = $(this).data('product-id');
+            var input = $('#product_qty' + productId);
+            var qty = parseInt(input.val(), 10) || 0;
+            console.log(action)
+            console.log(productId)
+            console.log(qty)
+            if (action === 'increment') {
+                qty += 1;
+            } else if (action === 'decrement' && qty > 0) {
+                qty -= 1;
+            }
+
+            $.ajax({
+                method:'POST',
+                url:'/update_cart/',
+                data:{
+                    'product_id' : productId,
+                    'quantity':qty,
+                    'action':action,
+                    'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function(response) {
+                    if (response.status === 'stock not available') {
+                        alert('Stock is not available');
+                    }else if (response.status === 'Zero quantity not allowed'){
+                        alert('zero not allowed');
+                    }else{
+                        if (qty === 0){
+                            qty=1;
+
+                        }
+                        input.val(qty);
+
+                        document.getElementById('subTotal' + productId).textContent = response.single_price;
+                        $('#grandTotalDisplay').text(response.grand_total);
+                        $('#taxDisplay').text('$'+response.tax);
+                        $('#shippingDisplay').text(response.shipping);
+                        $('#subTotal').text(response.sub_total);
+                        console.log("Tax",respose.tax);
+                        console.log("Shipping",respose.shipping);
+
+                    }
+                },
+                error:function(error){
+                    alert("Error Updating Cart");
+                }
+            });
+
+      
+
+
+        });
+    });
+</script>
 {% endblock %}

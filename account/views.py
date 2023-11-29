@@ -235,12 +235,13 @@ def profile(request):
         user=request.user
         
       
-        user_pro = User_Profile.objects.get(user=user)
+        user_pro, created = User_Profile.objects.get_or_create(user=user)
 
 
         context = {
             
             'user_pro': user_pro,
+            'created': created,
         }
         return render(request, 'user/profile.html', context)
        
@@ -255,25 +256,28 @@ def edit_profile(request):
     try:
         # user_profile, created = User_Profile.objects.get_or_create(user=request.user)
         user_profile, created = User_Profile.objects.get_or_create(user=request.user)
-
+        
     except User_Profile.DoesNotExist:
    
         user_profile = User_Profile(user=request.user)
-
+       
     if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-
+        
         if form.is_valid():
+            print(form,"form|||||||||||||||||||||||||||||")
             form.save()
 
             # Update the user's email
             user = request.user
             user.email = form.cleaned_data['email']
+            
             user.save()
 
             messages.success(request, "Profile updated successfully!")
             return redirect('account:profile')
         else:
+            print("Form is not valid:", form.errors)
             messages.error(request, "Please correct the errors in the form.")
     
     else:

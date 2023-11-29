@@ -18,8 +18,10 @@ class User_Profile(models.Model):
     last_name = models.CharField(max_length=50)
     phone = models.BigIntegerField(null=True)
     email = models.EmailField(max_length=30)
-    address = models.CharField(max_length=20)
+    address_line_1 = models.CharField(max_length=20)
+    address_line_2 = models.CharField(max_length=20,blank=True,null=True)
     city = models.CharField(max_length=15)
+    state = models.CharField(max_length=15,default=True,null=True)
     country = models.CharField(max_length=15)
     image = models.ImageField( upload_to='images/',blank=True,null=True)
 
